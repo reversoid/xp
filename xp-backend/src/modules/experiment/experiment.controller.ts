@@ -1,22 +1,37 @@
 import {
+  Body,
   Controller,
-  NotImplementedException,
+  Delete,
   Patch,
-  Post,
+  Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
+import { ExperimentService } from './experiment.service';
+import { FinishExperimentDTO } from './dto/finish-experiment.dto';
 
 @Controller('experiment')
 export class ExperimentController {
-  @Post()
+  constructor(private experimentService: ExperimentService) {}
+
+  @Put()
   @UseGuards() // TODO use some auth guard
-  async runExperiment() {
-    throw new NotImplementedException();
+  async runExperiment(@Request() { user }: { user: any }) {
+    return this.experimentService.runExperiment(user.id);
   }
 
   @Patch()
   @UseGuards() // TODO use some auth guard
-  async finishExperiment() {
-    throw new NotImplementedException();
+  async finishExperiment(
+    @Body() dto: FinishExperimentDTO,
+    @Request() { user }: { user: any },
+  ) {
+    return this.experimentService.finishExperiment(user.id, dto);
+  }
+
+  @Delete()
+  @UseGuards() // TODO use some auth guard
+  async cancelExperiment(@Request() { user }: { user: any }) {
+    return this.experimentService.cancelExperiment(user.id);
   }
 }

@@ -11,6 +11,10 @@ export class CreateObservationDTO {
 
   @IsOptional()
   @IsString()
+  document_id?: string;
+
+  @IsOptional()
+  @IsString()
   voice_id?: string;
 
   @IsOptional()
