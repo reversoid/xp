@@ -9,10 +9,6 @@ export interface Tokens {
 
 @Injectable()
 export class AuthService {
-  async getTokensByTgUserId(userId: number, apiKey: string): Promise<Tokens> {
-    throw new NotImplementedException({ userId, apiKey });
-  }
-
   async register(dto: RegisterDTO): Promise<Tokens> {
     throw new NotImplementedException({ dto });
   }
