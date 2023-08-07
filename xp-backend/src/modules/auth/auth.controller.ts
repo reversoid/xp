@@ -32,7 +32,7 @@ export class AuthController {
       return;
     }
 
-    throw new NotImplementedException(tokens);
+    throw new NotImplementedException({ tokens });
   }
 
   @Post('login')
@@ -52,6 +52,6 @@ export class AuthController {
       return;
     }
 
-    throw new NotImplementedException(tokens);
+    throw new NotImplementedException({ tokens });
   }
 }
