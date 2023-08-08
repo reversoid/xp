@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { GeoDTO } from 'src/shared/dto/geo.dto';
+import { MediaGroupDTO } from 'src/shared/dto/media-group.dto';
 
 export class FinishExperimentDTO {
   @IsString()
@@ -27,8 +28,9 @@ export class FinishExperimentDTO {
   document_id: string;
 
   @IsOptional()
-  @IsString()
-  media_group_id?: string;
+  @ValidateNested({ each: true })
+  @Type(() => MediaGroupDTO)
+  media_group: MediaGroupDTO[];
 
   @IsOptional()
   @ValidateNested()
