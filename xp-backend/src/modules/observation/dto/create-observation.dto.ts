@@ -24,8 +24,4 @@ export class CreateObservationDTO {
   @IsOptional()
   @IsString()
   video_note_id?: string;
-
-  @IsOptional()
-  @IsString()
-  media_group_id?: string;
 }
