@@ -1,17 +1,24 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Tokens } from '../auth/auth.service';
+import { Injectable } from '@nestjs/common';
+import { ExperimentRepository } from '../experiment/repository/experiment.repository';
+import { MoreThan } from 'typeorm';
+import { DateTime } from 'luxon';
+import {
+  Experiment,
+  ExperimentStatus,
+} from '../experiment/entities/experiment.entity';
 
 @Injectable()
 export class ProtectedService {
-  /** Get auth tokens and renews it if necessary */
-  async getTokensByTgUserId(
-    userId: number,
-    secretKey: string,
-  ): Promise<Tokens> {
-    throw new NotImplementedException({ userId, secretKey });
-  }
+  constructor(private experimentRepository: ExperimentRepository) {}
 
-  async getAllUnfinishedExperiments(): Promise<void> {
-    throw new NotImplementedException();
+  async getAllUnfinishedExperiments(): Promise<Experiment[]> {
+    const experiments = await this.experimentRepository.find({
+      where: {
+        completed_at: MoreThan(DateTime.now().toJSDate()),
+        status: ExperimentStatus.STARTED,
+      },
+    });
+
+    return experiments;
   }
 }
