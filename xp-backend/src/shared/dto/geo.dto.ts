@@ -1,6 +1,7 @@
 import { IsDecimal, IsOptional } from 'class-validator';
+import { Geo } from '../types/Geo.type';
 
-export class GeoDTO {
+export class GeoDTO implements Geo {
   @IsDecimal()
   longitude: number;
 

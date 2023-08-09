@@ -10,6 +10,7 @@ import { getPostgresConfig } from './config/modules-configs/getPostgresConfig';
 import { getRedisConfig } from './config/modules-configs/getRedisConfig';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './modules/user/user.module';
 import postgresConfig from './config/postgres.config';
 import redisConfig from './config/redis.config';
 import secretsConfig from './config/secrets.config';
@@ -30,6 +31,7 @@ import globalConfig from './config/global.config';
     ObservationModule,
     AuthModule,
     ProtectedModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

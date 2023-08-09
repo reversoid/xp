@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
+import { MediaGroupItem } from '../types/Media-group-item.type';
 
-export class MediaGroupDTO {
+export class MediaGroupDTO implements MediaGroupItem {
   @IsOptional()
   @IsString()
   audio_id: string;
