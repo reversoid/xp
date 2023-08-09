@@ -21,25 +21,25 @@ export class Observation {
   user: User;
 
   @Column('text', { nullable: true })
-  text: string;
+  text?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
-  tg_photo_id: string;
+  tg_photo_id?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
-  tg_document_id: string;
+  tg_document_id?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
-  tg_voice_id: string;
+  tg_voice_id?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
-  tg_video_id: string;
+  tg_video_id?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
-  tg_video_note_id: string;
+  tg_video_note_id?: string;
 
   @Column('varchar', { nullable: true, length: 256, array: true })
-  file_urls: string[];
+  file_urls?: string[];
 
   @Index()
   @CreateDateColumn({ select: false, type: 'timestamptz' })
