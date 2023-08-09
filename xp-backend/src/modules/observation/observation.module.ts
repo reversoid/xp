@@ -3,10 +3,12 @@ import { ObservationController } from './observation.controller';
 import { ObservationService } from './observation.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Observation } from './entities/observation.entity';
+import { ObservationRepository } from './repositories/observation.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Observation])],
   controllers: [ObservationController],
-  providers: [ObservationService],
+  providers: [ObservationService, ObservationRepository],
+  exports: [ObservationRepository],
 })
 export class ObservationModule {}

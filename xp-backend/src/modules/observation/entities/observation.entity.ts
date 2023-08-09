@@ -1,4 +1,5 @@
 import { User } from 'src/modules/user/entities/user.entity';
+import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
 import {
   Column,
   CreateDateColumn,
@@ -40,6 +41,9 @@ export class Observation {
 
   @Column('varchar', { nullable: true, length: 256, array: true })
   file_urls?: string[];
+
+  @Column('jsonb', { nullable: true, array: true })
+  tg_media_group?: MediaGroupItem[];
 
   @Index()
   @CreateDateColumn({ select: false, type: 'timestamptz' })

@@ -12,6 +12,7 @@ import { CreateObservationDTO } from './dto/create-observation.dto';
 import { ObservationService } from './observation.service';
 import { GetRandomObservations } from './dto/get-random-observations.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { User } from '../user/entities/user.entity';
 
 @Controller('observation')
 export class ObservationController {
@@ -20,7 +21,7 @@ export class ObservationController {
   @Post()
   @UseGuards(AuthGuard)
   async createObservation(
-    @Request() { user }: { user: any },
+    @Request() { user }: { user: User },
     @Body() dto: CreateObservationDTO,
   ) {
     return this.observationService.createObservation(dto, user.id);
@@ -29,7 +30,7 @@ export class ObservationController {
   @Get('random')
   @UseGuards(AuthGuard)
   async getRandomObservations(
-    @Request() { user }: { user: any },
+    @Request() { user }: { user: User },
 
     @Query(
       new ValidationPipe({
