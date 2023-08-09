@@ -65,6 +65,9 @@ export class Experiment {
   @Column('timestamptz', { nullable: false })
   complete_by: Date;
 
+  @Column('varchar', { nullable: true, length: 256, array: true })
+  file_urls?: string[];
+
   @Index()
   @CreateDateColumn({ select: false, type: 'timestamptz' })
   created_at: Date;
