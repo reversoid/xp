@@ -1,6 +1,13 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import secretsConfig from 'src/config/secrets.config';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -10,21 +17,27 @@ import { Repository } from 'typeorm';
 export class AuthGuard implements CanActivate {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @Inject(secretsConfig.KEY)
+    private secrets: ConfigType<typeof secretsConfig>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest() as Request;
 
-    const tg_secret_key = request.headers['tg_secret_key'];
+    const secret_key = request.headers['secret_key'];
     const tg_user_id = request.headers['tg_user_id'];
 
-    if (tg_secret_key === undefined || tg_user_id === undefined) {
+    if (secret_key === undefined || tg_user_id === undefined) {
       return false;
     }
 
     const numeric_tg_user_id = Number(tg_user_id);
 
     if (Number.isNaN(numeric_tg_user_id)) {
+      return false;
+    }
+
+    if (!this.secrets.apiSecretKeys.includes(String(secret_key))) {
       return false;
     }
 

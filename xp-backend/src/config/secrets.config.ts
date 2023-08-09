@@ -4,5 +4,6 @@ export default registerAs('secrets', () => {
   return {
     jwt: process.env.JWT_SECRET?.trim(),
     cookie: process.env.COOKIE_SECRET?.trim(),
+    apiSecretKeys: process.env.API_SECRET_KEYS?.trim()?.split(','),
   };
 });

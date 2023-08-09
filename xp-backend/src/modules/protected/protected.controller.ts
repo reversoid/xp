@@ -1,8 +1,9 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ProtectedService } from './protected.service';
+import { ProtectedGuard } from './guards/protected.guard';
 
 @Controller('protected')
-@UseGuards() // TODO some check for secret keys
+@UseGuards(ProtectedGuard)
 export class ProtectedController {
   constructor(private protectedService: ProtectedService) {}
 
