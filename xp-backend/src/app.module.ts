@@ -7,8 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ProtectedModule } from './modules/protected/protected.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getPostgresConfig } from './config/modules-configs/getPostgresConfig';
-import { getRedisConfig } from './config/modules-configs/getRedisConfig';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
+// import { getRedisConfig } from './config/modules-configs/getRedisConfig';
+// import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import postgresConfig from './config/postgres.config';
@@ -19,7 +19,7 @@ import globalConfig from './config/global.config';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync(getPostgresConfig()),
-    RedisModule.forRootAsync(getRedisConfig()),
+    // RedisModule.forRootAsync(getRedisConfig()), // TODO use if necessary
     ConfigModule.forRoot({
       isGlobal: true,
       load: [postgresConfig, redisConfig, secretsConfig, globalConfig],
