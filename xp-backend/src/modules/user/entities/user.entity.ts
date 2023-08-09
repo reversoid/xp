@@ -21,6 +21,9 @@ export class User {
   @Column('varchar', { length: 32, nullable: true, unique: true })
   username: string;
 
+  @Column('char', { length: 60, nullable: false, select: false })
+  password_hash: string;
+
   @Index()
   @CreateDateColumn({ select: false, type: 'timestamptz' })
   created_at: Date;

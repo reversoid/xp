@@ -11,13 +11,14 @@ import {
 import { CreateObservationDTO } from './dto/create-observation.dto';
 import { ObservationService } from './observation.service';
 import { GetRandomObservations } from './dto/get-random-observations.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('observation')
 export class ObservationController {
   constructor(private observationService: ObservationService) {}
 
   @Post()
-  @UseGuards() // TODO use some auth guard
+  @UseGuards(AuthGuard)
   async createObservation(
     @Request() { user }: { user: any },
     @Body() dto: CreateObservationDTO,
@@ -26,7 +27,7 @@ export class ObservationController {
   }
 
   @Get('random')
-  @UseGuards() // TODO use some auth guard
+  @UseGuards(AuthGuard)
   async getRandomObservations(
     @Request() { user }: { user: any },
 
