@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { User } from 'src/modules/user/entities/user.entity';
 import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
 import {
@@ -46,10 +47,24 @@ export class Observation {
   tg_media_group?: MediaGroupItem[];
 
   @Index()
-  @CreateDateColumn({ select: false, type: 'timestamptz' })
-  created_at: Date;
+  @CreateDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  created_at: DateTime;
 
   @Index()
-  @DeleteDateColumn({ select: false, type: 'timestamptz' })
-  deleted_at: Date;
+  @DeleteDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  deleted_at: DateTime;
 }

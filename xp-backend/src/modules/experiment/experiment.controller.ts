@@ -9,22 +9,24 @@ import {
 } from '@nestjs/common';
 import { ExperimentService } from './experiment.service';
 import { FinishExperimentDTO } from './dto/finish-experiment.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { User } from '../user/entities/user.entity';
 
 @Controller('experiment')
 export class ExperimentController {
   constructor(private experimentService: ExperimentService) {}
 
   @Put()
-  @UseGuards() // TODO use some auth guard
-  async runExperiment(@Request() { user }: { user: any }) {
+  @UseGuards(AuthGuard)
+  async runExperiment(@Request() { user }: { user: User }) {
     return this.experimentService.runExperiment(user.id);
   }
 
   @Patch()
-  @UseGuards() // TODO use some auth guard
+  @UseGuards(AuthGuard)
   async finishExperiment(
-    @Body() dto: FinishExperimentDTO,
     @Request() { user }: { user: any },
+    @Body() dto: FinishExperimentDTO,
   ) {
     return this.experimentService.finishExperiment(user.id, dto);
   }

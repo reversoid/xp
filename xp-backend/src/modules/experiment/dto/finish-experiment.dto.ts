@@ -9,31 +9,31 @@ export class FinishExperimentDTO {
 
   @IsOptional()
   @IsString()
-  photo_id: string;
+  photo_id?: string;
 
   @IsOptional()
   @IsString()
-  video_id: string;
+  video_id?: string;
 
   @IsOptional()
   @IsString()
-  video_note_id: string;
+  video_note_id?: string;
 
   @IsOptional()
   @IsString()
-  voice_id: string;
+  voice_id?: string;
 
   @IsOptional()
   @IsString()
-  document_id: string;
+  document_id?: string;
 
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => MediaGroupDTO)
-  media_group: MediaGroupDTO[];
+  media_group?: MediaGroupDTO[];
 
   @IsOptional()
   @ValidateNested()
   @Type(() => GeoDTO)
-  geo: GeoDTO;
+  geo?: GeoDTO;
 }

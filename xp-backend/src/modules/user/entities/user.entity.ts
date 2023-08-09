@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { Experiment } from 'src/modules/experiment/entities/experiment.entity';
 import { Observation } from 'src/modules/observation/entities/observation.entity';
 import {
@@ -25,12 +26,26 @@ export class User {
   password_hash: string;
 
   @Index()
-  @CreateDateColumn({ select: false, type: 'timestamptz' })
-  created_at: Date;
+  @CreateDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  created_at: DateTime;
 
   @Index()
-  @DeleteDateColumn({ select: false, type: 'timestamptz' })
-  deleted_at: Date;
+  @DeleteDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  deleted_at: DateTime;
 
   @OneToMany(() => Observation, (entity) => entity.user)
   observations: Observation[];

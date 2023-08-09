@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Geo } from 'src/shared/types/Geo.type';
 import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
@@ -28,8 +29,8 @@ export class Experiment {
   })
   user: User;
 
-  @Column('text', { nullable: false })
-  text: string;
+  @Column('text', { nullable: true })
+  text?: string;
 
   @Column('varchar', { nullable: true, length: 256 })
   tg_photo_id?: string;
@@ -52,6 +53,7 @@ export class Experiment {
   @Column('jsonb', { nullable: true })
   geo?: Geo;
 
+  @Index()
   @Column('enum', {
     enum: ExperimentStatus,
     default: ExperimentStatus.STARTED,
@@ -59,20 +61,48 @@ export class Experiment {
   })
   status: ExperimentStatus;
 
-  @Column('timestamptz', { nullable: true })
-  completed_at?: number;
+  @Index()
+  @Column('timestamptz', {
+    nullable: true,
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  completed_at: DateTime;
 
-  @Column('timestamptz', { nullable: false })
-  complete_by: Date;
+  @Index()
+  @Column('timestamptz', {
+    nullable: false,
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  complete_by: DateTime;
 
   @Column('varchar', { nullable: true, length: 256, array: true })
   file_urls?: string[];
 
   @Index()
-  @CreateDateColumn({ select: false, type: 'timestamptz' })
-  created_at: Date;
+  @CreateDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  created_at: DateTime;
 
   @Index()
-  @DeleteDateColumn({ select: false, type: 'timestamptz' })
-  deleted_at: Date;
+  @DeleteDateColumn({
+    select: false,
+    type: 'timestamptz',
+    transformer: {
+      from: (date: Date) => DateTime.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime.toJSDate(),
+    },
+  })
+  deleted_at: DateTime;
 }
