@@ -4,9 +4,10 @@ import { ExperimentService } from './experiment.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Experiment } from './entities/experiment.entity';
 import { ExperimentRepository } from './repository/experiment.repository';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Experiment])],
+  imports: [UserModule, TypeOrmModule.forFeature([Experiment])],
   controllers: [ExperimentController],
   providers: [ExperimentService, ExperimentRepository],
   exports: [ExperimentRepository],

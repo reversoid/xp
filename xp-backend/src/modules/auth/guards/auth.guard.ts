@@ -8,15 +8,14 @@ import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import secretsConfig from 'src/config/secrets.config';
-import { User } from 'src/modules/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { UserRepository } from 'src/modules/user/repositories/user.repository';
 
 // TODO later extend Jwt Auth Guard, now it is useless because we have only telegram clients
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
     @Inject(secretsConfig.KEY)
     private secrets: ConfigType<typeof secretsConfig>,
   ) {}
