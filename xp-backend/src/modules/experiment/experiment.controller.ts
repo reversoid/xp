@@ -25,15 +25,15 @@ export class ExperimentController {
   @Patch()
   @UseGuards(AuthGuard)
   async finishExperiment(
-    @Request() { user }: { user: any },
+    @Request() { user }: { user: User },
     @Body() dto: FinishExperimentDTO,
   ) {
     return this.experimentService.finishExperiment(user.id, dto);
   }
 
   @Delete()
-  @UseGuards() // TODO use some auth guard
-  async cancelExperiment(@Request() { user }: { user: any }) {
+  @UseGuards(AuthGuard)
+  async cancelExperiment(@Request() { user }: { user: User }) {
     return this.experimentService.cancelExperiment(user.id);
   }
 }

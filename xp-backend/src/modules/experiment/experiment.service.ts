@@ -36,7 +36,7 @@ export class ExperimentService {
   }
 
   async finishExperiment(userId: number, dto: FinishExperimentDTO) {
-    const existingExperiment = await this.findStartedExperiment(userId);
+    const existingExperiment = await this.findValidStartedExperiment(userId);
     if (!existingExperiment) {
       throw new NotExistingExperimentException();
     }
@@ -59,7 +59,7 @@ export class ExperimentService {
   }
 
   async cancelExperiment(userId: number) {
-    const startedExperiment = await this.findStartedExperiment(userId);
+    const startedExperiment = await this.findAnyStartedExperiment(userId);
     if (!startedExperiment) {
       throw new NotExistingExperimentException();
     }
@@ -73,14 +73,16 @@ export class ExperimentService {
   }
 
   private async validateExistingExperiments(userId: number) {
-    const experimentAlreadyStarted = await this.findStartedExperiment(userId);
+    const experimentAlreadyStarted = await this.findValidStartedExperiment(
+      userId,
+    );
 
     if (experimentAlreadyStarted) {
       throw new AlreadyExistingExperimentException();
     }
   }
 
-  private findStartedExperiment(userId: number) {
+  private findValidStartedExperiment(userId: number) {
     return this.experimentRepository.findOne({
       where: {
         user: {
@@ -88,6 +90,17 @@ export class ExperimentService {
         },
         status: ExperimentStatus.STARTED,
         complete_by: MoreThan(DateTime.now()),
+      },
+    });
+  }
+
+  private findAnyStartedExperiment(userId: number) {
+    return this.experimentRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        status: ExperimentStatus.STARTED,
       },
     });
   }

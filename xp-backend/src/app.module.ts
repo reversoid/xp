@@ -15,6 +15,7 @@ import postgresConfig from './config/postgres.config';
 import redisConfig from './config/redis.config';
 import secretsConfig from './config/secrets.config';
 import globalConfig from './config/global.config';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import globalConfig from './config/global.config';
     ObservationModule,
     AuthModule,
     ProtectedModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
