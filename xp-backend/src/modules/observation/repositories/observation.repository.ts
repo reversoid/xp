@@ -9,14 +9,18 @@ export class ObservationRepository extends Repository<Observation> {
   }
 
   async getRandomObservations(amount: number, userIdToIgnore?: number) {
-    const randomObservations = await super
+    const query = super
       .createQueryBuilder('observation')
+      .select('observation')
+      .addSelect('RANDOM()', 'random')
       .leftJoin('observation.user', 'user')
-      .where('user.id != :userIdToIgnore', { userIdToIgnore })
-      .orderBy('RANDOM()')
-      .take(amount)
-      .getMany();
+      .orderBy('random')
+      .take(amount);
 
-    return randomObservations;
+    if (userIdToIgnore !== undefined) {
+      query.where('user.id != :userIdToIgnore', { userIdToIgnore });
+    }
+
+    return query.getMany();
   }
 }
