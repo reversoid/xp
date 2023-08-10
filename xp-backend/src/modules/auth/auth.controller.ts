@@ -16,23 +16,9 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(
-    @Body() dto: RegisterDTO,
-    @Query(
-      new ValidationPipe({
-        transform: true,
-        forbidNonWhitelisted: true,
-      }),
-    )
-    { suppress_tokens }: AuthQueryDTO,
-  ) {
-    const tokens = await this.authService.register(dto);
-
-    if (suppress_tokens) {
-      return;
-    }
-
-    throw new NotImplementedException({ tokens });
+  async register(@Body() dto: RegisterDTO) {
+    await this.authService.register(dto);
+    return;
   }
 
   @Post('login')

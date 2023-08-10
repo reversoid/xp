@@ -65,8 +65,8 @@ export class Experiment {
   @Column('timestamptz', {
     nullable: true,
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   completed_at: DateTime;
@@ -75,8 +75,8 @@ export class Experiment {
   @Column('timestamptz', {
     nullable: false,
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   complete_by: DateTime;
@@ -89,8 +89,8 @@ export class Experiment {
     select: false,
     type: 'timestamptz',
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   created_at: DateTime;
@@ -100,8 +100,8 @@ export class Experiment {
     select: false,
     type: 'timestamptz',
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   deleted_at: DateTime;

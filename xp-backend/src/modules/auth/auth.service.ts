@@ -34,7 +34,7 @@ export class AuthService {
       password_hash: passwordHash,
     });
 
-    await this.userRepository.insert(newUser);
+    await this.userRepository.save(newUser);
   }
 
   async login(dto: LoginDTO): Promise<Tokens> {

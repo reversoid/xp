@@ -51,8 +51,8 @@ export class Observation {
     select: false,
     type: 'timestamptz',
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   created_at: DateTime;
@@ -62,8 +62,8 @@ export class Observation {
     select: false,
     type: 'timestamptz',
     transformer: {
-      from: (date: Date) => DateTime.fromJSDate(date),
-      to: (dateTime: DateTime) => dateTime.toJSDate(),
+      from: (date: Date) => DateTime?.fromJSDate(date),
+      to: (dateTime: DateTime) => dateTime?.toJSDate(),
     },
   })
   deleted_at: DateTime;
