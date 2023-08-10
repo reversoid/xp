@@ -87,7 +87,7 @@ export class ExperimentService {
           id: userId,
         },
         status: ExperimentStatus.STARTED,
-        complete_by: MoreThan(DateTime.now().toJSDate()),
+        complete_by: MoreThan(DateTime.now()),
       },
     });
   }
