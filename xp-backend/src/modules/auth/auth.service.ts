@@ -41,6 +41,10 @@ export class AuthService {
     throw new NotImplementedException({ dto });
   }
 
+  async isRegisteredTg(tg_user_id: number) {
+    return this.userRepository.exist({ where: { tg_id: tg_user_id } });
+  }
+
   private async validateUserExistence(username: string, tgId?: number) {
     const userExists = await this.userRepository.findOneBy([
       { tg_id: tgId },
