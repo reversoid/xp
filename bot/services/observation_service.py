@@ -25,9 +25,12 @@ class CreateObservationRequest(BaseModel):
 
 
 class ObservationService(ApiService):
-    async def create_observation(self, message: Union[Message, list[Message]]):
+    async def create_observation(self, tg_user_id: int, message: Union[Message, list[Message]]):
+        url = f'{self.base_url}/observation'
         request = self.__process_media_group(message) if isinstance(
             message, list) else self.__process_one_message(message)
+        headers = self.get_auth_headers(tg_user_id)
+        await self.post(url, payload=request, headers=headers)
 
     def __process_media_group(self, messages: list[Message]) -> Payload:
         text = ''
@@ -44,7 +47,8 @@ class ObservationService(ApiService):
             media_group_item = MediaGroupDTO(
                 audio_id=audio_id, document_id=document_id, photo_id=photo_id, video_id=video_id)
             media_group.append(media_group_item)
-        request = CreateObservationRequest(text=text if text else None, media_group=media_group)
+        request = CreateObservationRequest(
+            text=text if text else None, media_group=media_group)
         return request.dict()
 
     def __process_one_message(self, message: Message) -> Payload:
