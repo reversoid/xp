@@ -8,6 +8,8 @@ class Lexicon(TypedDict):
     internal_error: str
     start_experiment: str
     confirm_experiment: str
+    log_observation: str
+    log_observation_success: str
 
 
 LEXICON: Lexicon = {
@@ -24,5 +26,9 @@ LEXICON: Lexicon = {
     'confirm_experiment': """
         The goal is to make up a task based on 3 observations of others and share your solution. You will have 24 hours. Add process artefacts if desired.
         Ready?
-    """
+    """,
+    'log_observation': """Your observation could take any form: a word, a screenshot, a manifesto, a voice memo or a 2-second video shot. 
+
+What made you curious today?""",
+    'log_observation_success': 'Your observation is logged.'
 }

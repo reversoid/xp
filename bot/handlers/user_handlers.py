@@ -4,48 +4,33 @@ from aiogram.types import Message, InputMediaAudio, InputMediaDocument, InputMed
 from aiogram.filters import CommandStart, Command
 from aiogram.filters.callback_data import CallbackData
 from lexicon.lexicon import LEXICON
-from services.experiment_service import ExperimentService
+from services import ExperimentService, ObservationService
+from services.helpers import observations_to_media_group
 from services.types import Observation
 from keyboards import confirm_start_experiment_keyboard, StartExperimentCallback
 
 router: Router = Router()
 
 experiment_service = ExperimentService()
+observation_service = ObservationService()
 
-
-class NotValidObservation(Exception):
-    pass
-
-
-MediaGroupItem = InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo
-
-
-def observation_to_input_media(observation: Observation) -> MediaGroupItem:
-    if observation.tg_photo_id:
-        return InputMediaPhoto(media=observation.tg_photo_id)
-    if observation.tg_document_id:
-        return InputMediaDocument(media=observation.tg_document_id)
-    if observation.tg_video_id:
-        return InputMediaVideo(media=observation.tg_video_id)
-    if observation.tg_voice_id:
-        return InputMediaAudio(media=observation.tg_voice_id)
-    if observation.tg_video_note_id:
-        return InputMediaVideo(media=observation.tg_video_note_id)
-
-    raise NotValidObservation
-
-
-def observations_to_media_group(observations) -> list[MediaGroupItem]:
-    media_group: list[MediaGroupItem] = []
-    for observation in observations:
-        inputMedia = observation_to_input_media(observation)
-        media_group.append(inputMedia)
-    return media_group
+# TODO use routers for logging observation, experiments
 
 
 @router.message(CommandStart())
 async def handle_start_command(message: Message):
     await message.answer(text=LEXICON['cmd_start'])
+
+
+@router.message(Command('help'))
+async def handle_help_command(message: Message):
+    await message.answer(text=LEXICON['cmd_help'])
+
+
+@router.message(Command('log_observation'))
+async def handle_log_observation(message: Message):
+    # TODO set state for logging observation
+    await message.answer(text=LEXICON['log_observation'], reply_markup=confirm_start_experiment_keyboard)
 
 
 @router.message(Command('run_experiment'))
@@ -55,18 +40,35 @@ async def handle_start_experiment(message: Message):
 
 @router.callback_query(StartExperimentCallback.filter())
 async def confirm_start_experiment(query: CallbackQuery):
-    if not query.from_user or not query.message or not query.message.from_user:
-        await query.answer()
+    # TODO set state for passing experiment
+    await query.answer()
+    await query.message.edit_reply_markup(reply_markup=None) if query.message else None
+
+
+# TODO Check for state === in experiment
+@router.message()
+async def handle_experiment_results(message: Message):
+    if message.from_user is None:
         return
 
-    await query.message.edit_reply_markup(reply_markup=None)
+    try:
+        observations = await experiment_service.run_experiment(tg_user_id=message.from_user.id)
+        media_group = observations_to_media_group(observations)
+        await message.answer_media_group(media=media_group)
+        await message.answer(LEXICON['start_experiment'])
+    except Exception:
+        await message.answer(LEXICON['internal_error'])
+
+# TODO Check for state === in logging observation
+
+
+@router.message()
+async def handle_log_observation_results(message: Message):
+    if message.from_user is None:
+        return
 
     try:
-        observations = await experiment_service.run_experiment(tg_user_id=query.message.from_user.id)
-        media_group = observations_to_media_group(observations)
-        await query.message.answer_media_group(media=media_group)
-        await query.message.answer(LEXICON['start_experiment'])
+        await observation_service.create_observation(tg_user_id=message.from_user.id, message=message)
+        await message.answer(LEXICON['log_observation_success'])
     except:
-        await query.message.answer(LEXICON['internal_error'])
-    finally:
-        await query.answer()
+        await message.answer(LEXICON['internal_error'])
