@@ -40,6 +40,10 @@ export class ObservationController {
     )
     { amount = 3 }: GetRandomObservations,
   ) {
-    return this.observationService.getRandomObservations(amount, user.id);
+    const observations = await this.observationService.getRandomObservations(
+      amount,
+      user.id,
+    );
+    return { observations };
   }
 }
