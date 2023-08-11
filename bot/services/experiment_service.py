@@ -1,5 +1,5 @@
 from .exceptions import NoTextInExperimentResultException
-from .api_service import ApiService, Payload, Params
+from .api_service import ApiService, Params
 from pydantic import BaseModel
 from .types import Observation, UploadInfoRequest
 from aiogram.types import Message
@@ -22,7 +22,7 @@ class ExperimentService(ApiService):
         observations: RandomObservationsResponse = await self.put(url, headers=headers, params=params, dataclass=RandomObservationsResponse)
         return observations.observations
 
-    async def run_experiment(self, tg_user_id: int):
+    async def run_experiment(self, tg_user_id: int) -> list[Observation]:
         observations = await self.get_random_observations(tg_user_id)
         url = f'{self.base_url}/experiment'
         headers = self.get_auth_headers(tg_user_id)
