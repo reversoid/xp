@@ -14,6 +14,10 @@ class CreateExperimentRequest(UploadInfoRequest):
     text: str
 
 
+def get_experiment_task_id(tg_user_id: int):
+    return f'experiment_user_{tg_user_id}'
+
+
 class ExperimentService(ApiService):
     async def get_random_observations(self, tg_user_id: int) -> list[Observation]:
         url = f'{self.base_url}/observation/random'
@@ -36,7 +40,7 @@ class ExperimentService(ApiService):
             message) if isinstance(message, list) else process_message_files(message)
         self.__validate_complete_experiment_request(request)
 
-        payload = request.dict()
+        payload = request.model_dump()
         await self.patch(url, headers=headers, payload=payload)
 
     def __validate_complete_experiment_request(self, request: UploadInfoRequest):
