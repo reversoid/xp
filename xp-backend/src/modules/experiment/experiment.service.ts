@@ -21,13 +21,14 @@ class NotExistingExperimentException extends HttpException {
 export class ExperimentService {
   constructor(private experimentRepository: ExperimentRepository) {}
 
-  async runExperiment(userId: number) {
+  async runExperiment(userId: number, observationsIds: number[]) {
     await this.validateExistingExperiments(userId);
 
     const newExperiment = this.experimentRepository.create({
       status: ExperimentStatus.STARTED,
       complete_by: DateTime.now().plus({ hour: 24 }),
       user: { id: userId },
+      observations: observationsIds.map((id) => ({ id })),
     });
 
     const experiment = await this.experimentRepository.save(newExperiment);

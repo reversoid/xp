@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { Observation } from 'src/modules/observation/entities/observation.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Geo } from 'src/shared/types/Geo.type';
 import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
@@ -8,6 +9,8 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -83,6 +86,10 @@ export class Experiment {
 
   @Column('varchar', { nullable: true, length: 256, array: true })
   file_urls?: string[];
+
+  @ManyToMany(() => Observation)
+  @JoinTable()
+  observations: Observation[];
 
   @Index()
   @CreateDateColumn({

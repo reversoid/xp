@@ -11,6 +11,7 @@ import { ExperimentService } from './experiment.service';
 import { FinishExperimentDTO } from './dto/finish-experiment.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
+import { StartExperimentDTO } from './dto/start-experiment.dto';
 
 @Controller('experiment')
 export class ExperimentController {
@@ -18,8 +19,11 @@ export class ExperimentController {
 
   @Put()
   @UseGuards(AuthGuard)
-  async runExperiment(@Request() { user }: { user: User }) {
-    return this.experimentService.runExperiment(user.id);
+  async runExperiment(
+    @Request() { user }: { user: User },
+    @Body() { observations_ids }: StartExperimentDTO,
+  ) {
+    return this.experimentService.runExperiment(user.id, observations_ids);
   }
 
   @Patch()
