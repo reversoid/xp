@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  redis-db:
+    image: redis:7.0.5-alpine
+    restart: no
+    ports:
+      - '6379:6379'
+    command: "redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}"
+    volumes:
+      - redis-db:/data
+
+volumes:
+  redis-db:
+    driver: local

@@ -1,17 +1,24 @@
 import asyncio
 import logging
+from aiogram.fsm.storage.redis import RedisStorage, Redis
 from aiogram import Bot, Dispatcher
 from keyboards.main_menu import set_main_menu
-from config_data.config import load_config, Config
+from config_data.config import load_config
 from handlers import routers
 
 logger = logging.getLogger(__name__)
 
+
 async def main():
     config = load_config()
-
     bot = Bot(token=config.bot.token)
-    dp = Dispatcher()
+
+    redis = Redis(host=config.database.redis.host,
+                         password=config.database.redis.password, port=config.database.redis.port)
+
+    storage = RedisStorage(redis=redis)
+
+    dp = Dispatcher(storage=storage)
 
     # Конфигурируем логирование
     logging.basicConfig(
