@@ -8,7 +8,7 @@ from handlers import routers
 logger = logging.getLogger(__name__)
 
 async def main():
-    config: Config = load_config()
+    config = load_config()
 
     bot = Bot(token=config.bot.token)
     dp = Dispatcher()

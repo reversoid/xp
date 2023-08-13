@@ -13,6 +13,7 @@ def schedule_task(task_id: str, callback: function, date: datetime):
         'date',
         run_date=date,
         id=task_id,
+        replace_existing=True
     )
 
 
