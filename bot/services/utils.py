@@ -1,10 +1,10 @@
 from aiogram.types import Message
-from .types import Geo, MediaGroupItem, UploadInfoRequest
+from .types import GeoDTO, MediaGroupItemDTO, UploadInfoRequest
 
 
 def process_media_group_files(messages: list[Message]) -> UploadInfoRequest:
     text = ''
-    media_group: list[MediaGroupItem] = []
+    media_group: list[MediaGroupItemDTO] = []
     for message in messages:
         if message.text:
             text = f'{text} {message.text}'
@@ -14,7 +14,7 @@ def process_media_group_files(messages: list[Message]) -> UploadInfoRequest:
         document_id = message.document.file_id if message.document else None
         photo_id = message.photo[-1].file_id if message.photo else None
         video_id = message.video.file_id if message.video else None
-        media_group_item = MediaGroupItem(
+        media_group_item = MediaGroupItemDTO(
             audio_id=audio_id, document_id=document_id, photo_id=photo_id, video_id=video_id)
         media_group.append(media_group_item)
     request = UploadInfoRequest(
@@ -29,7 +29,7 @@ def process_message_files(message: Message) -> UploadInfoRequest:
     video_id = message.video.file_id if message.video else None
     video_note_id = message.video_note.file_id if message.video_note else None
     voice_id = message.voice.file_id if message.voice else None
-    geo = Geo(longitude=message.location.longitude,
+    geo = GeoDTO(longitude=message.location.longitude,
                    latitude=message.location.latitude, horizontal_accuracy=message.location.horizontal_accuracy) if message.location else None
 
     request = UploadInfoRequest(

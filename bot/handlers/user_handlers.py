@@ -6,7 +6,7 @@ from aiogram.filters.callback_data import CallbackData
 from lexicon.lexicon import LEXICON
 from services import ExperimentService, ObservationService
 from services.helpers import observations_to_media_group
-from services.types import Observation
+from services.types import ObservationDTO
 from keyboards import confirm_start_experiment_keyboard, StartExperimentCallback
 
 router: Router = Router()

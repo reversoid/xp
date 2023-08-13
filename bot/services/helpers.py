@@ -1,4 +1,4 @@
-from .types import Observation
+from .types import ObservationDTO
 from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
 
 MediaGroupItem = InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo
@@ -8,7 +8,7 @@ class NotValidObservation(Exception):
     pass
 
 
-def observation_to_input_media(observation: Observation) -> MediaGroupItem:
+def observation_to_input_media(observation: ObservationDTO) -> MediaGroupItem:
     if observation.tg_photo_id:
         return InputMediaPhoto(media=observation.tg_photo_id)
     if observation.tg_document_id:
