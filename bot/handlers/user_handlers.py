@@ -1,20 +1,15 @@
-from typing import Text
-from aiogram import Router
-from aiogram.types import Message, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo, CallbackQuery
+from aiogram import Bot, Router
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, Command
-from aiogram.filters.callback_data import CallbackData
 from lexicon.lexicon import LEXICON
 from services import ExperimentService, ObservationService
 from services.helpers import observations_to_media_group
-from services.types import ObservationDTO
 from keyboards import confirm_start_experiment_keyboard, StartExperimentCallback
 
 router: Router = Router()
 
 experiment_service = ExperimentService()
 observation_service = ObservationService()
-
-# TODO use routers for logging observation, experiments
 
 
 @router.message(CommandStart())
@@ -39,29 +34,22 @@ async def handle_start_experiment(message: Message):
 
 
 @router.callback_query(StartExperimentCallback.filter())
-async def confirm_start_experiment(query: CallbackQuery):
-    # TODO set state for passing experiment
+async def confirm_start_experiment(query: CallbackQuery, bot: Bot):
+    # TODO set state for "completing experiment"
     await query.answer()
     await query.message.edit_reply_markup(reply_markup=None) if query.message else None
-
-
-# TODO Check for state === in experiment
-@router.message()
-async def handle_experiment_results(message: Message):
-    if message.from_user is None:
-        return
+    # TODO send cancel and submit buttons
 
     try:
-        observations = await experiment_service.run_experiment(tg_user_id=message.from_user.id)
+        observations = await experiment_service.run_experiment(tg_user_id=query.from_user.id)
         media_group = observations_to_media_group(observations)
-        await message.answer_media_group(media=media_group)
-        await message.answer(LEXICON['start_experiment'])
+        await bot.send_media_group(chat_id=query.from_user.id, media=media_group)
+        await query.answer(LEXICON['start_experiment'])
     except Exception:
-        await message.answer(LEXICON['internal_error'])
+        await query.answer(LEXICON['internal_error'])
+
 
 # TODO Check for state === in logging observation
-
-
 @router.message()
 async def handle_log_observation_results(message: Message):
     if message.from_user is None:

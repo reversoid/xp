@@ -39,3 +39,8 @@ class UploadInfoRequest(BaseModel):
     video_note_id: str | None = None
     media_group: list[MediaGroupItemDTO] | None = None
     geo: Optional[GeoDTO] = None
+
+
+class Experiment(UploadInfoRequest):
+    id: int
+    
