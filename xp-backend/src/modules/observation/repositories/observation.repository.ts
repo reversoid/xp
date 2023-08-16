@@ -23,4 +23,8 @@ export class ObservationRepository extends Repository<Observation> {
 
     return query.getMany();
   }
+
+  async getUserObservations(userId: number) {
+    return this.findBy({ user: { id: userId } });
+  }
 }

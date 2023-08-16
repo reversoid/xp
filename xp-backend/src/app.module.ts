@@ -16,6 +16,7 @@ import redisConfig from './config/redis.config';
 import secretsConfig from './config/secrets.config';
 import globalConfig from './config/global.config';
 import { TaskModule } from './modules/task/task.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TaskModule } from './modules/task/task.module';
     AuthModule,
     ProtectedModule,
     TaskModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
