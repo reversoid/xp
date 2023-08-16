@@ -17,6 +17,7 @@ import secretsConfig from './config/secrets.config';
 import globalConfig from './config/global.config';
 import { TaskModule } from './modules/task/task.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { FeedModule } from './modules/feed/feed.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ProfileModule } from './modules/profile/profile.module';
     ProtectedModule,
     TaskModule,
     ProfileModule,
+    FeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

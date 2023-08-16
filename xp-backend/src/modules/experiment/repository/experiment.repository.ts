@@ -3,6 +3,7 @@ import { DataSource, LessThanOrEqual } from 'typeorm';
 import { Experiment, ExperimentStatus } from '../entities/experiment.entity';
 import { DateTime } from 'luxon';
 import { PaginatedRepository } from 'src/shared/paginated.repository';
+import { ExperimentView } from '../entities/experiment-view.entity';
 
 @Injectable()
 export class ExperimentRepository extends PaginatedRepository<Experiment> {
@@ -27,5 +28,19 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
     });
 
     return this.processPagination(experiments, limit);
+  }
+
+  async getRandomUnseenExperiments(userId: number, limit: number) {
+    return this.createQueryBuilder('experiment')
+      .leftJoin(
+        ExperimentView,
+        'experimentView',
+        'experiment.id = experimentView.experimentId AND experimentView.userId = :userId',
+        { userId },
+      )
+      .where('experimentView.id IS NULL')
+      .orderBy('RANDOM()')
+      .take(limit)
+      .getMany();
   }
 }
