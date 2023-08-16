@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -10,6 +11,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { FeedService } from './feed.service';
 import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
+import { SeeManyExperimentsDTO } from './dto/see-many-experiments.dto';
 
 @Controller('feed')
 export class FeedController {
@@ -28,5 +30,14 @@ export class FeedController {
     @Param() { id }: NumericIdParamDTO,
   ) {
     return this.feedService.markExperimentAsSeen(user.id, id);
+  }
+
+  @Put('experiment/views')
+  @UseGuards(AuthGuard)
+  async markManyExperimentsAsSeen(
+    @Request() { user }: { user: User },
+    @Body() { experiments_ids }: SeeManyExperimentsDTO,
+  ) {
+    return this.feedService.markManyExperimentsAsSeen(user.id, experiments_ids);
   }
 }
