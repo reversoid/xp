@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ObservationRepository } from '../observation/repositories/observation.repository';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class ProfileService {
@@ -9,11 +10,27 @@ export class ProfileService {
     private readonly experimentRepository: ExperimentRepository,
   ) {}
 
-  async getUserObservations(userId: number) {
-    return this.observationRepository.getUserObservations(userId);
+  async getUserObservations(
+    userId: number,
+    limit: number,
+    lowerBound?: DateTime,
+  ) {
+    return this.observationRepository.getUserObservations(
+      userId,
+      limit,
+      lowerBound,
+    );
   }
 
-  async getUserExperiments(userId: number) {
-    return this.experimentRepository.getUserExperiments(userId);
+  async getUserExperiments(
+    userId: number,
+    limit: number,
+    lower_bound: DateTime,
+  ) {
+    return this.experimentRepository.getUserCompletedExperiments(
+      userId,
+      limit,
+      lower_bound,
+    );
   }
 }
