@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import { Experiment } from 'src/modules/experiment/entities/experiment.entity';
 import { Observation } from 'src/modules/observation/entities/observation.entity';
+import { Subscription } from 'src/modules/profile/entities/Subscription';
 import {
   Column,
   CreateDateColumn,
@@ -52,4 +53,10 @@ export class User {
 
   @OneToMany(() => Experiment, (entity) => entity.user)
   experiments: Observation[];
+
+  @OneToMany(() => Subscription, (entity) => entity.followee)
+  followers: Subscription[];
+
+  @OneToMany(() => Subscription, (entity) => entity.follower)
+  followee: Subscription[];
 }
