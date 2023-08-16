@@ -107,7 +107,7 @@ export class ExperimentService {
         },
         status: ExperimentStatus.STARTED,
       },
-      relations: ['observations'],
+      relations: { observations: true },
     });
   }
 }

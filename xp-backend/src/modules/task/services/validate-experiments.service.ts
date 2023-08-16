@@ -19,6 +19,9 @@ export class ValidateExperimentsService {
       .createQueryBuilder('experiment')
       .update({ status: ExperimentStatus.CANCELED })
       .where('experiment.complete_by <= :date', { date: DateTime.now() })
+      .andWhere('experiment.status = :status', {
+        status: ExperimentStatus.STARTED,
+      })
       .execute();
   }
 }
