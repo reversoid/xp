@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { ExperimentView } from 'src/modules/experiment/entities/experiment-view.entity';
 import { Experiment } from 'src/modules/experiment/entities/experiment.entity';
 import { Observation } from 'src/modules/observation/entities/observation.entity';
 import { Subscription } from 'src/modules/profile/entities/Subscription';
@@ -59,4 +60,7 @@ export class User {
 
   @OneToMany(() => Subscription, (entity) => entity.follower)
   followee: Subscription[];
+
+  @OneToMany(() => ExperimentView, (entity) => entity.user)
+  seen_experiments: ExperimentView[];
 }

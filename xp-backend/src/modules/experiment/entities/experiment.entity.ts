@@ -12,8 +12,10 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ExperimentView } from './experiment-view.entity';
 
 export enum ExperimentStatus {
   STARTED = 'STARTED',
@@ -31,6 +33,12 @@ export class Experiment {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @OneToMany(() => ExperimentView, (view) => view.experiment, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  views: ExperimentView[];
 
   @Column('text', { nullable: true })
   text?: string;
