@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Patch,
   Put,
   Request,
@@ -16,6 +17,12 @@ import { StartExperimentDTO } from './dto/start-experiment.dto';
 @Controller('experiment')
 export class ExperimentController {
   constructor(private experimentService: ExperimentService) {}
+
+  @Get()
+  @UseGuards(AuthGuard)
+  async getCurrentExperiment(@Request() { user }: { user: User }) {
+    return this.experimentService.getCurrentExperiment(user.id);
+  }
 
   @Put()
   @UseGuards(AuthGuard)

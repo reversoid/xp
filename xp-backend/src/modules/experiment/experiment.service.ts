@@ -73,6 +73,10 @@ export class ExperimentService {
     return experiment;
   }
 
+  async getCurrentExperiment(userId: number) {
+    return this.findValidStartedExperiment(userId);
+  }
+
   private async validateExistingExperiments(userId: number) {
     const experimentAlreadyStarted = await this.findValidStartedExperiment(
       userId,
@@ -103,6 +107,7 @@ export class ExperimentService {
         },
         status: ExperimentStatus.STARTED,
       },
+      relations: ['observations'],
     });
   }
 }
