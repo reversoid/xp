@@ -14,7 +14,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { StartExperimentDTO } from './dto/start-experiment.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ExperimentResponse } from '../../shared/swagger/responses/ExperimentResponse';
+import { ExperimentResponse } from '../../shared/swagger/responses/Experiment.response';
 
 @ApiTags('Experiment')
 @Controller('experiment')
