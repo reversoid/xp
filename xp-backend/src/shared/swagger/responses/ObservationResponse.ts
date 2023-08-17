@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
-import { Observation } from '../../entities/observation.entity';
+import { Observation } from '../../../modules/observation/entities/observation.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { MediaGroupItemResponse } from './MediaGroupItem.response';
 
 export class ObservationResponse implements Partial<Observation> {
   @ApiProperty()
@@ -29,7 +29,7 @@ export class ObservationResponse implements Partial<Observation> {
   file_urls?: string[];
 
   @ApiProperty({ nullable: true })
-  tg_media_group?: MediaGroupItem[];
+  tg_media_group?: MediaGroupItemResponse[];
 
   @ApiProperty({ type: String })
   created_at: DateTime;

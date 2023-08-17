@@ -1,9 +1,12 @@
 import { DateTime } from 'luxon';
 import { Observation } from 'src/modules/observation/entities/observation.entity';
 import { Geo } from 'src/shared/types/Geo.type';
-import { MediaGroupItem } from 'src/shared/types/Media-group-item.type';
-import { Experiment, ExperimentStatus } from '../../entities/experiment.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import {
+  Experiment,
+  ExperimentStatus,
+} from 'src/modules/experiment/entities/experiment.entity';
+import { MediaGroupItemResponse } from './MediaGroupItem.response';
 
 export class ExperimentResponse implements Partial<Experiment> {
   @ApiProperty()
@@ -27,8 +30,8 @@ export class ExperimentResponse implements Partial<Experiment> {
   @ApiProperty({ nullable: true })
   tg_document_id?: string;
 
-  @ApiProperty({ nullable: true })
-  tg_media_group?: MediaGroupItem[];
+  @ApiProperty({ nullable: true, type: MediaGroupItemResponse })
+  tg_media_group?: MediaGroupItemResponse[];
 
   @ApiProperty({ nullable: true })
   geo?: Geo;
@@ -45,6 +48,6 @@ export class ExperimentResponse implements Partial<Experiment> {
   @ApiProperty()
   observations: Observation[];
 
-  @ApiProperty()
+  @ApiProperty({ type: String })
   created_at: DateTime;
 }

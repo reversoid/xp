@@ -14,7 +14,7 @@ import { GetRandomObservations } from './dto/get-random-observations.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ObservationResponse } from './dto/responses/ObservationResponse';
+import { ObservationResponse } from '../../shared/swagger/responses/ObservationResponse';
 
 @ApiTags('Observation')
 @Controller('observation')
