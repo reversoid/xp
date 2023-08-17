@@ -13,11 +13,16 @@ import { ObservationService } from './observation.service';
 import { GetRandomObservations } from './dto/get-random-observations.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ObservationResponse } from './dto/responses/ObservationResponse';
 
+@ApiTags('Observation')
 @Controller('observation')
 export class ObservationController {
   constructor(private observationService: ObservationService) {}
 
+  @ApiOperation({ description: 'Create observation' })
+  @ApiResponse({ description: 'New observation', type: ObservationResponse })
   @Post()
   @UseGuards(AuthGuard)
   async createObservation(
@@ -27,6 +32,12 @@ export class ObservationController {
     return this.observationService.createObservation(dto, user.id);
   }
 
+  @ApiOperation({ description: 'Get random observations' })
+  @ApiResponse({
+    description: 'Random observations',
+    type: ObservationResponse,
+    isArray: true,
+  })
   @Get('random')
   @UseGuards(AuthGuard)
   async getRandomObservations(
