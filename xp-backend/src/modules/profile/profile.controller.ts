@@ -8,21 +8,17 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { User } from '../user/entities/user.entity';
-import { ProfileService } from './profile.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDTO } from 'src/shared/dto/paginated-query.dto';
 import { PaginatedResponse } from 'src/shared/paginated.repository';
-import { Observation } from '../observation/entities/observation.entity';
-import { ProfileUsernameParamDTO } from './dto/profile-username.param.dto copy';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SwaggerPaginatedResponse } from 'src/shared/swagger/responses/Paginated.response';
-import { ObservationResponse } from 'src/shared/swagger/responses/ObservationResponse';
-import { ExperimentResponse } from 'src/shared/swagger/responses/Experiment.response';
-import { UserResponse } from 'src/shared/swagger/responses/User.response';
 import { ExperimentPaginatedResponse } from 'src/shared/swagger/responses/ExperimentPaginated.response';
 import { ObservationPaginatedResponse } from 'src/shared/swagger/responses/ObservationPaginated.response';
 import { UserPaginatedResponse } from 'src/shared/swagger/responses/UserPaginatedResponse';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { Observation } from '../observation/entities/observation.entity';
+import { User } from '../user/entities/user.entity';
+import { ProfileUsernameParamDTO } from './dto/profile-username.param.dto copy';
+import { ProfileService } from './profile.service';
 
 @ApiTags('Profile')
 @Controller('profile')
