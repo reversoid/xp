@@ -13,17 +13,24 @@ import { FinishExperimentDTO } from './dto/finish-experiment.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { StartExperimentDTO } from './dto/start-experiment.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ExperimentResponse } from './dto/responses/ExperimentResponse';
 
+@ApiTags('Experiment')
 @Controller('experiment')
 export class ExperimentController {
   constructor(private experimentService: ExperimentService) {}
 
+  @ApiOperation({ description: 'Get current experiment' })
+  @ApiResponse({ description: 'Current experiment', type: ExperimentResponse })
   @Get()
   @UseGuards(AuthGuard)
   async getCurrentExperiment(@Request() { user }: { user: User }) {
     return this.experimentService.getCurrentExperiment(user.id);
   }
 
+  @ApiOperation({ description: 'Run experiment' })
+  @ApiResponse({ description: 'New experiment', type: ExperimentResponse })
   @Put()
   @UseGuards(AuthGuard)
   async runExperiment(
@@ -33,6 +40,11 @@ export class ExperimentController {
     return this.experimentService.runExperiment(user.id, observations_ids);
   }
 
+  @ApiOperation({ description: 'Finish experiment' })
+  @ApiResponse({
+    description: 'Completed experiment',
+    type: ExperimentResponse,
+  })
   @Patch()
   @UseGuards(AuthGuard)
   async finishExperiment(
@@ -42,9 +54,10 @@ export class ExperimentController {
     return this.experimentService.finishExperiment(user.id, dto);
   }
 
+  @ApiOperation({ description: 'Cancel experiment' })
   @Delete()
   @UseGuards(AuthGuard)
   async cancelExperiment(@Request() { user }: { user: User }) {
-    return this.experimentService.cancelExperiment(user.id);
+    await this.experimentService.cancelExperiment(user.id);
   }
 }
