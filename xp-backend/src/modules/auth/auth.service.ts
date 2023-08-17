@@ -13,7 +13,7 @@ export interface Tokens {
   refresh_token: string;
 }
 
-class UserExistsException extends HttpException {
+export class UserExistsException extends HttpException {
   constructor() {
     super('USER_EXISTS', 400);
   }
