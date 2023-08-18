@@ -4,6 +4,7 @@ import { Experiment, ExperimentStatus } from '../entities/experiment.entity';
 import { DateTime } from 'luxon';
 import { PaginatedRepository } from 'src/shared/paginated.repository';
 import { ExperimentView } from '../entities/experiment-view.entity';
+import { Subscription } from 'src/modules/profile/entities/Subscription';
 
 @Injectable()
 export class ExperimentRepository extends PaginatedRepository<Experiment> {
@@ -38,7 +39,14 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
         'experiment.id = experimentView.experimentId AND experimentView.userId = :userId',
         { userId },
       )
+      .leftJoin(
+        Subscription,
+        'subscription',
+        'experiment.userId = subscription.followed_id AND subscription.follower_id = :userId',
+        { userId },
+      )
       .where('experimentView.id IS NULL')
+      .andWhere('subscription.id IS NULL')
       .orderBy('RANDOM()')
       .take(limit)
       .getMany();

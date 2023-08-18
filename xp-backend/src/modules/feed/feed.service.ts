@@ -20,7 +20,7 @@ export class FeedService {
     private readonly experimentViewRepository: ExperimentViewRepository,
   ) {}
 
-  async getExperiments(forUserId: number) {
+  async getRandomExperiments(forUserId: number) {
     const seenLastWeek = await this.experimentViewRepository.seenLastWeek(
       forUserId,
     );

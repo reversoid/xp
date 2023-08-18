@@ -29,7 +29,7 @@ export class FeedController {
   @Get('experiments')
   @UseGuards(AuthGuard)
   async getExperiments(@Request() { user }: { user: User }) {
-    return this.feedService.getExperiments(user.id);
+    return this.feedService.getRandomExperiments(user.id);
   }
 
   @ApiOperation({ description: 'Mark experiment as seen' })
