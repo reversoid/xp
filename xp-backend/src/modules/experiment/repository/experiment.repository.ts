@@ -63,7 +63,14 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
         'experiment.userId = subscription.followed_id AND subscription.follower_id = :userId',
         { userId },
       )
+      .leftJoin(
+        ExperimentView,
+        'experimentView',
+        'experiment.id = experimentView.experimentId AND experimentView.userId = :userId',
+        { userId },
+      )
       .where('experiment.completed_at IS NOT NULL')
+      .andWhere('experimentView.id IS NULL')
       .orderBy('experiment.completed_at', 'DESC')
       .take(limit + 1)
       .getMany();
