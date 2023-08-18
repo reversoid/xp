@@ -35,6 +35,6 @@ export class ObservationRepository extends PaginatedRepository<Observation> {
       order: { created_at: 'DESC' },
       take: limit + 1,
     });
-    return this.processPagination(observations, limit);
+    return this.processPaginationByCreatedDate(observations, limit);
   }
 }

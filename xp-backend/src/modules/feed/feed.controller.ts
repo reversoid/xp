@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -14,22 +15,41 @@ import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyExperimentsDTO } from './dto/see-many-experiments.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ExperimentResponse } from 'src/shared/swagger/responses/Experiment.response';
+import { LimitQueryDTO } from 'src/shared/dto/limit.query.dto';
 
 @ApiTags('Feed')
 @Controller('feed')
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
-  @ApiOperation({ description: 'Get experiments' })
+  @ApiOperation({ description: 'Get random experiments' })
   @ApiResponse({
     type: ExperimentResponse,
     isArray: true,
     description: 'Random experiments from all users',
   })
-  @Get('experiments')
+  @Get('experiments/random')
   @UseGuards(AuthGuard)
-  async getExperiments(@Request() { user }: { user: User }) {
-    return this.feedService.getRandomExperiments(user.id);
+  async getRandomExperiments(
+    @Request() { user }: { user: User },
+    @Query() { limit }: LimitQueryDTO,
+  ) {
+    return this.feedService.getRandomExperiments(user.id, limit);
+  }
+
+  @ApiOperation({ description: 'Get latest experiments from your followee' })
+  @ApiResponse({
+    type: ExperimentResponse,
+    isArray: true,
+    description: 'Latest experiments',
+  })
+  @Get('experiments/followee')
+  @UseGuards(AuthGuard)
+  async getExperimentsFromFollowee(
+    @Request() { user }: { user: User },
+    @Query() { limit }: LimitQueryDTO,
+  ) {
+    return this.feedService.getExperimentsFromFollowee(user.id, limit);
   }
 
   @ApiOperation({ description: 'Mark experiment as seen' })

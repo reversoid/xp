@@ -1,13 +1,9 @@
-import { IsDateString, IsInt, IsOptional } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 import { DateTime } from 'luxon';
+import { LimitQueryDTO } from './limit.query.dto';
 
-export class PaginationQueryDTO {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit?: number;
-
+export class PaginationQueryDTO extends LimitQueryDTO {
   @IsOptional()
   @IsDateString()
   @Type(() => DateTime.fromISO)

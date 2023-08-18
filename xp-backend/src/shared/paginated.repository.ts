@@ -9,7 +9,7 @@ export class PaginatedResponse<T> {
 export class PaginatedRepository<
   T extends { created_at: DateTime },
 > extends Repository<T> {
-  processPagination<V extends { created_at: DateTime } = T>(
+  processPaginationByCreatedDate<V extends { created_at: DateTime } = T>(
     items: V[],
     limit: number,
   ): PaginatedResponse<V> {

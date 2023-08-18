@@ -52,6 +52,6 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
         created_at: 'DESC',
       },
     });
-    return this.processPagination(followees, limit);
+    return this.processPaginationByCreatedDate(followees, limit);
   }
 }

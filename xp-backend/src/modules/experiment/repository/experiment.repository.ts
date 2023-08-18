@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, LessThanOrEqual } from 'typeorm';
 import { Experiment, ExperimentStatus } from '../entities/experiment.entity';
 import { DateTime } from 'luxon';
-import { PaginatedRepository } from 'src/shared/paginated.repository';
+import {
+  PaginatedRepository,
+  PaginatedResponse,
+} from 'src/shared/paginated.repository';
 import { ExperimentView } from '../entities/experiment-view.entity';
 import { Subscription } from 'src/modules/profile/entities/Subscription';
 
@@ -28,7 +31,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
       relations: { observations: true },
     });
 
-    return this.processPagination(experiments, limit);
+    return this.processPaginationByCreatedDate(experiments, limit);
   }
 
   async getRandomUnseenExperiments(userId: number, limit: number) {
@@ -50,5 +53,32 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
       .orderBy('RANDOM()')
       .take(limit)
       .getMany();
+  }
+
+  async getLatestExperimentsFromFollowee(userId: number, limit: number) {
+    const experiments = await this.createQueryBuilder('experiment')
+      .innerJoin(
+        Subscription,
+        'subscription',
+        'experiment.userId = subscription.followed_id AND subscription.follower_id = :userId',
+        { userId },
+      )
+      .where('experiment.completed_at IS NOT NULL')
+      .orderBy('experiment.completed_at', 'DESC')
+      .take(limit + 1)
+      .getMany();
+
+    return this.processPaginationByCompletedDate(experiments, limit);
+  }
+
+  private processPaginationByCompletedDate<
+    V extends { completed_at: DateTime },
+  >(items: V[], limit: number): PaginatedResponse<V> {
+    let next_key = null;
+    if (items.length > limit) {
+      const lastItem = items.at(limit);
+      next_key = lastItem.completed_at;
+    }
+    return { items: items.slice(0, limit), next_key };
   }
 }

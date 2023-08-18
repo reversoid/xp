@@ -1,14 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
 import { ExperimentViewRepository } from '../experiment/repository/experiment-view.repository';
 import { ExperimentView } from '../experiment/entities/experiment-view.entity';
 import { DeepPartial } from 'typeorm';
-
-class ExperimentsViewsExceededException extends HttpException {
-  constructor() {
-    super('VIEWS_EXCEEDED', 423);
-  }
-}
 
 /** Amount of experiments user is able to see a week */
 export const VIEW_LIMIT_PER_WEEK = 10;
@@ -20,17 +14,26 @@ export class FeedService {
     private readonly experimentViewRepository: ExperimentViewRepository,
   ) {}
 
-  async getRandomExperiments(forUserId: number) {
+  async getRandomExperiments(forUserId: number, limit = VIEW_LIMIT_PER_WEEK) {
     const seenLastWeek = await this.experimentViewRepository.seenLastWeek(
       forUserId,
     );
     if (seenLastWeek >= VIEW_LIMIT_PER_WEEK) {
-      throw new ExperimentsViewsExceededException();
+      return [];
     }
+
+    const maxAvailable = VIEW_LIMIT_PER_WEEK - seenLastWeek;
 
     return this.experimentRepository.getRandomUnseenExperiments(
       forUserId,
-      VIEW_LIMIT_PER_WEEK - seenLastWeek,
+      Math.min(maxAvailable, limit),
+    );
+  }
+
+  async getExperimentsFromFollowee(userId: number, limit = 10) {
+    return this.experimentRepository.getLatestExperimentsFromFollowee(
+      userId,
+      limit,
     );
   }
 
