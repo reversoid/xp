@@ -5,10 +5,17 @@ import { DateTime } from 'luxon';
 import { SubscriptionRepository } from './repositories/subscription.repository';
 import { PaginatedResponse } from 'src/shared/paginated.repository';
 import { User } from '../user/entities/user.entity';
+import { UserRepository } from '../user/repositories/user.repository';
 
 class UserAlreadySubscribedException extends BadRequestException {
   constructor() {
     super('ALREADY_SUBSCRIBED');
+  }
+}
+
+class UsernameTakenException extends BadRequestException {
+  constructor() {
+    super('USERNAME_TAKEN');
   }
 }
 
@@ -24,6 +31,7 @@ export class ProfileService {
     private readonly observationRepository: ObservationRepository,
     private readonly experimentRepository: ExperimentRepository,
     private readonly subscriptionRepository: SubscriptionRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async getUserObservations(
@@ -61,18 +69,25 @@ export class ProfileService {
     return this.subscriptionRepository.followByUsername(whoFollowsId, username);
   }
 
-  async unFollowUser(whoFollowsId: number, username: string) {
-    const isFollowed = await this.subscriptionRepository.isFollowedByUsername(
+  async unFollowUser(whoFollowsId: number, userId: number) {
+    const isFollowed = await this.subscriptionRepository.isFollowedById(
       whoFollowsId,
-      username,
+      userId,
     );
     if (!isFollowed) {
       throw new UserUnSubscribedException();
     }
-    return this.subscriptionRepository.unfollowByUsername(
-      whoFollowsId,
-      username,
-    );
+    return this.subscriptionRepository.unfollowById(whoFollowsId, userId);
+  }
+
+  async changeUsername(userId: number, username: string) {
+    const user = await this.userRepository.getUserByUsername(username);
+
+    if (user) {
+      throw new UsernameTakenException();
+    }
+
+    return this.userRepository.editUsername(userId, username);
   }
 
   async getUserFollowees(

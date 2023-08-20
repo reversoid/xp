@@ -17,7 +17,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ExperimentResponse } from '../../shared/swagger/responses/Experiment.response';
 
 @ApiTags('Experiment')
-@Controller('experiment')
+@Controller('experiments')
 export class ExperimentController {
   constructor(private experimentService: ExperimentService) {}
 

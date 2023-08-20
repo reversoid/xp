@@ -6,6 +6,7 @@ import { ExperimentModule } from '../experiment/experiment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Subscription } from './entities/Subscription';
 import { SubscriptionRepository } from './repositories/subscription.repository';
+import { UserModule } from '../user/user.module';
 
 @Module({
   controllers: [ProfileController],
@@ -13,6 +14,7 @@ import { SubscriptionRepository } from './repositories/subscription.repository';
   imports: [
     ObservationModule,
     ExperimentModule,
+    UserModule,
     TypeOrmModule.forFeature([Subscription]),
   ],
 })

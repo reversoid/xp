@@ -20,8 +20,8 @@ import { ObservationResponse } from '../../shared/swagger/responses/ObservationR
 import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyObservationsDTO } from './dto/see-many-observations.dto';
 
-@ApiTags('Observation')
-@Controller('observation')
+@ApiTags('Observations')
+@Controller('observations')
 export class ObservationController {
   constructor(private observationService: ObservationService) {}
 

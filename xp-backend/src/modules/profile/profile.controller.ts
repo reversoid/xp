@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -17,8 +18,9 @@ import { UserPaginatedResponse } from 'src/shared/swagger/responses/UserPaginate
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { Observation } from '../observation/entities/observation.entity';
 import { User } from '../user/entities/user.entity';
-import { ProfileUsernameParamDTO } from './dto/profile-username.param.dto copy';
 import { ProfileService } from './profile.service';
+import { ProfileUsernameDTO } from './dto/profile-username.dto';
+import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
 
 @ApiTags('Profile')
 @Controller('profile')
@@ -72,18 +74,28 @@ export class ProfileController {
   @UseGuards(AuthGuard)
   async followUser(
     @Request() { user }: { user: User },
-    @Param() { username }: ProfileUsernameParamDTO,
+    @Param() { username }: ProfileUsernameDTO,
   ) {
     await this.profileService.followUser(user.id, username);
   }
 
   @ApiOperation({ description: 'Unfollow a user' })
-  @Delete(':username/followers')
+  @Delete(':id/followers')
   @UseGuards(AuthGuard)
   async unFollowUser(
     @Request() { user }: { user: User },
-    @Param() { username }: ProfileUsernameParamDTO,
+    @Param() { id }: NumericIdParamDTO,
   ) {
-    return this.profileService.unFollowUser(user.id, username);
+    return this.profileService.unFollowUser(user.id, id);
+  }
+
+  @ApiOperation({ description: 'Change username' })
+  @Put('username')
+  @UseGuards(AuthGuard)
+  async changeUsername(
+    @Request() { user }: { user: User },
+    @Body() { username }: ProfileUsernameDTO,
+  ) {
+    return this.profileService.changeUsername(user.id, username);
   }
 }

@@ -19,6 +19,14 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
     return Boolean(subscription);
   }
 
+  async isFollowedById(whoFollowsId: number, userId: number) {
+    const subscription = await this.findBy({
+      followee: { id: userId },
+      follower: { id: whoFollowsId },
+    });
+    return Boolean(subscription);
+  }
+
   async followByUsername(whoFollowsId: number, username: string) {
     const subscription = this.create({
       followee: { username },
@@ -30,6 +38,17 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
   async unfollowByUsername(whoFollowsId: number, username: string) {
     const subscription = await this.findBy({
       followee: { username },
+      follower: { id: whoFollowsId },
+    });
+    if (!subscription) {
+      return;
+    }
+    await this.softRemove(subscription);
+  }
+
+  async unfollowById(whoFollowsId: number, userId: number) {
+    const subscription = await this.findBy({
+      followee: { id: userId },
       follower: { id: whoFollowsId },
     });
     if (!subscription) {
