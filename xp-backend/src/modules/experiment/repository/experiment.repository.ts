@@ -50,6 +50,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
       )
       .where('experimentView.id IS NULL')
       .andWhere('subscription.id IS NULL')
+      .andWhere('experiment.userId != userId', { userId })
       .orderBy('RANDOM()')
       .take(limit)
       .getMany();
