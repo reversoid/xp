@@ -34,6 +34,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
     return this.processPaginationByCreatedDate(experiments, limit);
   }
 
+  /** Returns random unseen experiments from all users, but ignoring your experiments */
   async getRandomUnseenExperiments(userId: number, limit: number) {
     return this.createQueryBuilder('experiment')
       .leftJoin(
