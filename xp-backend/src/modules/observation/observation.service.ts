@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateObservationDTO } from './dto/create-observation.dto';
 import { ObservationRepository } from './repositories/observation.repository';
 import { Observation } from './entities/observation.entity';
+import { ObservationViewRepository } from './repositories/observation-view.repository';
 
 @Injectable()
 export class ObservationService {
-  constructor(private readonly observationRepository: ObservationRepository) {}
+  constructor(
+    private readonly observationRepository: ObservationRepository,
+    private readonly observationViewRepository: ObservationViewRepository,
+  ) {}
 
   async createObservation(
     dto: CreateObservationDTO,
@@ -34,8 +38,22 @@ export class ObservationService {
    */
   async getRandomObservations(
     amount: number,
-    userId?: number,
+    userId: number,
   ): Promise<Observation[]> {
     return this.observationRepository.getRandomObservations(amount, userId);
+  }
+
+  async markObservationAsViewed(userId: number, observationId: number) {
+    await this.observationViewRepository.markObservationAsViewed(
+      userId,
+      observationId,
+    );
+  }
+
+  async markManyObservationsAsViewed(userId: number, observationIds: number[]) {
+    await this.observationViewRepository.markManyObservationsAsViewed(
+      userId,
+      observationIds,
+    );
   }
 }

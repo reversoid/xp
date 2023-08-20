@@ -8,8 +8,10 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ObservationView } from './observation-view.entity';
 
 @Entity()
 export class Observation {
@@ -67,4 +69,10 @@ export class Observation {
     },
   })
   deleted_at: DateTime;
+
+  @OneToMany(() => ObservationView, (view) => view.observation, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  views: ObservationView[];
 }

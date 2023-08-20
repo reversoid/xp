@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
 import { ExperimentViewRepository } from '../experiment/repository/experiment-view.repository';
-import { ExperimentView } from '../experiment/entities/experiment-view.entity';
-import { DeepPartial } from 'typeorm';
 
 /** Amount of experiments user is able to see a week */
 export const VIEW_LIMIT_PER_WEEK = 10;
@@ -51,12 +49,7 @@ export class FeedService {
     );
   }
 
-  async markManyExperimentsAsSeen(userId: number, experiments_ids: number[]) {
-    await this.experimentViewRepository.save(
-      experiments_ids.map<DeepPartial<ExperimentView>>((id) => ({
-        user: { id: userId },
-        experiment: { id },
-      })),
-    );
+  async markManyExperimentsAsSeen(userId: number, experimentsIds: number[]) {
+    await this.markManyExperimentsAsSeen(userId, experimentsIds);
   }
 }

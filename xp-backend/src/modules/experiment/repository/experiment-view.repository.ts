@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, MoreThan, Repository } from 'typeorm';
+import { DataSource, DeepPartial, MoreThan, Repository } from 'typeorm';
 import { ExperimentView } from '../entities/experiment-view.entity';
 import { DateTime } from 'luxon';
 
@@ -14,6 +14,15 @@ export class ExperimentViewRepository extends Repository<ExperimentView> {
       experiment: { id: experimentId },
       user: { id: userId },
     });
+  }
+
+  async markManyExperimentsAsViewed(userId: number, experimentsIds: number[]) {
+    return this.save(
+      experimentsIds.map<DeepPartial<ExperimentView>>((id) => ({
+        user: { id: userId },
+        experiment: { id },
+      })),
+    );
   }
 
   async isExperimentViewed(userId: number, experimentId: number) {

@@ -3,6 +3,7 @@ import { Observation } from '../entities/observation.entity';
 import { Injectable } from '@nestjs/common';
 import { DateTime } from 'luxon';
 import { PaginatedRepository } from 'src/shared/paginated.repository';
+import { ObservationView } from '../entities/observation-view.entity';
 
 @Injectable()
 export class ObservationRepository extends PaginatedRepository<Observation> {
@@ -10,18 +11,22 @@ export class ObservationRepository extends PaginatedRepository<Observation> {
     super(Observation, dataSource.createEntityManager());
   }
 
-  async getRandomObservations(amount: number, userIdToIgnore?: number) {
+  async getRandomObservations(amount: number, forUserId: number) {
     const query = super
       .createQueryBuilder('observation')
+      .leftJoin(
+        ObservationView,
+        'observationView',
+        'experiment.id = observationView.experimentId AND observationView.userId = :userId',
+        { userId: forUserId },
+      )
+      .leftJoin('observation.user', 'user')
       .select('observation')
       .addSelect('RANDOM()', 'random')
-      .leftJoin('observation.user', 'user')
+      .where('observationView.id IS NULL')
+      .andWhere('user.id != :userId', { userId: forUserId })
       .orderBy('random')
       .take(amount);
-
-    if (userIdToIgnore !== undefined) {
-      query.where('user.id != :userIdToIgnore', { userIdToIgnore });
-    }
 
     return query.getMany();
   }

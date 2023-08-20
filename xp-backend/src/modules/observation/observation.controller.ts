@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Query,
   Request,
   UseGuards,
@@ -15,6 +17,8 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObservationResponse } from '../../shared/swagger/responses/ObservationResponse';
+import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
+import { SeeManyObservationsDTO } from './dto/see-many-observations.dto';
 
 @ApiTags('Observation')
 @Controller('observation')
@@ -32,9 +36,9 @@ export class ObservationController {
     return this.observationService.createObservation(dto, user.id);
   }
 
-  @ApiOperation({ description: 'Get random observations' })
+  @ApiOperation({ description: 'Get random unseen observations' })
   @ApiResponse({
-    description: 'Random observations',
+    description: 'Random unseen observations',
     type: ObservationResponse,
     isArray: true,
   })
@@ -56,5 +60,31 @@ export class ObservationController {
       user.id,
     );
     return { observations };
+  }
+
+  @ApiOperation({ description: 'Mark observation as viewed' })
+  @Put(':id/views')
+  @UseGuards(AuthGuard)
+  async markObservationAsViewed(
+    @Request() { user }: { user: User },
+    @Param() { id: observationId }: NumericIdParamDTO,
+  ) {
+    return this.observationService.markObservationAsViewed(
+      user.id,
+      observationId,
+    );
+  }
+
+  @ApiOperation({ description: 'Mark many observations as viewed' })
+  @Put('views')
+  @UseGuards(AuthGuard)
+  async markManyObservationsAsViewed(
+    @Request() { user }: { user: User },
+    @Body() { observations_ids }: SeeManyObservationsDTO,
+  ) {
+    return this.observationService.markManyObservationsAsViewed(
+      user.id,
+      observations_ids,
+    );
   }
 }
