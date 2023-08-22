@@ -16,6 +16,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ExperimentView } from './experiment-view.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum ExperimentStatus {
   STARTED = 'STARTED',
@@ -72,6 +73,11 @@ export class Experiment {
   })
   status: ExperimentStatus;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @Column('timestamptz', {
     nullable: true,
@@ -82,6 +88,11 @@ export class Experiment {
   })
   completed_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @Column('timestamptz', {
     nullable: false,
@@ -99,6 +110,11 @@ export class Experiment {
   @JoinTable()
   observations: Observation[];
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @CreateDateColumn({
     select: false,
@@ -110,6 +126,11 @@ export class Experiment {
   })
   created_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @DeleteDateColumn({
     select: false,

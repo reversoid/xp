@@ -15,7 +15,7 @@ import { ObservationService } from './observation.service';
 import { GetRandomObservations } from './dto/get-random-observations.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObservationResponse } from '../../shared/swagger/responses/ObservationResponse';
 import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyObservationsDTO } from './dto/see-many-observations.dto';
@@ -27,6 +27,7 @@ export class ObservationController {
 
   @ApiOperation({ description: 'Create observation' })
   @ApiResponse({ description: 'New observation', type: ObservationResponse })
+  @ApiBody({ type: CreateObservationDTO })
   @Post()
   @UseGuards(AuthGuard)
   async createObservation(

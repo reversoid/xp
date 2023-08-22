@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ObservationView } from './observation-view.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Observation {
@@ -48,9 +49,14 @@ export class Observation {
   @Column('jsonb', { nullable: true, array: true })
   tg_media_group?: MediaGroupItem[];
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @CreateDateColumn({
-    select: false,
+    select: true,
     type: 'timestamptz',
     transformer: {
       from: (date: Date) => DateTime?.fromJSDate(date),
@@ -59,6 +65,11 @@ export class Observation {
   })
   created_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @DeleteDateColumn({
     select: false,

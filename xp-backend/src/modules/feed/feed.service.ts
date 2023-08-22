@@ -50,6 +50,9 @@ export class FeedService {
   }
 
   async markManyExperimentsAsSeen(userId: number, experimentsIds: number[]) {
-    await this.markManyExperimentsAsSeen(userId, experimentsIds);
+    await this.experimentViewRepository.markManyExperimentsAsViewed(
+      userId,
+      experimentsIds,
+    );
   }
 }

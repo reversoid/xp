@@ -55,7 +55,7 @@ export class FeedController {
   }
 
   @ApiOperation({ description: 'Mark experiment as seen' })
-  @Put('experiment/:id/views')
+  @Put('experiments/:id/views')
   @UseGuards(AuthGuard)
   async markExperimentAsSeen(
     @Request() { user }: { user: User },
@@ -65,7 +65,7 @@ export class FeedController {
   }
 
   @ApiOperation({ description: 'Mark many experiments as seen' })
-  @Put('experiment/views')
+  @Put('experiments/views')
   @UseGuards(AuthGuard)
   async markManyExperimentsAsSeen(
     @Request() { user }: { user: User },

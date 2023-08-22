@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { DateTime } from 'luxon';
 import { ExperimentView } from 'src/modules/experiment/entities/experiment-view.entity';
 import { Experiment } from 'src/modules/experiment/entities/experiment.entity';
@@ -27,6 +28,11 @@ export class User {
   @Column('char', { length: 60, nullable: false, select: false })
   password_hash: string;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @CreateDateColumn({
     select: false,
@@ -38,6 +44,11 @@ export class User {
   })
   created_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @DeleteDateColumn({
     select: false,

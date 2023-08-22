@@ -26,7 +26,7 @@ export class ExperimentViewRepository extends Repository<ExperimentView> {
   }
 
   async isExperimentViewed(userId: number, experimentId: number) {
-    return this.findBy({
+    return this.findOneBy({
       experiment: { id: experimentId },
       user: { id: userId },
     });
