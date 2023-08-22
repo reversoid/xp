@@ -1,0 +1,30 @@
+_id: req_e5c58a15c8c94942b37190cb2ed3ab8e
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692709845989
+created: 1685020484381
+url: http://localhost:3000/auth/register
+name: register
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"password": "1",
+    	"username": "2",
+    	"tg_user_id": 2
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1685020484381
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

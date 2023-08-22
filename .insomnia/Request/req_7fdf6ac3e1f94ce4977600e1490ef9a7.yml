@@ -1,0 +1,38 @@
+_id: req_7fdf6ac3e1f94ce4977600e1490ef9a7
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692710272450
+created: 1691674792788
+url: http://localhost:3000/experiments
+name: Start experiment
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"observations_ids": [12, 11, 6]
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_bd14b9057bc64ed8af73c0e013bfa728
+  - id: pair_e98dacc7570446a6abbdb61eab366349
+    name: secret_key
+    value: def
+    description: ""
+  - id: pair_d20210e7980141d7931bc4389d1b0bdc
+    name: tg_user_id
+    value: "2"
+    description: ""
+    disabled: false
+authentication: {}
+metaSortKey: -1670760145292.375
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

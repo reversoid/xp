@@ -1,0 +1,35 @@
+_id: req_dcf1b75d4ae54cc6949b4999bcc1a0be
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692710384025
+created: 1692710335914
+url: http://localhost:3000/feed/experiments/5/views
+name: Mark experiment as viewed
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: ""
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_bd14b9057bc64ed8af73c0e013bfa728
+  - id: pair_e98dacc7570446a6abbdb61eab366349
+    name: secret_key
+    value: def
+    description: ""
+  - id: pair_d20210e7980141d7931bc4389d1b0bdc
+    name: tg_user_id
+    value: "1"
+    description: ""
+    disabled: false
+authentication: {}
+metaSortKey: -1668724943438.6274
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
