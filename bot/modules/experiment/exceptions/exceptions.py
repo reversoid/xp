@@ -1,0 +1,2 @@
+class NoTextInExperimentResultException(Exception):
+    pass

@@ -2,9 +2,14 @@ import asyncio
 import logging
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from aiogram import Bot, Dispatcher
-from keyboards.main_menu import set_main_menu
 from config_data.config import load_config
-from handlers import routers
+
+from modules.core.handlers import core_router
+from modules.core.utils import set_main_menu
+from modules.experiment.handlers import experiment_router
+from modules.feed.handlers import feed_router
+from modules.observation.handlers import observation_router
+from modules.profile.handlers import profile_router
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +19,7 @@ async def main():
     bot = Bot(token=config.bot.token)
 
     redis = Redis(host=config.database.redis.host,
-                         password=config.database.redis.password, port=config.database.redis.port)
+                  password=config.database.redis.password, port=config.database.redis.port)
 
     storage = RedisStorage(redis=redis)
 
@@ -29,7 +34,13 @@ async def main():
     # Выводим в консоль информацию о начале запуска бота
     logger.info('Starting bot')
 
-    dp.include_routers(*routers)
+    dp.include_routers(
+        experiment_router,
+        feed_router,
+        observation_router,
+        profile_router,
+        core_router,
+    )
 
     await set_main_menu(bot)
 

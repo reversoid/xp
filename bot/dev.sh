@@ -1,1 +1,1 @@
-docker compose --env-file ./.env -f docker-compose.dev.yml up -d && poetry run python bot.py
+docker compose -f docker-compose.dev.yml up -d && poetry run python bot.py
