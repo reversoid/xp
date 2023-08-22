@@ -50,7 +50,7 @@ export class Observation {
 
   @Index()
   @CreateDateColumn({
-    select: false,
+    select: true,
     type: 'timestamptz',
     transformer: {
       from: (date: Date) => DateTime?.fromJSDate(date),

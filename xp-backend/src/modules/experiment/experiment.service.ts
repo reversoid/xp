@@ -66,7 +66,7 @@ export class ExperimentService {
     }
 
     const experiment = await this.experimentRepository.save({
-      ...startedExperiment,
+      id: startedExperiment.id,
       status: ExperimentStatus.CANCELED,
     });
 
