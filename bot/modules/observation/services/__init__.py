@@ -1,4 +1,4 @@
-from shared.types import UploadInfoRequest
+from shared.my_types import UploadInfoRequest
 from shared.utils.convert.message_to_upload_request import process_message_files
 from .exceptions import NoDataForObservation
 from shared.api_service import ApiService, Payload

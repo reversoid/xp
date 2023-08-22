@@ -1,5 +1,5 @@
 from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
-from shared.types import Observation, ObservationDTO
+from shared.my_types import Observation, ObservationDTO
 
 MediaGroupItem = InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo
 

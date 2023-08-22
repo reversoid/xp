@@ -4,7 +4,7 @@ from shared.api_service import ApiService, Params, Payload
 from pydantic import BaseModel
 from aiogram.types import Message
 
-from shared.types import Experiment, Observation, UploadInfoRequest
+from shared.my_types import Experiment, Observation, UploadInfoRequest
 from shared.utils.convert.message_to_upload_request import process_media_group_files, process_message_files
 
 
@@ -29,7 +29,9 @@ class ExperimentService(ApiService):
         return observations.observations
 
     async def user_running_experiment(self, tg_user_id: int) -> Experiment | None:
-        # TODO make proper request
+        url = f'{self.base_url}/experiments'
+        headers = self.get_auth_headers(tg_user_id)
+        
         return random.choice([Experiment(id=666), None])
 
     async def run_experiment(self, tg_user_id: int) -> list[Observation]:

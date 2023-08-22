@@ -9,7 +9,7 @@ from shared.lexicon import SHARED_LEXICON
 from modules.experiment.keyboards import StartExperimentCallback, confirm_start_experiment_keyboard
 from modules.experiment.services import ExperimentService, experiment_service
 from modules.experiment.states import FSMExperiment
-from shared.types import Observation
+from shared.my_types import Observation
 from shared.utils.convert.observation_to_media_group import observations_to_media_group
 
 router: Router = Router()
