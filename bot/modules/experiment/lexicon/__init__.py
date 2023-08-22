@@ -4,6 +4,12 @@ from typing import TypedDict
 class Lexicon(TypedDict):
     experiment_started: str
     confirm_experiment: str
+    continue_experiment: str
+    success_experiment: str
+    no_text_in_experiment: str
+    cancel_experiment: str
+    experiment_not_started: str
+    experiment_already_started: str
 
 
 LEXICON: Lexicon = {
@@ -18,4 +24,16 @@ LEXICON: Lexicon = {
         The goal is to make up a task based on 3 observations of others and share your solution. You will have 24 hours. Add process artefacts if desired.
         Ready?
     """,
+
+    'continue_experiment': 'I got it. \n\n Continue?',
+
+    'success_experiment': 'Success!',
+
+    'no_text_in_experiment': 'No text in experiment... Provide it please',
+
+    'cancel_experiment': 'You cancelled the experiment',
+    
+    'experiment_not_started': 'Experiment is not started',
+    
+    'experiment_already_started': 'Experiment is already started'
 }

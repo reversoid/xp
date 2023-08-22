@@ -1,13 +1,12 @@
 from aiogram import Router
-from aiogram.filters import Command
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import CallbackQuery
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
 from shared.lexicon import SHARED_LEXICON
 from modules.experiment.keyboards import StartExperimentCallback, confirm_start_experiment_keyboard
-from modules.experiment.services import ExperimentService, experiment_service
+from modules.experiment.services import ExperimentService, experiment_service, AlreadyStartedExperiment
 from modules.experiment.states import FSMExperiment
 from shared.my_types import Observation
 from shared.utils.convert.observation_to_media_group import observations_to_media_group
@@ -29,5 +28,11 @@ async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMCon
         await state.set_state(FSMExperiment.completing)
         await query.message.edit_reply_markup(reply_markup=None) if query.message else None
 
-    except Exception:
+    except AlreadyStartedExperiment:
+        await query.answer(LEXICON['experiment_already_started'])
+        await state.set_state(FSMExperiment.completing)
+        
+
+    except Exception as e:
+        print(e)
         await query.answer(SHARED_LEXICON['internal_error'])

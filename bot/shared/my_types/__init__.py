@@ -10,14 +10,14 @@ class MediaGroupItemDTO(BaseModel):
 
 
 class ObservationDTO(BaseModel):
-    text: Optional[str]
-    tg_photo_id: Optional[str]
-    tg_document_id: Optional[str]
-    tg_voice_id: Optional[str]
-    tg_video_id: Optional[str]
-    tg_video_note_id: Optional[str]
-    file_urls: Optional[list[str]]
-    tg_media_group: Optional[list[MediaGroupItemDTO]]
+    text: Optional[str] = None
+    tg_photo_id: Optional[str] = None
+    tg_document_id: Optional[str] = None
+    tg_voice_id: Optional[str] = None
+    tg_video_id: Optional[str] = None
+    tg_video_note_id: Optional[str] = None
+    file_urls: Optional[list[str]] = None
+    tg_media_group: Optional[list[MediaGroupItemDTO]] = None
 
 
 class Observation(ObservationDTO):

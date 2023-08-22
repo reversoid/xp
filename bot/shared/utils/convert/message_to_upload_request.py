@@ -7,7 +7,7 @@ def process_media_group_files(messages: list[Message]) -> UploadInfoRequest:
     media_group: list[MediaGroupItemDTO] = []
     for message in messages:
         if message.text:
-            text = f'{text} {message.text}'
+            text = f'{text}\n\n{message.text}'
         if message.caption:
             text = f'{text} {message.caption}'
         audio_id = message.audio.file_id if message.audio else None
@@ -34,4 +34,25 @@ def process_message_files(message: Message) -> UploadInfoRequest:
 
     request = UploadInfoRequest(
         document_id=document_id, text=text, photo_id=photo_id, video_id=video_id, video_note_id=video_note_id, voice_id=voice_id, geo=geo)
+    return request
+
+
+def combine_upload_info_requests(requests: list[UploadInfoRequest]) -> UploadInfoRequest:
+    text = ''
+    media_group: list[MediaGroupItemDTO] = []
+    for req in requests:
+        if req.text:
+            text = f'{text}\n\n{req.text}'
+
+        audio_id = req.voice_id if req.voice_id else None
+        document_id = req.document_id if req.document_id else None
+        photo_id = req.photo_id if req.photo_id else None
+        video_id = req.video_id if req.video_id else None
+        video_note_id = req.video_note_id if req.video_note_id else None
+
+        media_group_item = MediaGroupItemDTO(
+            audio_id=audio_id, document_id=document_id, photo_id=photo_id, video_id=video_id or video_note_id)
+        media_group.append(media_group_item)
+    request = UploadInfoRequest(
+        text=text if text else None, media_group=media_group)
     return request

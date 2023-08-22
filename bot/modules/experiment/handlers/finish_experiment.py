@@ -2,12 +2,31 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from aiogram import Router
+from aiogram.filters import Command, StateFilter
+from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
+
 from modules.experiment.lexicon import LEXICON
-from modules.experiment.keyboards import confirm_start_experiment_keyboard
+from modules.experiment.states import FSMExperiment
+from modules.experiment.services import experiment_service, NoTextInExperimentResultException
+from shared.lexicon import SHARED_LEXICON
+from shared.my_types import UploadInfoRequest
 
 router: Router = Router()
 
 
-@router.message(Command('run_experiment'))
-async def handle_start_experiment(message: Message):
-    await message.answer(text=LEXICON['confirm_experiment'], reply_markup=confirm_start_experiment_keyboard)
+@router.message(StateFilter(FSMExperiment.completing), Command('finish'))
+async def handle_finish_experiment(message: Message, state: FSMContext):
+    data = await state.get_data()
+    requests: list[UploadInfoRequest] = data.get('messages', [])
+
+    try:
+        await experiment_service.complete_experiment(message.from_user.id, requests=requests)
+        await message.answer(text=LEXICON['success_experiment'], reply_markup=None)
+        await state.clear()
+    except NoTextInExperimentResultException:
+        await message.answer(text=LEXICON['no_text_in_experiment'])
+    except Exception:
+        await message.answer(text=SHARED_LEXICON['internal_error'])
+        await state.clear()

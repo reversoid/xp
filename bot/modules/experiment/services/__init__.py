@@ -3,9 +3,18 @@ from modules.experiment.exceptions.exceptions import NoTextInExperimentResultExc
 from shared.api_service import ApiService, Params, Payload
 from pydantic import BaseModel
 from aiogram.types import Message
+from aiohttp import ClientError, ClientResponseError
 
 from shared.my_types import Experiment, Observation, UploadInfoRequest
-from shared.utils.convert.message_to_upload_request import process_media_group_files, process_message_files
+from shared.utils.convert.message_to_upload_request import process_media_group_files, process_message_files, combine_upload_info_requests
+
+
+class AlreadyStartedExperiment(Exception):
+    pass
+
+
+class NotStartedExperiment(Exception):
+    pass
 
 
 class RandomObservationsResponse(BaseModel):
@@ -26,10 +35,11 @@ class CurrentExperimentResponse:
 
 class ExperimentService(ApiService):
     async def get_random_observations(self, tg_user_id: int) -> list[Observation]:
-        url = f'{self.base_url}/observation/random'
+        url = f'{self.base_url}/observations/random'
         params: Params = {'amount': 3}
         headers = self.get_auth_headers(tg_user_id)
-        observations: RandomObservationsResponse = await self.put(url, headers=headers, params=params, dataclass=RandomObservationsResponse)
+        observations: RandomObservationsResponse = await self.get(url, headers=headers, params=params, dataclass=RandomObservationsResponse)
+
         return observations.observations
 
     async def user_running_experiment(self, tg_user_id: int) -> Experiment | None:
@@ -43,18 +53,33 @@ class ExperimentService(ApiService):
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         payload: Payload = {'observations_ids': [o.id for o in observations]}
-        await self.put(url, headers=headers, payload=payload)
+        try:
+            await self.put(url, headers=headers, payload=payload)
+        except ClientResponseError as e:
+            if e.code == 423:
+                raise AlreadyStartedExperiment
+            raise ClientResponseError
+
         return observations
 
-    async def complete_experiment(self, tg_user_id: int, message: Message | list[Message]):
+    async def complete_experiment(self, tg_user_id: int, requests: list[UploadInfoRequest]):
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
-        request: UploadInfoRequest = process_media_group_files(
-            message) if isinstance(message, list) else process_message_files(message)
+        request: UploadInfoRequest = combine_upload_info_requests(requests=requests)
         self.__validate_complete_experiment_request(request)
 
         payload = request.model_dump()
-        await self.patch(url, headers=headers, payload=payload)
+        try:
+            await self.patch(url, headers=headers, payload=payload)
+        except ClientResponseError as e:
+            if e.code == 423:
+                raise NotStartedExperiment
+            raise ClientResponseError
+
+    async def cancel_experiment(self, tg_user_id: int):
+        url = f'{self.base_url}/experiments'
+        headers = self.get_auth_headers(tg_user_id)
+        await self.delete(url, headers=headers)
 
     def __validate_complete_experiment_request(self, request: UploadInfoRequest):
         if not request.text:
