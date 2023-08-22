@@ -29,12 +29,12 @@ import { FeedModule } from './modules/feed/feed.module';
       cache: true,
     }),
     UserModule,
+    ProfileModule,
     ExperimentModule,
     ObservationModule,
     AuthModule,
     ProtectedModule,
     TaskModule,
-    ProfileModule,
     FeedModule,
   ],
 })

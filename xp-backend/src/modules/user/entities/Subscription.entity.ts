@@ -14,13 +14,13 @@ export class Subscription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.followee)
+  @ManyToOne(() => User, (user) => user.followedSubscriptions)
   @JoinColumn({ name: 'follower_id' })
   follower: User;
 
-  @ManyToOne(() => User, (user) => user.followers)
+  @ManyToOne(() => User, (user) => user.followerSubscriptions)
   @JoinColumn({ name: 'followed_id' })
-  followee: User;
+  followed: User;
 
   @DeleteDateColumn({
     select: false,

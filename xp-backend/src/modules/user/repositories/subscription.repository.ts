@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, LessThanOrEqual } from 'typeorm';
 
-import { Subscription } from '../entities/Subscription';
+import { Subscription } from '../entities/Subscription.entity';
 import { DateTime } from 'luxon';
 import { PaginatedRepository } from 'src/shared/paginated.repository';
 
@@ -13,7 +13,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
 
   async isFollowedByUsername(whoFollowsId: number, username: string) {
     const subscription = await this.findBy({
-      followee: { username },
+      followed: { username },
       follower: { id: whoFollowsId },
     });
     return Boolean(subscription);
@@ -21,7 +21,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
 
   async isFollowedById(whoFollowsId: number, userId: number) {
     const subscription = await this.findBy({
-      followee: { id: userId },
+      followed: { id: userId },
       follower: { id: whoFollowsId },
     });
     return Boolean(subscription);
@@ -29,7 +29,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
 
   async followByUsername(whoFollowsId: number, username: string) {
     const subscription = this.create({
-      followee: { username },
+      followed: { username },
       follower: { id: whoFollowsId },
     });
     return this.save(subscription);
@@ -37,7 +37,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
 
   async unfollowByUsername(whoFollowsId: number, username: string) {
     const subscription = await this.findBy({
-      followee: { username },
+      followed: { username },
       follower: { id: whoFollowsId },
     });
     if (!subscription) {
@@ -48,7 +48,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
 
   async unfollowById(whoFollowsId: number, userId: number) {
     const subscription = await this.findBy({
-      followee: { id: userId },
+      followed: { id: userId },
       follower: { id: whoFollowsId },
     });
     if (!subscription) {
@@ -64,7 +64,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
         created_at: lowerBound && LessThanOrEqual(lowerBound),
       },
       relations: {
-        followee: true,
+        followed: true,
       },
       take: limit + 1,
       order: {

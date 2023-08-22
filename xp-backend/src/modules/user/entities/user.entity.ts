@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { ExperimentView } from 'src/modules/experiment/entities/experiment-view.entity';
 import { Experiment } from 'src/modules/experiment/entities/experiment.entity';
 import { Observation } from 'src/modules/observation/entities/observation.entity';
-import { Subscription } from 'src/modules/profile/entities/Subscription';
+import { Subscription } from 'src/modules/user/entities/Subscription.entity';
 import {
   Column,
   CreateDateColumn,
@@ -53,13 +53,13 @@ export class User {
   observations: Observation[];
 
   @OneToMany(() => Experiment, (entity) => entity.user)
-  experiments: Observation[];
+  experiments: Experiment[];
 
-  @OneToMany(() => Subscription, (entity) => entity.followee)
-  followers: Subscription[];
+  @OneToMany(() => Subscription, (entity) => entity.followed)
+  followerSubscriptions: Subscription[];
 
   @OneToMany(() => Subscription, (entity) => entity.follower)
-  followee: Subscription[];
+  followedSubscriptions: Subscription[];
 
   @OneToMany(() => ExperimentView, (entity) => entity.user)
   seen_experiments: ExperimentView[];

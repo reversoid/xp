@@ -7,7 +7,7 @@ import {
   PaginatedResponse,
 } from 'src/shared/paginated.repository';
 import { ExperimentView } from '../entities/experiment-view.entity';
-import { Subscription } from 'src/modules/profile/entities/Subscription';
+import { Subscription } from 'src/modules/user/entities/Subscription.entity';
 
 @Injectable()
 export class ExperimentRepository extends PaginatedRepository<Experiment> {
@@ -34,7 +34,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
     return this.processPaginationByCreatedDate(experiments, limit);
   }
 
-  /** Returns random unseen experiments from all users, but ignoring your experiments */
+  /** Returns random unseen experiments from users not followed by you and ignoring your experiments */
   async getRandomUnseenExperiments(userId: number, limit: number) {
     return this.createQueryBuilder('experiment')
       .leftJoin(

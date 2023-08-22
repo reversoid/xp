@@ -5,7 +5,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import secretsConfig from 'src/config/secrets.config';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
@@ -15,7 +14,7 @@ import { UserRepository } from 'src/modules/user/repositories/user.repository';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @InjectRepository(UserRepository) private userRepository: UserRepository,
+    @Inject(UserRepository) private userRepository: UserRepository,
     @Inject(secretsConfig.KEY)
     private secrets: ConfigType<typeof secretsConfig>,
   ) {}

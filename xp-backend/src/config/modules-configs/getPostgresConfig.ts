@@ -27,6 +27,7 @@ export const getPostgresConfig = (): TypeOrmModule => {
         entities: ['dist/**/*entity.js'],
         migrationsRun: true,
         migrations: ['dist/db/migrations/*.js'],
+        autoLoadEntities: true,
       };
     },
   };

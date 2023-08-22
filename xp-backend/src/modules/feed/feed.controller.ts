@@ -22,11 +22,13 @@ import { LimitQueryDTO } from 'src/shared/dto/limit.query.dto';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
-  @ApiOperation({ description: 'Get random experiments' })
+  @ApiOperation({
+    description: 'Get random experiments from users, not followed by you',
+  })
   @ApiResponse({
     type: ExperimentResponse,
     isArray: true,
-    description: 'Random experiments from all users',
+    description: 'Result',
   })
   @Get('experiments/random')
   @UseGuards(AuthGuard)

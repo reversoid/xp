@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ObservationRepository } from '../observation/repositories/observation.repository';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
 import { DateTime } from 'luxon';
-import { SubscriptionRepository } from './repositories/subscription.repository';
+import { SubscriptionRepository } from '../user/repositories/subscription.repository';
 import { PaginatedResponse } from 'src/shared/paginated.repository';
 import { User } from '../user/entities/user.entity';
 import { UserRepository } from '../user/repositories/user.repository';
@@ -102,7 +102,7 @@ export class ProfileService {
     );
     return {
       ...subscriptions,
-      items: subscriptions.items.map((s) => s.followee),
+      items: subscriptions.items.map((s) => s.followed),
     };
   }
 }
