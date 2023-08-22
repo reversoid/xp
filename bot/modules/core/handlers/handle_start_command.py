@@ -44,9 +44,8 @@ async def handle_input_username(message: Message, state: FSMContext):
 async def handle_input_wrong_username(message: Message):
     await message.answer(text=CORE_LEXICON['wrong_username_format'])
 
+
 # If wrong message is given
-
-
 @start_router.message(StateFilter(FSMRegistration.fill_username))
 async def handle_input_wrong_message(message: Message):
     await message.answer(text=CORE_LEXICON['bad_username_message'])
