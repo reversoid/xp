@@ -43,8 +43,10 @@ export class AuthController {
     )
     { tg_user_id }: IsRegisteredQueryDTO,
   ) {
-    const registered = await this.authService.isRegisteredTg(tg_user_id);
-    return { registered };
+    const { registered, username } = await this.authService.isRegisteredTg(
+      tg_user_id,
+    );
+    return { registered, username };
   }
 
   @ApiOperation({ description: 'Login user' })

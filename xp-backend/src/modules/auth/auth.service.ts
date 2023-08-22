@@ -42,7 +42,9 @@ export class AuthService {
   }
 
   async isRegisteredTg(tg_user_id: number) {
-    return this.userRepository.exist({ where: { tg_id: tg_user_id } });
+    const user = await this.userRepository.getUserByTelegramID(tg_user_id);
+
+    return { registered: Boolean(user), username: user?.username };
   }
 
   private async validateUserExistence(username: string, tgId?: number) {

@@ -12,6 +12,10 @@ export class UserRepository extends Repository<User> {
     return this.findOneBy({ username: username });
   }
 
+  getUserByTelegramID(tg_id: number) {
+    return this.findOneBy({ tg_id });
+  }
+
   editUsername(userId: number, username: string) {
     return this.save({ id: userId, username });
   }
