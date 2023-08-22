@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Experiment } from './experiment.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class ExperimentView {
@@ -27,6 +28,12 @@ export class ExperimentView {
   })
   experiment: Experiment;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+    description: 'Seen at date',
+  })
   @CreateDateColumn({
     select: false,
     type: 'timestamptz',
@@ -37,6 +44,13 @@ export class ExperimentView {
   })
   seen_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+    description: 'deleted at date',
+    nullable: true,
+  })
   @Index()
   @DeleteDateColumn({
     select: false,

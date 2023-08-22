@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Observation } from './observation.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class ObservationView {
@@ -27,6 +28,11 @@ export class ObservationView {
   })
   observation: Observation;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @CreateDateColumn({
     select: false,
     type: 'timestamptz',
@@ -37,6 +43,11 @@ export class ObservationView {
   })
   seen_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @Index()
   @DeleteDateColumn({
     select: false,

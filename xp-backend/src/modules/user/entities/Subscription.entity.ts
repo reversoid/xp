@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { DateTime } from 'luxon';
 import { User } from 'src/modules/user/entities/user.entity';
 import {
@@ -26,6 +27,11 @@ export class Subscription {
   @JoinColumn({ name: 'followed_id' })
   followed: User;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @DeleteDateColumn({
     select: false,
     type: 'timestamptz',
@@ -36,6 +42,11 @@ export class Subscription {
   })
   deleted_at: DateTime;
 
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
   @CreateDateColumn({
     type: 'timestamptz',
     transformer: {

@@ -28,7 +28,7 @@ export class ObservationResponse implements Partial<Observation> {
   @ApiProperty({ nullable: true })
   file_urls?: string[];
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, type: MediaGroupItemResponse, isArray: true })
   tg_media_group?: MediaGroupItemResponse[];
 
   @ApiProperty({ type: String })
