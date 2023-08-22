@@ -37,22 +37,24 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
   /** Returns random unseen experiments from users not followed by you and ignoring your experiments */
   async getRandomUnseenExperiments(userId: number, limit: number) {
     return this.createQueryBuilder('experiment')
+      .leftJoinAndSelect('experiment.user', 'experimentUser')
       .leftJoin(
         ExperimentView,
         'experimentView',
-        'experiment.id = experimentView.experimentId AND experimentView.userId = :userId',
+        'experiment.id = experimentView.experimentId AND experimentView.user.id = :userId',
         { userId },
       )
       .leftJoin(
         Subscription,
         'subscription',
-        'experiment.userId = subscription.followed_id AND subscription.follower_id = :userId',
+        'experimentUser.id = subscription.followed.id AND subscription.follower.id = :userId',
         { userId },
       )
+      .addSelect('RANDOM()', 'random')
       .where('experimentView.id IS NULL')
       .andWhere('subscription.id IS NULL')
-      .andWhere('experiment.userId != userId', { userId })
-      .orderBy('RANDOM()')
+      .andWhere('experimentUser.id != :userId', { userId })
+      .orderBy('random')
       .take(limit)
       .getMany();
   }
