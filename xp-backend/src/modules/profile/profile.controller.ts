@@ -64,7 +64,7 @@ export class ProfileController {
   @UseGuards(AuthGuard)
   async getMyFollowees(
     @Request() { user }: { user: User },
-    @Query() { limit, lower_bound }: PaginationQueryDTO,
+    @Query() { limit = 10, lower_bound }: PaginationQueryDTO,
   ) {
     return this.profileService.getUserFollowees(user.id, limit, lower_bound);
   }

@@ -14,11 +14,15 @@ export class Subscription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.followedSubscriptions)
+  @ManyToOne(() => User, (user) => user.followedSubscriptions, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'follower_id' })
   follower: User;
 
-  @ManyToOne(() => User, (user) => user.followerSubscriptions)
+  @ManyToOne(() => User, (user) => user.followerSubscriptions, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'followed_id' })
   followed: User;
 

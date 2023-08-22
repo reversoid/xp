@@ -12,10 +12,11 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
   }
 
   async isFollowedByUsername(whoFollowsId: number, username: string) {
-    const subscription = await this.findBy({
+    const subscription = await this.findOneBy({
       followed: { username },
       follower: { id: whoFollowsId },
     });
+
     return Boolean(subscription);
   }
 
@@ -27,12 +28,11 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
     return Boolean(subscription);
   }
 
-  async followByUsername(whoFollowsId: number, username: string) {
-    const subscription = this.create({
-      followed: { username },
+  async followByUsername(whoFollowsId: number, whoToFollowId: number) {
+    return this.save({
+      followed: { id: whoToFollowId },
       follower: { id: whoFollowsId },
     });
-    return this.save(subscription);
   }
 
   async unfollowByUsername(whoFollowsId: number, username: string) {
@@ -71,6 +71,7 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
         created_at: 'DESC',
       },
     });
+
     return this.processPaginationByCreatedDate(followees, limit);
   }
 }

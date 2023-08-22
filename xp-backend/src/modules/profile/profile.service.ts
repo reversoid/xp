@@ -66,7 +66,8 @@ export class ProfileService {
     if (isFollowed) {
       throw new UserAlreadySubscribedException();
     }
-    return this.subscriptionRepository.followByUsername(whoFollowsId, username);
+    const user = await this.userRepository.getUserByUsername(username);
+    return this.subscriptionRepository.followByUsername(whoFollowsId, user.id);
   }
 
   async unFollowUser(whoFollowsId: number, userId: number) {
