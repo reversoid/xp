@@ -1,19 +1,21 @@
-_id: req_1ca441e1208447b39b8466cfa7ea5b78
+_id: req_40edcbe57c394e5191792412d3b8bbc8
 type: Request
-parentId: fld_ae24077c6f574cacbc4ad33f3c4594fc
-modified: 1692714560642
-created: 1691675029985
-url: http://localhost:3000/experiments
-name: finish experiment
+parentId: fld_d370acecf4fd4f3baf7bc3eac28e4ab1
+modified: 1692714684919
+created: 1692711346127
+url: http://localhost:3000/profile/experiments
+name: My experiments
 description: ""
-method: PATCH
+method: GET
 body:
   mimeType: application/json
-  text: |-
-    {
-    	"text": "bobik22222 completed!"
-    }
-parameters: []
+  text: ""
+parameters:
+  - id: pair_fa48450999dc4903a14d5ea3e5c543bd
+    name: limit
+    value: ""
+    description: ""
+    disabled: true
 headers:
   - name: Content-Type
     value: application/json
@@ -28,7 +30,7 @@ headers:
     description: ""
     disabled: false
 authentication: {}
-metaSortKey: -1692714530164
+metaSortKey: -1668746827329.5278
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

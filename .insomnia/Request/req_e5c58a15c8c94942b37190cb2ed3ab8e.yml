@@ -1,7 +1,7 @@
 _id: req_e5c58a15c8c94942b37190cb2ed3ab8e
 type: Request
-parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
-modified: 1692709845989
+parentId: fld_f54284e86f734757a86038f18123649f
+modified: 1692714095965
 created: 1685020484381
 url: http://localhost:3000/auth/register
 name: register
@@ -20,7 +20,7 @@ headers:
   - name: Content-Type
     value: application/json
 authentication: {}
-metaSortKey: -1685020484381
+metaSortKey: -1690733787244.9375
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

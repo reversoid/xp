@@ -1,19 +1,21 @@
-_id: req_1ca441e1208447b39b8466cfa7ea5b78
+_id: req_65d0a7b40f294817933cfc73b62aac2e
 type: Request
-parentId: fld_ae24077c6f574cacbc4ad33f3c4594fc
-modified: 1692714560642
-created: 1691675029985
-url: http://localhost:3000/experiments
-name: finish experiment
+parentId: fld_d370acecf4fd4f3baf7bc3eac28e4ab1
+modified: 1692714678497
+created: 1692711201120
+url: http://localhost:3000/profile/observations
+name: My observations
 description: ""
-method: PATCH
+method: GET
 body:
   mimeType: application/json
-  text: |-
-    {
-    	"text": "bobik22222 completed!"
-    }
-parameters: []
+  text: ""
+parameters:
+  - id: pair_fa48450999dc4903a14d5ea3e5c543bd
+    name: limit
+    value: ""
+    description: ""
+    disabled: true
 headers:
   - name: Content-Type
     value: application/json
@@ -24,11 +26,11 @@ headers:
     description: ""
   - id: pair_d20210e7980141d7931bc4389d1b0bdc
     name: tg_user_id
-    value: "2"
+    value: "1"
     description: ""
     disabled: false
 authentication: {}
-metaSortKey: -1692714530164
+metaSortKey: -1668738869501.0186
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

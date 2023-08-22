@@ -1,10 +1,10 @@
 _id: req_ee8ed1eb06dd40459109b9d65ca7dabe
 type: Request
-parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
-modified: 1692710530964
+parentId: fld_d370acecf4fd4f3baf7bc3eac28e4ab1
+modified: 1692714697835
 created: 1692709316290
 url: http://localhost:3000/profile/followees
-name: Get followees
+name: My followees
 description: ""
 method: GET
 body:

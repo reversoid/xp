@@ -1,10 +1,10 @@
 _id: req_598af2789682430ca9fa5a5a366f5a1d
 type: Request
-parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
-modified: 1692710112587
+parentId: fld_a565f55ec38d49599bca5c7d866a5954
+modified: 1692714650458
 created: 1692709758778
 url: http://localhost:3000/observations/views
-name: Mark observations as viewed
+name: Mark many observations as viewed
 description: ""
 method: PUT
 body:
@@ -28,7 +28,7 @@ headers:
     description: ""
     disabled: false
 authentication: {}
-metaSortKey: -1668730911772.5093
+metaSortKey: -1676871719087.5
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true
