@@ -20,6 +20,10 @@ def get_experiment_task_id(tg_user_id: int):
     return f'experiment_user_{tg_user_id}'
 
 
+class CurrentExperimentResponse:
+    experiment: Experiment | None = None
+
+
 class ExperimentService(ApiService):
     async def get_random_observations(self, tg_user_id: int) -> list[Observation]:
         url = f'{self.base_url}/observation/random'
@@ -31,8 +35,8 @@ class ExperimentService(ApiService):
     async def user_running_experiment(self, tg_user_id: int) -> Experiment | None:
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
-        
-        return random.choice([Experiment(id=666), None])
+        experiment: Experiment | None = await self.put(url, headers=headers, dataclass=Experiment)
+        return experiment
 
     async def run_experiment(self, tg_user_id: int) -> list[Observation]:
         observations = await self.get_random_observations(tg_user_id)
@@ -55,5 +59,6 @@ class ExperimentService(ApiService):
     def __validate_complete_experiment_request(self, request: UploadInfoRequest):
         if not request.text:
             raise NoTextInExperimentResultException
+
 
 experiment_service = ExperimentService()

@@ -37,47 +37,36 @@ class ApiService:
             params['tg_user_id'] = tg_user_id
         return params
 
+    async def _handle_response(self, response: aiohttp.ClientResponse, dataclass: Optional[Type[BaseModel]] = None):
+        response.raise_for_status()
+        data = await response.text()
+        if not data or data == "null":
+            return None
+        if dataclass:
+            return dataclass.parse_raw(data)
+        return data
+
     async def get(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, headers: Optional[Headers] = None):
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, headers=headers) as response:
-                response.raise_for_status()
-                data = await response.text()
-                if dataclass:
-                    return dataclass.parse_raw(data)
-                return data
+                return await self._handle_response(response, dataclass)
 
     async def post(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, payload: Optional[Payload] = None, headers: Optional[Headers] = None):
         async with aiohttp.ClientSession() as session:
             async with session.post(url, params=params, json=payload, headers=headers) as response:
-                response.raise_for_status()
-                data = await response.text()
-                if dataclass:
-                    return dataclass.parse_raw(data)
-                return data
+                return await self._handle_response(response, dataclass)
 
     async def put(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, payload: Optional[Payload] = None, headers: Optional[Headers] = None):
         async with aiohttp.ClientSession() as session:
             async with session.put(url, params=params, json=payload, headers=headers) as response:
-                response.raise_for_status()
-                data = await response.text()
-                if dataclass:
-                    return dataclass.parse_raw(data)
-                return data
+                return await self._handle_response(response, dataclass)
 
     async def patch(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, payload: Optional[Payload] = None, headers: Optional[Headers] = None):
         async with aiohttp.ClientSession() as session:
             async with session.patch(url, params=params, json=payload, headers=headers) as response:
-                response.raise_for_status()
-                data = await response.text()
-                if dataclass:
-                    return dataclass.parse_raw(data)
-                return data
+                return await self._handle_response(response, dataclass)
 
     async def delete(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, headers: Optional[Headers] = None):
         async with aiohttp.ClientSession() as session:
             async with session.delete(url, params=params, headers=headers) as response:
-                response.raise_for_status()
-                data = await response.text()
-                if dataclass:
-                    return dataclass.parse_raw(data)
-                return data
+                return await self._handle_response(response, dataclass)
