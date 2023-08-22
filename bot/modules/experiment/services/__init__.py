@@ -34,14 +34,14 @@ class ExperimentService(ApiService):
 
     async def run_experiment(self, tg_user_id: int) -> list[Observation]:
         observations = await self.get_random_observations(tg_user_id)
-        url = f'{self.base_url}/experiment'
+        url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         payload: Payload = {'observations_ids': [o.id for o in observations]}
         await self.put(url, headers=headers, payload=payload)
         return observations
 
     async def complete_experiment(self, tg_user_id: int, message: Message | list[Message]):
-        url = f'{self.base_url}/experiment'
+        url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         request: UploadInfoRequest = process_media_group_files(
             message) if isinstance(message, list) else process_message_files(message)

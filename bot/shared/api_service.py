@@ -34,7 +34,7 @@ class ApiService:
         """
         params: Headers = {'secret_key': self.api_secret}
         if tg_user_id != None:
-            params['tg_user_id'] = str(tg_user_id)
+            params['tg_user_id'] = tg_user_id
         return params
 
     async def get(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, headers: Optional[Headers] = None):

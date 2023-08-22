@@ -7,7 +7,7 @@ from aiogram.types import Message
 
 class ObservationService(ApiService):
     async def create_observation(self, tg_user_id: int, message: Message):
-        url = f'{self.base_url}/observation'
+        url = f'{self.base_url}/observations'
         request = self.__get_request_for_creation_observation(message)
         headers = self.get_auth_headers(tg_user_id)
         await self.post(url, payload=request, headers=headers)
