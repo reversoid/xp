@@ -21,3 +21,5 @@ class ObservationService(ApiService):
     def __validate_created_observation(self, request: UploadInfoRequest):
         if not request.text and not request.photo_id and not request.video_id and not request.voice_id and not request.video_note_id:
             raise NoDataForObservation
+
+observation_service = ObservationService()
