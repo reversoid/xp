@@ -1,7 +1,14 @@
+from aiohttp import ClientError, ClientResponseError
 from shared.api_service import ApiService, Headers, Params, Payload
 import string
 import secrets
 from pydantic import BaseModel
+
+username_pattern = r'^[a-zA-Z0-9_\-\.]{1,32}$'
+
+
+class UserExistsException(Exception):
+    pass
 
 
 class CheckUserRegistrationResponse(BaseModel):
@@ -29,7 +36,11 @@ class AuthService(ApiService):
         payload: Payload = {'username': username,
                             'password': random_password, 'tg_user_id': tg_user_id}
 
-        await self.post(url, payload=payload)
+        try:
+            await self.post(url, payload=payload)
+        except ClientResponseError as e:
+            if (e.status == 409):
+                raise UserExistsException
 
 
 auth_service = AuthService()
