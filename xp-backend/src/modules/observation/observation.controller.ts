@@ -19,6 +19,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObservationResponse } from '../../shared/swagger/responses/ObservationResponse';
 import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyObservationsDTO } from './dto/see-many-observations.dto';
+import { RandomObservationResponse } from './dto/responses/random-observations.response';
 
 @ApiTags('Observations')
 @Controller('observations')
@@ -40,8 +41,7 @@ export class ObservationController {
   @ApiOperation({ description: 'Get random unseen observations' })
   @ApiResponse({
     description: 'Random unseen observations',
-    type: ObservationResponse,
-    isArray: true,
+    type: RandomObservationResponse,
   })
   @Get('random')
   @UseGuards(AuthGuard)

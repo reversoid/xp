@@ -15,7 +15,7 @@ export interface Tokens {
 
 export class UserExistsException extends HttpException {
   constructor() {
-    super('USER_EXISTS', 400);
+    super('USER_EXISTS', 409);
   }
 }
 
