@@ -1,7 +1,7 @@
 _id: req_89a89da4ab97454184567f9a57a30e02
 type: Request
-parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
-modified: 1692710748984
+parentId: fld_f54284e86f734757a86038f18123649f
+modified: 1692714124533
 created: 1692710682797
 url: http://localhost:3000/auth/is_registered_tg
 name: Is registered with tg
@@ -29,7 +29,7 @@ headers:
     description: ""
     disabled: false
 authentication: {}
-metaSortKey: -1668723451355.1567
+metaSortKey: -1690733787194.9375
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true
