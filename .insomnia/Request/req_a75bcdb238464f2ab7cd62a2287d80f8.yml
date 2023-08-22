@@ -1,0 +1,35 @@
+_id: req_a75bcdb238464f2ab7cd62a2287d80f8
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692710207771
+created: 1691674053107
+url: http://localhost:3000/observations/random
+name: Get random observation
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: ""
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_bd14b9057bc64ed8af73c0e013bfa728
+  - id: pair_e98dacc7570446a6abbdb61eab366349
+    name: secret_key
+    value: def
+    description: ""
+  - id: pair_d20210e7980141d7931bc4389d1b0bdc
+    name: tg_user_id
+    value: "2"
+    description: ""
+    disabled: false
+authentication: {}
+metaSortKey: -1672797336590.75
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

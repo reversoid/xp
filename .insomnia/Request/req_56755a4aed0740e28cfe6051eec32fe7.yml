@@ -1,0 +1,37 @@
+_id: req_56755a4aed0740e28cfe6051eec32fe7
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692709908395
+created: 1691673878046
+url: http://localhost:3000/observations
+name: Create observation
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"text": "I am lolik 4"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_bd14b9057bc64ed8af73c0e013bfa728
+  - id: pair_e98dacc7570446a6abbdb61eab366349
+    name: secret_key
+    value: def
+    description: ""
+  - id: pair_d20210e7980141d7931bc4389d1b0bdc
+    name: tg_user_id
+    value: "2"
+    description: ""
+authentication: {}
+metaSortKey: -1676871719187.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,39 @@
+_id: req_89a89da4ab97454184567f9a57a30e02
+type: Request
+parentId: wrk_197bd58bfe2d41609fa6c80bb2f57e5e
+modified: 1692710748984
+created: 1692710682797
+url: http://localhost:3000/auth/is_registered_tg
+name: Is registered with tg
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: ""
+parameters:
+  - id: pair_3caa2c32eac04cebbc9663bb28240834
+    name: tg_user_id
+    value: "123456"
+    description: ""
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_bd14b9057bc64ed8af73c0e013bfa728
+  - id: pair_e98dacc7570446a6abbdb61eab366349
+    name: secret_key
+    value: def
+    description: ""
+  - id: pair_d20210e7980141d7931bc4389d1b0bdc
+    name: tg_user_id
+    value: "1"
+    description: ""
+    disabled: false
+authentication: {}
+metaSortKey: -1668723451355.1567
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
