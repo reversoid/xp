@@ -3,7 +3,7 @@ from aiogram import Bot
 from modules.experiment.exceptions.exceptions import NoTextInExperimentResultException
 from modules.experiment.services.exceptions import AlreadyStartedExperiment, NotEnoughObservationsException, NotStartedExperimentException
 from modules.experiment.services.responses import RandomObservationsResponse
-from modules.experiment.utils.scheduler import send_experiment_expired_message
+from modules.experiment.utils.scheduler import send_experiment_expired_message, cancel_send_expired_message
 from shared.api_service import ApiService, Params, Payload
 from aiohttp import ClientResponseError
 
@@ -33,7 +33,7 @@ class ExperimentService(ApiService):
         observations = await self.get_random_observations(tg_user_id)
         if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
             pass
-            # TODO uncomment when test is over 
+            # TODO uncomment when test is over
             # raise NotEnoughObservationsException
 
         url = f'{self.base_url}/experiments'
@@ -66,6 +66,7 @@ class ExperimentService(ApiService):
         payload = request.model_dump()
         try:
             await self.patch(url, headers=headers, payload=payload)
+            cancel_send_expired_message(tg_user_id=tg_user_id)
         except ClientResponseError as e:
             if e.code == 423:
                 raise NotStartedExperimentException
