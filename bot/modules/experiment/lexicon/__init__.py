@@ -43,3 +43,14 @@ LEXICON: Lexicon = {
 
     'experiment_expired': 'Your experiment expired! Just start a new one'
 }
+
+
+class ButtonLexicon(TypedDict):
+    cancel: str
+    finish: str
+
+
+BUTTON_LEXICON: ButtonLexicon = {
+    'cancel': 'Cancel',
+    'finish': 'Finish'
+}

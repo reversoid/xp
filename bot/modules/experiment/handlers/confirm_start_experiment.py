@@ -8,7 +8,7 @@ from modules.experiment.lexicon import LEXICON
 from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
 from modules.experiment.utils.send_observations import send_observations
 from shared.lexicon import SHARED_LEXICON
-from modules.experiment.keyboards import StartExperimentCallback
+from modules.experiment.keyboards import StartExperimentCallback, started_experiment_keyboard
 from modules.experiment.services import NotEnoughObservationsException, experiment_service, AlreadyStartedExperiment
 from modules.experiment.states import FSMExperiment
 from shared.my_types import Observation
@@ -27,7 +27,7 @@ async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMCon
 
         await send_observations(bot=bot, observations=observations, user_id=query.from_user.id)
 
-        await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'])
+        await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'],  reply_markup=started_experiment_keyboard)
         await state.set_state(FSMExperiment.completing)
         await query.message.edit_reply_markup(reply_markup=None) if query.message else None
 

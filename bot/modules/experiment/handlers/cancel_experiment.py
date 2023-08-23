@@ -1,9 +1,9 @@
-from aiogram import Router
+from aiogram import F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
-from modules.experiment.lexicon import LEXICON
+from modules.experiment.lexicon import BUTTON_LEXICON, LEXICON
 from modules.experiment.states import FSMExperiment
 from modules.experiment.services import experiment_service, NotStartedExperimentException
 from shared.lexicon import SHARED_LEXICON
@@ -11,7 +11,7 @@ from shared.lexicon import SHARED_LEXICON
 router: Router = Router()
 
 
-@router.message(StateFilter(FSMExperiment.completing), Command('cancel'))
+@router.message(StateFilter(FSMExperiment.completing), F.text == BUTTON_LEXICON['cancel'])
 async def handle_cancel_experiment(message: Message, state: FSMContext):
     try:
         await experiment_service.cancel_experiment(message.from_user.id)
@@ -22,5 +22,5 @@ async def handle_cancel_experiment(message: Message, state: FSMContext):
 
     except Exception:
         await message.answer(text=SHARED_LEXICON['internal_error'], reply_markup=None)
-    
+
     await state.clear()
