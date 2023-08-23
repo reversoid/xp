@@ -17,7 +17,7 @@ router: Router = Router()
 @router.callback_query(StartExperimentCallback.filter())
 async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMContext):
     try:
-        observations: list[Observation] = await experiment_service.run_experiment(tg_user_id=query.from_user.id)
+        observations: list[Observation] = await experiment_service.run_experiment(tg_user_id=query.from_user.id, bot=bot)
         await send_observations(bot=bot, observations=observations, user_id=query.from_user.id)
 
         await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'])

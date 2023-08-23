@@ -43,3 +43,4 @@ class UploadInfoRequest(BaseModel):
 
 class Experiment(UploadInfoRequest):
     id: int
+    complete_by: str | None = None

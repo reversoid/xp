@@ -13,7 +13,7 @@ router: Router = Router()
 
 @router.message(Command('run_experiment'))
 async def handle_start_experiment(message: Message, state: FSMContext):
-    currentExperiment = await experiment_service.user_running_experiment(message.from_user.id)
+    currentExperiment = await experiment_service.get_user_current_experiment(message.from_user.id)
 
     if (currentExperiment):
         await message.answer(text=LEXICON['experiment_already_started'])

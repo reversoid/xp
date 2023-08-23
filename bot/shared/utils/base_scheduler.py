@@ -1,12 +1,11 @@
-from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
-
-
-scheduler = BackgroundScheduler()
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from typing import Callable
+scheduler = AsyncIOScheduler()
 scheduler.start()
 
 
-def schedule_task(task_id: str, callback: function, date: datetime):
+def schedule_task(task_id: str, callback: Callable, date: datetime):
     scheduler.add_job(
         callback,
         'date',
