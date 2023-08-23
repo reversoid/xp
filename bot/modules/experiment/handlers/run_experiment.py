@@ -17,6 +17,7 @@ async def handle_start_experiment(message: Message, state: FSMContext):
 
     if (currentExperiment):
         await message.answer(text=LEXICON['experiment_already_started'])
+        await message.answer(text=LEXICON['experiment_started'])
         await state.set_state(FSMExperiment.completing)
 
     else:

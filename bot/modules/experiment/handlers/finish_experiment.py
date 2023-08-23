@@ -28,6 +28,6 @@ async def handle_finish_experiment(message: Message, state: FSMContext):
         await state.clear()
     except NoTextInExperimentResultException:
         await message.answer(text=LEXICON['no_text_in_experiment'])
-    except Exception as e:
+    except Exception:
         await message.answer(text=SHARED_LEXICON['internal_error'])
         await state.clear()

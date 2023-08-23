@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
 from modules.experiment.states import FSMExperiment
-from modules.experiment.services import experiment_service, NotStartedExperiment
+from modules.experiment.services import experiment_service, NotStartedExperimentException
 from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
@@ -17,7 +17,7 @@ async def handle_cancel_experiment(message: Message, state: FSMContext):
         await experiment_service.cancel_experiment(message.from_user.id)
         await message.answer(text=LEXICON['cancel_experiment'], reply_markup=None)
 
-    except NotStartedExperiment:
+    except NotStartedExperimentException:
         await message.answer(text=LEXICON['experiment_not_started'], reply_markup=None)
 
     except Exception:

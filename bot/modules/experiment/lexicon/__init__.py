@@ -10,6 +10,7 @@ class Lexicon(TypedDict):
     cancel_experiment: str
     experiment_not_started: str
     experiment_already_started: str
+    not_enough_observations: str
 
 
 LEXICON: Lexicon = {
@@ -35,5 +36,7 @@ LEXICON: Lexicon = {
     
     'experiment_not_started': 'Experiment is not started',
     
-    'experiment_already_started': 'Experiment is already started'
+    'experiment_already_started': 'Experiment is already started',
+
+    'not_enough_observations': 'Not enough observations to continue... please wait for more!'
 }

@@ -13,7 +13,10 @@ class AlreadyStartedExperiment(Exception):
     pass
 
 
-class NotStartedExperiment(Exception):
+class NotStartedExperimentException(Exception):
+    pass
+
+class NotEnoughObservationsException(Exception):
     pass
 
 
@@ -31,12 +34,14 @@ def get_experiment_task_id(tg_user_id: int):
 
 class CurrentExperimentResponse:
     experiment: Experiment | None = None
+    
+RANDOM_OBSERVATIONS_AMOUNT = 3
 
 
 class ExperimentService(ApiService):
     async def get_random_observations(self, tg_user_id: int) -> list[Observation]:
         url = f'{self.base_url}/observations/random'
-        params: Params = {'amount': 3}
+        params: Params = {'amount': RANDOM_OBSERVATIONS_AMOUNT}
         headers = self.get_auth_headers(tg_user_id)
         observations: RandomObservationsResponse = await self.get(url, headers=headers, params=params, dataclass=RandomObservationsResponse)
 
@@ -50,6 +55,9 @@ class ExperimentService(ApiService):
 
     async def run_experiment(self, tg_user_id: int) -> list[Observation]:
         observations = await self.get_random_observations(tg_user_id)
+        if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
+            raise NotEnoughObservationsException
+
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         payload: Payload = {'observations_ids': [o.id for o in observations]}
@@ -75,7 +83,7 @@ class ExperimentService(ApiService):
             await self.patch(url, headers=headers, payload=payload)
         except ClientResponseError as e:
             if e.code == 423:
-                raise NotStartedExperiment
+                raise NotStartedExperimentException
             raise e
 
     async def cancel_experiment(self, tg_user_id: int):
