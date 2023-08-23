@@ -5,6 +5,7 @@ from aiogram import Router
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from modules.experiment.keyboards import started_experiment_keyboard
 
 from modules.experiment.lexicon import BUTTON_LEXICON, LEXICON
 from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
@@ -29,7 +30,7 @@ async def handle_finish_experiment(message: Message, state: FSMContext, experime
         await message.answer(text=LEXICON['success_experiment'], reply_markup=None)
         await state.clear()
     except NoTextInExperimentResultException:
-        await message.answer(text=LEXICON['no_text_in_experiment'])
+        await message.answer(text=LEXICON['no_text_in_experiment'], reply_markup=started_experiment_keyboard)
     except Exception:
         await message.answer(text=SHARED_LEXICON['internal_error'], reply_markup=None)
         await state.clear()
