@@ -1,40 +1,17 @@
-import random
 from modules.experiment.exceptions.exceptions import NoTextInExperimentResultException
+from modules.experiment.services.exceptions import AlreadyStartedExperiment, NotEnoughObservationsException, NotStartedExperimentException
+from modules.experiment.services.responses import RandomObservationsResponse
 from shared.api_service import ApiService, Params, Payload
-from pydantic import BaseModel
-from aiogram.types import Message
-from aiohttp import ClientError, ClientResponseError
+from aiohttp import  ClientResponseError
 
 from shared.my_types import Experiment, Observation, UploadInfoRequest
-from shared.utils.convert.message_to_upload_request import process_media_group_files, process_message_files, combine_upload_info_requests
-
-
-class AlreadyStartedExperiment(Exception):
-    pass
-
-
-class NotStartedExperimentException(Exception):
-    pass
-
-class NotEnoughObservationsException(Exception):
-    pass
-
-
-class RandomObservationsResponse(BaseModel):
-    observations: list[Observation]
-
-
-class CreateExperimentRequest(UploadInfoRequest):
-    text: str
+from shared.utils.convert.message_to_upload_request import combine_upload_info_requests
 
 
 def get_experiment_task_id(tg_user_id: int):
     return f'experiment_user_{tg_user_id}'
 
 
-class CurrentExperimentResponse:
-    experiment: Experiment | None = None
-    
 RANDOM_OBSERVATIONS_AMOUNT = 3
 
 
