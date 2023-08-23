@@ -59,7 +59,7 @@ export class Experiment {
   @Column('varchar', { nullable: true, length: 256 })
   tg_document_id?: string;
 
-  @Column('jsonb', { nullable: true, array: true })
+  @Column('jsonb', { nullable: true, array: false })
   tg_media_group?: MediaGroupItem[];
 
   @Column('jsonb', { nullable: true })

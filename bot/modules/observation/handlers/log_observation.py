@@ -33,6 +33,5 @@ async def handle_log_observation_results(message: Message, state: FSMContext):
         await message.answer(LEXICON['not_supported_data'])
 
     except Exception as e:
-        print(e)
         await state.clear()
         await message.answer(SHARED_LEXICON['internal_error'])

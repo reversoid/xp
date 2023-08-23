@@ -20,13 +20,14 @@ router: Router = Router()
 async def handle_finish_experiment(message: Message, state: FSMContext):
     data = await state.get_data()
     requests: list[UploadInfoRequest] = data.get('messages', [])
+    parsed_requests = [UploadInfoRequest.model_validate(v) for v in requests]
 
     try:
-        await experiment_service.complete_experiment(message.from_user.id, requests=requests)
+        await experiment_service.complete_experiment(message.from_user.id, requests=parsed_requests)
         await message.answer(text=LEXICON['success_experiment'], reply_markup=None)
         await state.clear()
     except NoTextInExperimentResultException:
         await message.answer(text=LEXICON['no_text_in_experiment'])
-    except Exception:
+    except Exception as e:
         await message.answer(text=SHARED_LEXICON['internal_error'])
         await state.clear()

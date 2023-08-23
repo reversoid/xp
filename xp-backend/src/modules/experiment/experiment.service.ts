@@ -49,11 +49,11 @@ export class ExperimentService {
       text: dto.text,
       geo: dto.geo,
       tg_document_id: dto.document_id,
-      tg_media_group: dto.media_group,
       tg_photo_id: dto.photo_id,
       tg_video_id: dto.video_id,
       tg_video_note_id: dto.video_note_id,
       tg_voice_id: dto.voice_id,
+      tg_media_group: dto.media_group,
     });
 
     return finishedExperiment;

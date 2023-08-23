@@ -39,11 +39,12 @@ class ApiService:
 
     async def _handle_response(self, response: aiohttp.ClientResponse, dataclass: Optional[Type[BaseModel]] = None):
         response.raise_for_status()
+        
         data = await response.text()
         if not data or data == "null":
             return None
         if dataclass:
-            return dataclass.parse_raw(data)
+            return dataclass.model_validate_json(data)
         return data
 
     async def get(self, url: str, params: Optional[Params] = None, dataclass: Optional[Type[BaseModel]] = None, headers: Optional[Headers] = None):

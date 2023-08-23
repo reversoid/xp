@@ -45,7 +45,7 @@ class ExperimentService(ApiService):
     async def user_running_experiment(self, tg_user_id: int) -> Experiment | None:
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
-        experiment: Experiment | None = await self.put(url, headers=headers, dataclass=Experiment)
+        experiment: Experiment | None = await self.get(url, headers=headers, dataclass=Experiment)
         return experiment
 
     async def run_experiment(self, tg_user_id: int) -> list[Observation]:
@@ -65,7 +65,9 @@ class ExperimentService(ApiService):
     async def complete_experiment(self, tg_user_id: int, requests: list[UploadInfoRequest]):
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
-        request: UploadInfoRequest = combine_upload_info_requests(requests=requests)
+        request: UploadInfoRequest = combine_upload_info_requests(
+            requests=requests)
+
         self.__validate_complete_experiment_request(request)
 
         payload = request.model_dump()
@@ -74,7 +76,7 @@ class ExperimentService(ApiService):
         except ClientResponseError as e:
             if e.code == 423:
                 raise NotStartedExperiment
-            raise ClientResponseError
+            raise e
 
     async def cancel_experiment(self, tg_user_id: int):
         url = f'{self.base_url}/experiments'

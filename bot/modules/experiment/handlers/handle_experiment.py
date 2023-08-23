@@ -14,7 +14,7 @@ router: Router = Router()
 @router.message(StateFilter(FSMExperiment.completing))
 async def handle_experiment(message: Message, state: FSMContext):
     data = await state.get_data()
-
+    # TODO apply middleware that reveals media group 
     messages: list[UploadInfoRequest] = data.get('messages', [])
     newRequest = process_message_files(message)
     messages.append(newRequest.model_dump())
