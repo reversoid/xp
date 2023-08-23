@@ -36,6 +36,8 @@ class ExperimentService(ApiService):
             # TODO uncomment when test is over
             # raise NotEnoughObservationsException
 
+        await self.mark_observations_as_seen(tg_user_id=tg_user_id, observations_ids=[o.id for o in observations])
+
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         payload: Payload = {'observations_ids': [o.id for o in observations]}
@@ -76,6 +78,12 @@ class ExperimentService(ApiService):
         url = f'{self.base_url}/experiments'
         headers = self.get_auth_headers(tg_user_id)
         await self.delete(url, headers=headers)
+
+    async def mark_observations_as_seen(self, tg_user_id: int, observations_ids: list[int]):
+        url = f'{self.base_url}/observations/views'
+        headers = self.get_auth_headers(tg_user_id)
+        request: Payload = {'observations_ids': observations_ids}
+        await self.put(url, headers=headers, payload=request)
 
     def __validate_complete_experiment_request(self, request: UploadInfoRequest):
         if not request.text:
