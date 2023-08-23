@@ -8,6 +8,7 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
+from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
 from modules.experiment.states import FSMExperiment
 from modules.experiment.services import experiment_service, NoTextInExperimentResultException
 from shared.lexicon import SHARED_LEXICON
@@ -17,13 +18,14 @@ router: Router = Router()
 
 
 @router.message(StateFilter(FSMExperiment.completing), Command('finish'))
-async def handle_finish_experiment(message: Message, state: FSMContext):
+async def handle_finish_experiment(message: Message, state: FSMContext, experiment_scheduler: ExperimentScheduler):
     data = await state.get_data()
     requests: list[UploadInfoRequest] = data.get('messages', [])
     parsed_requests = [UploadInfoRequest.model_validate(v) for v in requests]
 
     try:
         await experiment_service.complete_experiment(message.from_user.id, requests=parsed_requests)
+        experiment_scheduler.cancel_send_experiment_expired(tg_user_id=message.from_user.id)
         await message.answer(text=LEXICON['success_experiment'], reply_markup=None)
         await state.clear()
     except NoTextInExperimentResultException:

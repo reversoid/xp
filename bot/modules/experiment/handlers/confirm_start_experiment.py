@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
+from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
 from modules.experiment.utils.send_observations import send_observations
 from shared.lexicon import SHARED_LEXICON
 from modules.experiment.keyboards import StartExperimentCallback
@@ -15,9 +17,14 @@ router: Router = Router()
 
 
 @router.callback_query(StartExperimentCallback.filter())
-async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMContext):
+async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMContext, experiment_scheduler: ExperimentScheduler):
     try:
-        observations: list[Observation] = await experiment_service.run_experiment(tg_user_id=query.from_user.id, bot=bot)
+        observations, experiment = await experiment_service.run_experiment(tg_user_id=query.from_user.id, bot=bot)
+        complete_by = datetime.fromisoformat(experiment.complete_by)
+
+        experiment_scheduler.schedule_send_experiment_expired(
+            bot, query.from_user.id, date=complete_by)
+
         await send_observations(bot=bot, observations=observations, user_id=query.from_user.id)
 
         await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'])

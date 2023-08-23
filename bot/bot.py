@@ -3,6 +3,10 @@ import logging
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from aiogram import Bot, Dispatcher
 from config_data.config import load_config
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from modules.core.middlewares.SchedulerMiddleware import SchedulerMiddleware
+
 
 from modules.core.handlers import core_router
 from modules.core.utils import set_main_menu
@@ -25,6 +29,11 @@ async def main():
 
     dp = Dispatcher(storage=storage)
 
+    scheduler = AsyncIOScheduler()
+
+    dp.message.middleware.register(SchedulerMiddleware(scheduler=scheduler))
+    dp.callback_query.middleware.register(SchedulerMiddleware(scheduler=scheduler))
+
     # Конфигурируем логирование
     logging.basicConfig(
         level=logging.INFO,
@@ -45,6 +54,8 @@ async def main():
     await set_main_menu(bot)
 
     await bot.delete_webhook(drop_pending_updates=True)
+
+    scheduler.start()
     await dp.start_polling(bot)
 
 if (__name__ == '__main__'):

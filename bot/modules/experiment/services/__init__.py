@@ -3,7 +3,6 @@ from aiogram import Bot
 from modules.experiment.exceptions.exceptions import NoTextInExperimentResultException
 from modules.experiment.services.exceptions import AlreadyStartedExperiment, NotEnoughObservationsException, NotStartedExperimentException
 from modules.experiment.services.responses import RandomObservationsResponse
-from modules.experiment.utils.scheduler import send_experiment_expired_message, cancel_send_expired_message
 from shared.api_service import ApiService, Params, Payload
 from aiohttp import ClientResponseError
 
@@ -29,7 +28,7 @@ class ExperimentService(ApiService):
         experiment: Experiment | None = await self.get(url, headers=headers, dataclass=Experiment)
         return experiment
 
-    async def run_experiment(self, tg_user_id: int, bot: Bot) -> list[Observation]:
+    async def run_experiment(self, tg_user_id: int, bot: Bot) -> tuple[list[Observation], Experiment]:
         observations = await self.get_random_observations(tg_user_id)
         if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
             pass
@@ -43,19 +42,12 @@ class ExperimentService(ApiService):
         payload: Payload = {'observations_ids': [o.id for o in observations]}
         try:
             experiment: Experiment = await self.put(url, headers=headers, payload=payload, dataclass=Experiment)
-            complete_by = datetime.fromisoformat(experiment.complete_by)
-            test_date = datetime.now() + timedelta(seconds=5)
-            # TODO why not working dates?
-
-            send_experiment_expired_message(
-                bot, tg_user_id=tg_user_id, date=test_date)
+            return observations, experiment
 
         except ClientResponseError as e:
             if e.code == 423:
                 raise AlreadyStartedExperiment
             raise ClientResponseError
-
-        return observations
 
     async def complete_experiment(self, tg_user_id: int, requests: list[UploadInfoRequest]):
         url = f'{self.base_url}/experiments'
@@ -68,7 +60,6 @@ class ExperimentService(ApiService):
         payload = request.model_dump()
         try:
             await self.patch(url, headers=headers, payload=payload)
-            cancel_send_expired_message(tg_user_id=tg_user_id)
         except ClientResponseError as e:
             if e.code == 423:
                 raise NotStartedExperimentException
