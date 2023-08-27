@@ -7,7 +7,6 @@ from modules.observation.lexicon import LEXICON
 from modules.observation.services import observation_service
 from modules.observation.services import NoDataForObservation
 from modules.observation.states import FSMObservation
-from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
 
