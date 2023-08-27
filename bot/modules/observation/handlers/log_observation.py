@@ -11,8 +11,6 @@ from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
 
-router.message.middleware.register(AlbumMiddleware())
-
 
 @router.message(Command('log_observation'))
 async def handle_log_observation(message: Message, state: FSMContext):
