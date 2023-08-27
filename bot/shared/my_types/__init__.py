@@ -27,7 +27,7 @@ class Observation(ObservationDTO):
 class GeoDTO(BaseModel):
     longitude: float
     latitude: float
-    horizontal_accuracy: Optional[float]
+    horizontal_accuracy: Optional[float] = None
 
 
 class UploadInfoRequest(BaseModel):
