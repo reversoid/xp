@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
 import { ExperimentViewRepository } from '../experiment/repository/experiment-view.repository';
+import { PaginatedResponse } from 'src/shared/paginated.repository';
+import { Experiment } from '../experiment/entities/experiment.entity';
 
 /** Amount of experiments user is able to see a week */
 export const VIEW_LIMIT_PER_WEEK = 10;
@@ -12,20 +14,26 @@ export class FeedService {
     private readonly experimentViewRepository: ExperimentViewRepository,
   ) {}
 
-  async getRandomExperiments(forUserId: number, limit = VIEW_LIMIT_PER_WEEK) {
+  async getRandomExperiments(
+    forUserId: number,
+    limit = VIEW_LIMIT_PER_WEEK,
+  ): Promise<PaginatedResponse<Experiment>> {
     const seenLastWeek = await this.experimentViewRepository.seenLastWeek(
       forUserId,
     );
     if (seenLastWeek >= VIEW_LIMIT_PER_WEEK) {
-      return [];
+      return { items: [], next_key: null };
     }
 
     const maxAvailable = VIEW_LIMIT_PER_WEEK - seenLastWeek;
 
-    return this.experimentRepository.getRandomUnseenExperiments(
-      forUserId,
-      Math.min(maxAvailable, limit),
-    );
+    const experiments =
+      await this.experimentRepository.getRandomUnseenExperiments(
+        forUserId,
+        Math.min(maxAvailable, limit),
+      );
+
+    return { items: experiments, next_key: null };
   }
 
   async getExperimentsFromFollowee(userId: number, limit = 10) {
