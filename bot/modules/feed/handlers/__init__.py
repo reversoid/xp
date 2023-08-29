@@ -1,1 +1,1 @@
-from .feed_handlers import feed_router
+from .get_feed import feed_router

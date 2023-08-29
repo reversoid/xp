@@ -1,7 +1,8 @@
-from aiogram import Router
+from aiogram import Router, Bot
 from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from modules.experiment.utils.send_experiments import send_experiments
 from modules.feed.lexicon import LEXICON
 from modules.feed.services import feed_service
 from modules.feed.services.responses.feed_response import FeedResponse
@@ -12,7 +13,7 @@ feed_router = Router()
 
 
 @feed_router.message(Command('feed'))
-async def handle_feed_command(message: Message, state: FSMContext):
+async def handle_feed_command(message: Message, state: FSMContext, bot: Bot):
     await state.set_state(FSMFeed.reading_followee)
 
     followee_experiments = await feed_service.get_followee_experiments(
@@ -21,8 +22,7 @@ async def handle_feed_command(message: Message, state: FSMContext):
     followee_experiments_exist = len(followee_experiments.items) != 0
 
     if followee_experiments_exist:
-        # TODO send experiments
-        pass
+        await send_experiments(bot=bot, experiments=followee_experiments, tg_user_id=message.from_user.id)
         return
 
     await message.answer(text=LEXICON['no_followee_experiments'])
@@ -34,7 +34,6 @@ async def handle_feed_command(message: Message, state: FSMContext):
     random_experiments_exist = len(random_experiments.items) != 0
 
     if random_experiments_exist:
-        # TODO send experiments
-        pass
+        await send_experiments(bot=bot, experiments=random_experiments, tg_user_id=message.from_user.id)
     else:
         await message.answer(text=LEXICON['no_random_experiments'])

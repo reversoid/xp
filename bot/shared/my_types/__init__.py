@@ -1,5 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
+from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
+
+MediaGroupItem = InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo
 
 
 class MediaGroupItemDTO(BaseModel):
@@ -41,6 +44,14 @@ class UploadInfoRequest(BaseModel):
     geo: Optional[GeoDTO] = None
 
 
-class Experiment(UploadInfoRequest):
+class Experiment(BaseModel):
     id: int
+    text: str
     complete_by: str | None = None
+    tg_photo_id: Optional[str] = None
+    tg_document_id: Optional[str] = None
+    tg_voice_id: Optional[str] = None
+    tg_video_id: Optional[str] = None
+    tg_video_note_id: Optional[str] = None
+    file_urls: Optional[list[str]] = None
+    tg_media_group: Optional[list[MediaGroupItemDTO]] = None

@@ -1,7 +1,5 @@
+from shared.my_types import MediaGroupItem, Observation, ObservationDTO
 from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
-from shared.my_types import Observation, ObservationDTO
-
-MediaGroupItem = InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo
 
 
 class NotValidObservation(Exception):
