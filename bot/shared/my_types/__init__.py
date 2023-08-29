@@ -44,6 +44,10 @@ class UploadInfoRequest(BaseModel):
     geo: Optional[GeoDTO] = None
 
 
+class User(BaseModel):
+    id: int
+
+
 class Experiment(BaseModel):
     id: int
     text: str
@@ -55,3 +59,4 @@ class Experiment(BaseModel):
     tg_video_note_id: Optional[str] = None
     file_urls: Optional[list[str]] = None
     tg_media_group: Optional[list[MediaGroupItemDTO]] = None
+    user: User
