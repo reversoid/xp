@@ -29,7 +29,7 @@ async def handle_feed_command(message: Message, state: FSMContext, bot: Bot):
     await message.answer(text=LEXICON['showing_random'])
 
     random_experiments: FeedResponse = await feed_service.get_random_unseen_experiments(
-        message.from_user.id)
+        message.from_user.id, limit=5)
 
     random_experiments_exist = len(random_experiments.items) != 0
 
