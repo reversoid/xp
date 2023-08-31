@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from modules.core.middlewares.SchedulerMiddleware import SchedulerMiddleware
 
 
-from modules.core.handlers import core_router
+from modules.core.handlers import core_router, other_router
 from modules.core.utils import set_main_menu
 from modules.experiment.handlers import experiment_router
 from modules.feed.handlers import feed_router
@@ -44,11 +44,12 @@ async def main():
     logger.info('Starting bot')
 
     dp.include_routers(
+        core_router,
         experiment_router,
         feed_router,
         observation_router,
         profile_router,
-        core_router,
+        other_router
     )
 
     await set_main_menu(bot)

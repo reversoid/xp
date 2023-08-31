@@ -9,7 +9,8 @@ from modules.experiment.middlewares.SchedulerMiddleware import ExperiementSchedu
 
 experiment_router = Router()
 experiment_router.message.middleware.register(ExperiementSchedulerMiddleware())
-experiment_router.callback_query.middleware.register(ExperiementSchedulerMiddleware())
+experiment_router.callback_query.middleware.register(
+    ExperiementSchedulerMiddleware())
 
 experiment_router.include_routers(
     _start_router,

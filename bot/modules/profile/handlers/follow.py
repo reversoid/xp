@@ -35,3 +35,9 @@ async def handle_input_username(message: Message, state: FSMContext):
 @follow_router.message(StateFilter(FSMProfile.sending_username_to_follow), ~F.text)
 async def handle_input_wrong_username(message: Message):
     await message.answer(text=LEXICON['no_username_provided'])
+
+
+@follow_router.message(StateFilter(FSMProfile.sending_username_to_follow), Command('cancel'))
+async def handle_cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(text=LEXICON['follow_canceled'])
