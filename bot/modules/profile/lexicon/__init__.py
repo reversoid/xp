@@ -11,6 +11,7 @@ class Lexicon(TypedDict):
     follow_canceled: str
     your_followees: str
     empty_followees: str
+    no_more_followees: str
 
 
 LEXICON: Lexicon = {
@@ -22,5 +23,17 @@ LEXICON: Lexicon = {
     'already_subscribed': 'You are already subscribed to the user',
     'follow_canceled': 'Okay, canceled',
     'your_followees': 'The profiles you are subscribed to:',
-    'empty_followees': 'There are currently no followees'
+    'empty_followees': 'There are currently no followees',
+    'no_more_followees': 'There are no more followees'
+}
+
+
+class ButtonLexicon(TypedDict):
+    cancel_showing_followees: str
+    load_more_followees: str
+
+
+BUTTON_LEXICON: ButtonLexicon = {
+    'cancel_showing_followees': 'Cancel',
+    'load_more_followees': 'More',
 }

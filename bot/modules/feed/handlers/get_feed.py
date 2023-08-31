@@ -22,7 +22,7 @@ async def handle_feed_command(message: Message, state: FSMContext, bot: Bot):
     followee_experiments_exist = len(followee_experiments.items) != 0
 
     if followee_experiments_exist:
-        await send_experiments(bot=bot, experiments=followee_experiments, tg_user_id=message.from_user.id)
+        await send_experiments(bot=bot, experiments=followee_experiments.items, tg_user_id=message.from_user.id)
         return
 
     await message.answer(text=LEXICON['no_followee_experiments'])
