@@ -41,4 +41,4 @@ async def show_experiments(message: Message, state: FSMContext, bot: Bot):
 @experiments_router.message(StateFilter(FSMProfile.viewing_experiments), F.text == BUTTON_LEXICON['cancel_showing_experiments'])
 async def cancel_show_experiments(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer(text=SHARED_LEXICON['ok'])
+    await message.answer(text=SHARED_LEXICON['ok'], reply_markup=None)

@@ -25,7 +25,7 @@ async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMCon
         experiment_scheduler.schedule_send_experiment_expired(
             bot, query.from_user.id, date=complete_by)
 
-        await send_observations(bot=bot, observations=observations, user_id=query.from_user.id)
+        await send_observations(bot=bot, observations=observations, tg_user_id=query.from_user.id)
 
         await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'],  reply_markup=started_experiment_keyboard)
         await state.set_state(FSMExperiment.completing)

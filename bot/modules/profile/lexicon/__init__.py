@@ -17,6 +17,10 @@ class Lexicon(TypedDict):
     no_more_experiments: str
     your_experiments: str
     exists_more_experiments: str
+    empty_observations: str
+    no_more_observations: str
+    your_observations: str
+    exists_more_observations: str
 
 
 LEXICON: Lexicon = {
@@ -27,14 +31,21 @@ LEXICON: Lexicon = {
     'followed_successfully': 'You were successfully subscribed!',
     'already_subscribed': 'You are already subscribed to the user',
     'follow_canceled': 'Okay, canceled',
+
     'your_followees': 'The profiles you are subscribed to:',
     'empty_followees': 'There are currently no followees',
     'no_more_followees': 'There are no more followees',
     'exists_more_followees': 'There are more followees, load?',
+
     'empty_experiments': 'No experiments yet',
     'no_more_experiments': 'There are no more experiments',
     'your_experiments': 'Here are your experiments',
     'exists_more_experiments': 'There are more experiments, load?',
+
+    'empty_observations': 'No observations yet',
+    'no_more_observations': 'There are no more observations',
+    'your_observations': 'Here are your observations',
+    'exists_more_observations': 'There are more observations, load?'
 }
 
 
