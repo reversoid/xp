@@ -17,7 +17,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObservationResponse } from '../../shared/swagger/responses/ObservationResponse';
-import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
+import { NumericIdDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyObservationsDTO } from './dto/see-many-observations.dto';
 import { RandomObservationResponse } from './dto/responses/random-observations.response';
 
@@ -68,7 +68,7 @@ export class ObservationController {
   @UseGuards(AuthGuard)
   async markObservationAsViewed(
     @Request() { user }: { user: User },
-    @Param() { id: observationId }: NumericIdParamDTO,
+    @Param() { id: observationId }: NumericIdDTO,
   ) {
     return this.observationService.markObservationAsViewed(
       user.id,

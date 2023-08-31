@@ -21,14 +21,14 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
   }
 
   async isFollowedById(whoFollowsId: number, userId: number) {
-    const subscription = await this.findBy({
+    const subscription = await this.findOneBy({
       followed: { id: userId },
       follower: { id: whoFollowsId },
     });
     return Boolean(subscription);
   }
 
-  async followByUsername(whoFollowsId: number, whoToFollowId: number) {
+  async followById(whoFollowsId: number, whoToFollowId: number) {
     return this.save({
       followed: { id: whoToFollowId },
       follower: { id: whoFollowsId },

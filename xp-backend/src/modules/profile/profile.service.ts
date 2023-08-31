@@ -25,6 +25,12 @@ class UserUnSubscribedException extends BadRequestException {
   }
 }
 
+class NoSuchUserException extends BadRequestException {
+  constructor() {
+    super('NO_SUCH_USER');
+  }
+}
+
 @Injectable()
 export class ProfileService {
   constructor(
@@ -67,7 +73,21 @@ export class ProfileService {
       throw new UserAlreadySubscribedException();
     }
     const user = await this.userRepository.getUserByUsername(username);
-    return this.subscriptionRepository.followByUsername(whoFollowsId, user.id);
+    if (!user) {
+      throw new NoSuchUserException();
+    }
+    return this.subscriptionRepository.followById(whoFollowsId, user.id);
+  }
+
+  async followUserById(whoFollowsId: number, userId: number) {
+    const isFollowed = await this.subscriptionRepository.isFollowedById(
+      whoFollowsId,
+      userId,
+    );
+    if (isFollowed) {
+      throw new UserAlreadySubscribedException();
+    }
+    return this.subscriptionRepository.followById(whoFollowsId, userId);
   }
 
   async unFollowUser(whoFollowsId: number, userId: number) {

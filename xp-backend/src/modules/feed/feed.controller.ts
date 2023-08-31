@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { User } from '../user/entities/user.entity';
 import { FeedService } from './feed.service';
-import { NumericIdParamDTO } from 'src/shared/dto/id.param.dto';
+import { NumericIdDTO } from 'src/shared/dto/id.param.dto';
 import { SeeManyExperimentsDTO } from './dto/see-many-experiments.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ExperimentResponse } from 'src/shared/swagger/responses/Experiment.response';
@@ -59,7 +59,7 @@ export class FeedController {
   @UseGuards(AuthGuard)
   async markExperimentAsSeen(
     @Request() { user }: { user: User },
-    @Param() { id }: NumericIdParamDTO,
+    @Param() { id }: NumericIdDTO,
   ) {
     return this.feedService.markExperimentAsSeen(user.id, id);
   }
