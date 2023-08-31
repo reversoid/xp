@@ -8,6 +8,7 @@ from modules.profile.lexicon import LEXICON, BUTTON_LEXICON
 from aiogram.fsm.context import FSMContext
 from modules.profile.services import profile_service
 from modules.profile.states import FSMProfile
+from shared.lexicon import SHARED_LEXICON
 
 followees_router = Router()
 
@@ -32,6 +33,7 @@ async def show_followees(message: Message, state: FSMContext):
         await message.answer(text=f'{profile.username}', reply_markup=keyboard)
 
     if not profiles.next_key:
+        await state.clear()
         await message.answer(text=LEXICON['no_more_followees'], reply_markup=None)
         return
     else:
@@ -64,3 +66,9 @@ async def follow(query: CallbackQuery):
 
     follow_keyboard = get_unfollow_keyboard(followee_id)
     await query.message.edit_reply_markup(reply_markup=follow_keyboard)
+
+
+@followees_router.message(StateFilter(FSMProfile.viewing_followees), F.text == BUTTON_LEXICON['cancel_showing_followees'])
+async def cancel_show_experiments(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(text=SHARED_LEXICON['ok'])

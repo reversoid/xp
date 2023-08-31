@@ -13,6 +13,10 @@ class Lexicon(TypedDict):
     empty_followees: str
     no_more_followees: str
     exists_more_followees: str
+    empty_experiments: str
+    no_more_experiments: str
+    your_experiments: str
+    exists_more_experiments: str
 
 
 LEXICON: Lexicon = {
@@ -26,16 +30,28 @@ LEXICON: Lexicon = {
     'your_followees': 'The profiles you are subscribed to:',
     'empty_followees': 'There are currently no followees',
     'no_more_followees': 'There are no more followees',
-    'exists_more_followees': 'There are more followees, load?'
+    'exists_more_followees': 'There are more followees, load?',
+    'empty_experiments': 'No experiments yet',
+    'no_more_experiments': 'There are no more experiments',
+    'your_experiments': 'Here are your experiments',
+    'exists_more_experiments': 'There are more experiments, load?',
 }
 
 
 class ButtonLexicon(TypedDict):
     cancel_showing_followees: str
     load_more_followees: str
+    load_more_experiments: str
+    cancel_showing_experiments: str
+    load_more_observations: str
+    cancel_showing_observations: str
 
 
 BUTTON_LEXICON: ButtonLexicon = {
     'cancel_showing_followees': 'Cancel',
     'load_more_followees': 'More',
+    'load_more_experiments': 'More',
+    'cancel_showing_experiments': 'Cancel',
+    'load_more_observations': 'More',
+    'cancel_showing_observations': 'Cancel',
 }

@@ -3,8 +3,10 @@ from typing import TypedDict
 
 class Lexicon(TypedDict):
     internal_error: str
+    ok: str
 
 
 SHARED_LEXICON: Lexicon = {
-    'internal_error': "Ohh, I have a problem... Please, contact the creator to fix me!",
+    'internal_error': "Well... I am broken...",
+    'ok': 'Okay'
 }

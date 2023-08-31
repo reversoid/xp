@@ -1,4 +1,4 @@
-from .responses import PaginatedUsersResponse
+from .responses import PaginatedUsersResponse, PaginatedExperimentsResponse, PaginatedObservationsResponse
 from shared.api_service import ApiException, ApiService, Payload, Params
 
 
@@ -18,6 +18,32 @@ class ProfileService(ApiService):
 
         await self.put(
             url, headers=headers, payload=payload)
+
+    async def get_my_experiments(self, tg_user_id: int, lower_bound: str | None = None) -> PaginatedExperimentsResponse:
+        limit = 5
+        url = f'{self.base_url}/profile/experiments'
+
+        headers = self.get_auth_headers(tg_user_id=tg_user_id)
+        params: Params = {'limit': limit}
+        if lower_bound:
+            params['lower_bound'] = lower_bound
+
+        response: PaginatedExperimentsResponse = await self.get(
+            url=url, headers=headers, params=params, dataclass=PaginatedExperimentsResponse)
+        return response
+
+    async def get_my_observations(self, tg_user_id: int, lower_bound: str | None = None) -> PaginatedObservationsResponse:
+        limit = 5
+        url = f'{self.base_url}/profile/observations'
+
+        headers = self.get_auth_headers(tg_user_id=tg_user_id)
+        params: Params = {'limit': limit}
+        if lower_bound:
+            params['lower_bound'] = lower_bound
+
+        response: PaginatedObservationsResponse = await self.get(
+            url, headers=headers, params=params, dataclass=PaginatedObservationsResponse)
+        return response
 
     async def get_followees(self, tg_user_id: int, lower_bound: str | None = None) -> PaginatedUsersResponse:
         limit = 5

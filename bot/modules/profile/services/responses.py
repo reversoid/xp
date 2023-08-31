@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from shared.my_types import Experiment, Observation
+
 
 class UserResponse(BaseModel):
     id: int
@@ -10,3 +12,13 @@ class UserResponse(BaseModel):
 class PaginatedUsersResponse(BaseModel):
     next_key: str | None = None
     items: list[UserResponse]
+
+
+class PaginatedObservationsResponse(BaseModel):
+    next_key: str | None = None
+    items: list[Observation]
+
+
+class PaginatedExperimentsResponse(BaseModel):
+    next_key: str | None = None
+    items: list[Experiment]
