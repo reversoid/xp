@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters.callback_data import CallbackData
 
 
-class FollowUserCallback(CallbackData, prefix='profile-follow'):
+class FollowUserCallback(CallbackData, prefix='my-followee-follow'):
     user_id: int
 
 

@@ -1,4 +1,5 @@
-from shared.api_service import ApiException, ApiService, Payload
+from .responses import PaginatedUsersResponse
+from shared.api_service import ApiException, ApiService, Payload, Params
 
 
 class AlreadySubscribedException(Exception):
@@ -17,6 +18,19 @@ class ProfileService(ApiService):
 
         await self.put(
             url, headers=headers, payload=payload)
+
+    async def get_followees(self, tg_user_id: int, lower_bound: str | None = None) -> PaginatedUsersResponse:
+        limit = 5
+        url = f'{self.base_url}/profile/followees'
+        headers = self.get_auth_headers(tg_user_id=tg_user_id)
+        params: Params = {'limit': limit}
+
+        if lower_bound:
+            params['lower_bound'] = lower_bound
+
+        profiles = await self.get(
+            url, headers=headers, params=params, dataclass=PaginatedUsersResponse)
+        return profiles
 
     async def unfollow_user_by_id(self, tg_user_id: int, followee_user_id: int):
         url = f'{self.base_url}/profile/{followee_user_id}/followers'

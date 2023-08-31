@@ -9,6 +9,8 @@ class Lexicon(TypedDict):
     already_subscribed: str
     no_such_user: str
     follow_canceled: str
+    your_followees: str
+    empty_followees: str
 
 
 LEXICON: Lexicon = {
@@ -18,5 +20,7 @@ LEXICON: Lexicon = {
     'no_such_user': 'There is no such user. Try again',
     'followed_successfully': 'You were successfully subscribed!',
     'already_subscribed': 'You are already subscribed to the user',
-    'follow_canceled': 'Okay, canceled'
+    'follow_canceled': 'Okay, canceled',
+    'your_followees': 'The profiles you are subscribed to:',
+    'empty_followees': 'There are currently no followees'
 }
