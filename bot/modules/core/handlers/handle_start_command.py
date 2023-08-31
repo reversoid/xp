@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart, StateFilter
 from modules.core.lexicon import CORE_LEXICON
 from aiogram.fsm.context import FSMContext
@@ -14,14 +14,15 @@ start_router: Router = Router()
 
 @start_router.message(CommandStart())
 async def handle_start_command(message: Message, state: FSMContext):
+    await state.clear()
     response = await auth_service.is_user_registered(message.from_user.id)
 
     if (response.registered):
-        await message.answer(text=f'Hello, {response.username}! \n\n{CORE_LEXICON["cmd_start"]}')
+        await message.answer(text=f'Hello, {response.username}! \n\n{CORE_LEXICON["cmd_start"]}', reply_markup=ReplyKeyboardRemove())
         # TODO check if user has running experiment
     else:
         await state.set_state(FSMRegistration.fill_username)
-        await message.answer(text=CORE_LEXICON['cmd_start'])
+        await message.answer(text=CORE_LEXICON['cmd_start'], reply_markup=ReplyKeyboardRemove())
         await message.answer(text=CORE_LEXICON['fill_username'])
 
 
