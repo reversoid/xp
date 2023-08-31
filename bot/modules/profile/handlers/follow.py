@@ -26,7 +26,6 @@ async def handle_cancel(message: Message, state: FSMContext):
 @follow_router.message(StateFilter(FSMProfile.sending_username_to_follow), F.text)
 async def handle_input_username(message: Message, state: FSMContext):
     try:
-        # TODO check for username pattern
         await profile_service.follow_user_by_username(message.from_user.id, message.text)
         await state.clear()
         await message.answer(text=LEXICON['followed_successfully'])

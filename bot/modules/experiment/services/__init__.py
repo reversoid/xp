@@ -31,8 +31,7 @@ class ExperimentService(ApiService):
         observations = await self.get_random_observations(tg_user_id)
         if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
             pass
-            # TODO uncomment when test is over
-            # raise NotEnoughObservationsException
+            raise NotEnoughObservationsException
 
         await self.mark_observations_as_seen(tg_user_id=tg_user_id, observations_ids=[o.id for o in observations])
 
