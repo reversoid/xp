@@ -25,7 +25,7 @@ async def show_followees(message: Message, state: FSMContext):
         await message.answer(text=LEXICON['empty_followees'])
         return
 
-    await message.answer(text=LEXICON['your_followees'])
+    await message.answer(text=LEXICON['your_followees']) if not lower_bound else None
 
     for profile in profiles.items:
         keyboard = get_unfollow_keyboard(profile.id)
