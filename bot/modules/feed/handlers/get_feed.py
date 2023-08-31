@@ -32,8 +32,7 @@ async def handle_feed_command(message: Message, state: FSMContext, bot: Bot):
         message.from_user.id, limit=5)
 
     random_experiments_exist = len(random_experiments.items) != 0
-
     if random_experiments_exist:
-        await send_experiments(bot=bot, experiments=random_experiments, include_subscribe_markup=True, tg_user_id=message.from_user.id)
+        await send_experiments(bot=bot, experiments=random_experiments.items, include_subscribe_markup=True, tg_user_id=message.from_user.id)
     else:
         await message.answer(text=LEXICON['no_random_experiments'])

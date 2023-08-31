@@ -6,6 +6,9 @@ def experiment_to_media_group_with_text(experiment: Experiment) -> tuple[list[Me
     text = experiment.text
     media_group: list[MediaGroupItem] = []
 
+    if not experiment.tg_media_group:
+        return [], text
+
     for media_group_item in experiment.tg_media_group:
         if media_group_item.audio_id:
             media_group.append(InputMediaAudio(
