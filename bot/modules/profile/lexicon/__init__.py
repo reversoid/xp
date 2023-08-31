@@ -12,6 +12,7 @@ class Lexicon(TypedDict):
     your_followees: str
     empty_followees: str
     no_more_followees: str
+    exists_more_followees: str
 
 
 LEXICON: Lexicon = {
@@ -24,7 +25,8 @@ LEXICON: Lexicon = {
     'follow_canceled': 'Okay, canceled',
     'your_followees': 'The profiles you are subscribed to:',
     'empty_followees': 'There are currently no followees',
-    'no_more_followees': 'There are no more followees'
+    'no_more_followees': 'There are no more followees',
+    'exists_more_followees': 'There are more followees, load?'
 }
 
 

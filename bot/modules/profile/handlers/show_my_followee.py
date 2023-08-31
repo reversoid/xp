@@ -37,7 +37,7 @@ async def show_followees(message: Message, state: FSMContext):
     else:
         await state.set_state(FSMProfile.viewing_followees)
         await state.update_data(lower_bound=profiles.next_key)
-        await message.answer(reply_markup=next_followees_keyboard)
+        await message.answer(text=LEXICON['exists_more_followees'], reply_markup=next_followees_keyboard)
 
 
 @followees_router.callback_query(UnfollowUserCallback.filter())
