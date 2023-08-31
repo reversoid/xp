@@ -32,7 +32,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
       relations: { observations: true },
     });
 
-    return this.processPaginationByCreatedDate(experiments, limit);
+    return this.processPaginationByCompletedDate(experiments, limit);
   }
 
   /** Returns random unseen experiments from users not followed by you and ignoring your experiments */
