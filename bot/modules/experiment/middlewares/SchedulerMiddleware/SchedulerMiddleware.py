@@ -20,7 +20,6 @@ class ExperiementSchedulerMiddleware(BaseMiddleware):
         data: dict[str, Any]
     ) -> Any:
         core_scheduler = data.get('scheduler')
-        print('exp_scheduler', core_scheduler)
         if not core_scheduler or not isinstance(core_scheduler, CoreScheduler):
             raise SchedulerNotProvidedException
 

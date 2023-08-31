@@ -23,7 +23,6 @@ class FeedService(ApiService):
         headers = self.get_auth_headers(tg_user_id=tg_user_id)
         random_experiments: FeedResponse = await self.get(
             url, params=params, dataclass=FeedResponse, headers=headers)
-        print(random_experiments)
         # await self.mark_experiments_as_seen(tg_user_id=tg_user_id, experiments_ids=[
         #     item.id for item in random_experiments.items])
 

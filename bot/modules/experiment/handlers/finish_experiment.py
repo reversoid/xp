@@ -31,6 +31,6 @@ async def handle_finish_experiment(message: Message, state: FSMContext, experime
         await state.clear()
     except NoTextInExperimentResultException:
         await message.answer(text=LEXICON['no_text_in_experiment'], reply_markup=started_experiment_keyboard)
-    except Exception:
+    except Exception as e:
         await message.answer(text=SHARED_LEXICON['internal_error'], reply_markup=ReplyKeyboardRemove())
         await state.clear()

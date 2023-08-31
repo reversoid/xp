@@ -50,9 +50,16 @@ def combine_upload_info_requests(requests: list[UploadInfoRequest]) -> UploadInf
         video_id = req.video_id if req.video_id else None
         video_note_id = req.video_note_id if req.video_note_id else None
 
-        media_group_item = MediaGroupItemDTO(
-            audio_id=audio_id, document_id=document_id, photo_id=photo_id, video_id=video_id or video_note_id)
-        media_group.append(media_group_item)
+        if req.media_group:
+            for item in req.media_group:
+                media_group.append(item)
+
+        elif audio_id or document_id or photo_id or video_id or video_note_id:
+            media_group_item = MediaGroupItemDTO(
+                audio_id=audio_id, document_id=document_id, photo_id=photo_id, video_id=video_id or video_note_id)
+            media_group.append(media_group_item)
+
     request = UploadInfoRequest(
         text=text if text else None, media_group=media_group)
+
     return request

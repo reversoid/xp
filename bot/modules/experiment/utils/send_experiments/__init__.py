@@ -1,5 +1,5 @@
 from modules.feed.keyboards.follow_keyboard import get_follow_keyboard
-from shared.my_types import Experiment, MediaGroupItem
+from shared.my_types import Experiment
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup
 from shared.utils.convert.experiment_to_media_group import experiment_to_media_group_with_text
@@ -13,7 +13,6 @@ async def send_experiments(experiments: list[Experiment], bot: Bot, tg_user_id: 
             keyboard = get_follow_keyboard(experiment.user.id)
 
         if len(media_group) >= 2:
-            media_group[0].caption = text
             await bot.send_media_group(chat_id=tg_user_id, media=media_group)
             await bot.send_message(chat_id=tg_user_id, text='', reply_markup=keyboard) if include_subscribe_markup else None
         elif len(media_group) == 1:
