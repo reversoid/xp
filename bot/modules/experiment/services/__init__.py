@@ -3,8 +3,7 @@ from aiogram import Bot
 from modules.experiment.exceptions.exceptions import NoTextInExperimentResultException
 from modules.experiment.services.exceptions import AlreadyStartedExperiment, NotEnoughObservationsException, NotStartedExperimentException
 from modules.experiment.services.responses import RandomObservationsResponse
-from shared.api_service import ApiService, Params, Payload
-from aiohttp import ClientResponseError
+from shared.api_service import ApiException, ApiService, Params, Payload
 
 from shared.my_types import Experiment, Observation, UploadInfoRequest
 from shared.utils.convert.message_to_upload_request import combine_upload_info_requests
@@ -44,10 +43,10 @@ class ExperimentService(ApiService):
             experiment: Experiment = await self.put(url, headers=headers, payload=payload, dataclass=Experiment)
             return observations, experiment
 
-        except ClientResponseError as e:
-            if e.code == 423:
+        except ApiException as e:
+            if e.message == 'EXPERIMENT_ALREADY_STARTED':
                 raise AlreadyStartedExperiment
-            raise ClientResponseError
+            raise e
 
     async def complete_experiment(self, tg_user_id: int, requests: list[UploadInfoRequest]):
         url = f'{self.base_url}/experiments'
@@ -60,8 +59,8 @@ class ExperimentService(ApiService):
         payload = request.model_dump()
         try:
             await self.patch(url, headers=headers, payload=payload)
-        except ClientResponseError as e:
-            if e.code == 423:
+        except ApiException as e:
+            if e.message == 'EXPERIMENT_NOT_STARTED':
                 raise NotStartedExperimentException
             raise e
 

@@ -1,4 +1,3 @@
-from aiohttp import ClientResponseError
 from shared.api_service import ApiException, ApiService, Payload
 
 

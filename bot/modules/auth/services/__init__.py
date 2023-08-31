@@ -1,5 +1,4 @@
-from aiohttp import ClientError, ClientResponseError
-from shared.api_service import ApiService, Headers, Params, Payload
+from shared.api_service import ApiException, ApiService, Headers, Params, Payload
 import string
 import secrets
 from pydantic import BaseModel
@@ -38,8 +37,8 @@ class AuthService(ApiService):
 
         try:
             await self.post(url, payload=payload)
-        except ClientResponseError as e:
-            if (e.status == 409):
+        except ApiException as e:
+            if (e.message == 'USER_EXISTS'):
                 raise UserExistsException
 
 

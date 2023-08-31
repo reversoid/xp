@@ -13,20 +13,6 @@ Headers = Dict[str, str]
 Params = Dict[str, Any]
 
 
-async def raise_for_status(self: aiohttp.ClientResponse) -> None:
-    if 400 <= self.status:
-        # reason should always be not None for a started response
-        assert self.reason is not None
-        message = await self.text()
-        self.release()
-        raise aiohttp.ClientResponseError(
-            self.request_info,
-            self.history,
-            status=self.status,
-            message=message,
-            headers=self.headers)
-
-
 class ApiErrorResponse(BaseModel):
     statusCode: int
     message: str
