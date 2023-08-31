@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.filters import Command, StateFilter
+from aiogram.filters import StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from modules.core.middlewares.AlbumMiddleware import AlbumMiddleware
@@ -24,6 +24,7 @@ async def handle_experiment(message: Message, state: FSMContext):
     await state.update_data(messages=messages)
     await message.answer(text=LEXICON['continue_experiment'])
     # TODO check for maximim messages length (should not be greater than 10)
+
 
 @router.message(StateFilter(FSMExperiment.completing), F.media_group_id != None)
 async def handle_media_group(message: Message, state: FSMContext, album: list[Message]):

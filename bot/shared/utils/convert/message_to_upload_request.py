@@ -24,7 +24,7 @@ def process_media_group_files(messages: list[Message]) -> UploadInfoRequest:
 
 def process_message_files(message: Message) -> UploadInfoRequest:
     document_id = message.document.file_id if message.document else None
-    text = message.text
+    text = message.text or message.caption
     photo_id = message.photo[-1].file_id if message.photo else None
     video_id = message.video.file_id if message.video else None
     video_note_id = message.video_note.file_id if message.video_note else None

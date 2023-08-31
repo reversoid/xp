@@ -12,6 +12,7 @@ LEXICON: Lexicon = {
     'log_observation': """
         Your observation could take any form: a word, a screenshot, a manifesto, a voice memo or a 2-second video shot.
         What made you curious today?
+        Type /cancel to abort.
     """,
 
     'log_observation_success': 'Your observation is logged.',

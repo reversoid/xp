@@ -1,12 +1,10 @@
 from aiogram import Router
-from aiogram.filters import Command, StateFilter
+from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from modules.core.middlewares.AlbumMiddleware import AlbumMiddleware
 from modules.observation.lexicon import LEXICON
-from modules.observation.services import observation_service
-from modules.observation.services import NoDataForObservation
 from modules.observation.states import FSMObservation
+from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
 
@@ -15,3 +13,9 @@ router: Router = Router()
 async def handle_log_observation(message: Message, state: FSMContext):
     await state.set_state(FSMObservation.completing)
     await message.answer(text=LEXICON['log_observation'])
+
+
+@router.message(Command('cancel'))
+async def handle_cancel_log_observation(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(text=SHARED_LEXICON['ok'])
