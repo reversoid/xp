@@ -20,7 +20,7 @@ class ProfileService(ApiService):
             url, headers=headers, payload=payload)
 
     async def get_followees(self, tg_user_id: int, lower_bound: str | None = None) -> PaginatedUsersResponse:
-        limit = 1
+        limit = 5
         url = f'{self.base_url}/profile/followees'
         headers = self.get_auth_headers(tg_user_id=tg_user_id)
         params: Params = {'limit': limit}
