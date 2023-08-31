@@ -1,6 +1,6 @@
 from aiogram import Router, F, Bot
 from aiogram.filters import Command, StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from modules.experiment.utils.send_observations import send_observations
 from modules.experiment.utils.send_experiments import send_experiments
 from modules.profile.keyboards.next_observations_keyboard import next_observations_keyboard
@@ -31,7 +31,7 @@ async def show_experiments(message: Message, state: FSMContext, bot: Bot):
 
     if not observations.next_key:
         await state.clear()
-        await message.answer(text=LEXICON['no_more_observations'], reply_markup=None)
+        await message.answer(text=LEXICON['no_more_observations'], reply_markup=ReplyKeyboardRemove())
         return
     else:
         await state.set_state(FSMProfile.viewing_observations)
@@ -42,4 +42,4 @@ async def show_experiments(message: Message, state: FSMContext, bot: Bot):
 @observations_router.message(StateFilter(FSMProfile.viewing_experiments), F.text == BUTTON_LEXICON['cancel_showing_observations'])
 async def cancel_show_observations(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer(text=SHARED_LEXICON['ok'], reply_markup=None)
+    await message.answer(text=SHARED_LEXICON['ok'], reply_markup=ReplyKeyboardRemove())

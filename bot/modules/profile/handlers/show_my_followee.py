@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command, StateFilter
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 from modules.profile.keyboards.follow_keyboard import FollowUserCallback, get_follow_keyboard
 from modules.profile.keyboards.unfollow_keyboard import UnfollowUserCallback, get_unfollow_keyboard
 from modules.profile.keyboards.next_followees_keyboard import next_followees_keyboard
@@ -34,7 +34,7 @@ async def show_followees(message: Message, state: FSMContext):
 
     if not profiles.next_key:
         await state.clear()
-        await message.answer(text=LEXICON['no_more_followees'], reply_markup=None)
+        await message.answer(text=LEXICON['no_more_followees'], reply_markup=ReplyKeyboardRemove())
         return
     else:
         await state.set_state(FSMProfile.viewing_followees)
@@ -71,4 +71,4 @@ async def follow(query: CallbackQuery):
 @followees_router.message(StateFilter(FSMProfile.viewing_followees), F.text == BUTTON_LEXICON['cancel_showing_followees'])
 async def cancel_show_experiments(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer(text=SHARED_LEXICON['ok'], reply_markup=None)
+    await message.answer(text=SHARED_LEXICON['ok'], reply_markup=ReplyKeyboardRemove())
