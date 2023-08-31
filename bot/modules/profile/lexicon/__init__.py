@@ -13,7 +13,7 @@ class Lexicon(TypedDict):
 
 LEXICON: Lexicon = {
     'about_profile_command': 'Welcome to profile',
-    'send_username': 'Send an xp-username to follow',
+    'send_username': 'Send an xp-username to follow. Type /cancel to abort',
     'no_username_provided': 'Please, send a username',
     'no_such_user': 'There is no such user. Try again',
     'followed_successfully': 'You were successfully subscribed!',
