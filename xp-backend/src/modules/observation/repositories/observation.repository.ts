@@ -50,7 +50,7 @@ export class ObservationRepository extends PaginatedRepository<Observation> {
       where: {
         user: { id: userId },
         created_at:
-          lowerBound && LessThanOrEqual(lowerBound.minus({ millisecond: 1 })),
+          lowerBound && LessThanOrEqual(lowerBound.plus({ millisecond: 1 })),
       },
       order: { created_at: 'DESC' },
       take: limit + 1,

@@ -25,7 +25,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
         user: { id: userId },
         status: ExperimentStatus.COMPLETED,
         completed_at:
-          lower_bound && LessThanOrEqual(lower_bound.minus({ millisecond: 1 })),
+          lower_bound && LessThanOrEqual(lower_bound.plus({ millisecond: 1 })),
       },
       order: { completed_at: 'DESC' },
       take: limit + 1,
@@ -86,7 +86,7 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
   private processPaginationByCompletedDate<
     V extends { completed_at: DateTime },
   >(items: V[], limit: number): PaginatedResponse<V> {
-    let next_key = null;
+    let next_key: DateTime | null = null;
     if (items.length > limit) {
       const lastItem = items.at(limit);
       next_key = lastItem.completed_at;
