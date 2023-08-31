@@ -3,7 +3,7 @@ from aiogram.types import Message
 
 from aiogram import Router
 from aiogram.filters import Command, StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from modules.experiment.keyboards import started_experiment_keyboard
 
@@ -27,10 +27,10 @@ async def handle_finish_experiment(message: Message, state: FSMContext, experime
         await experiment_service.complete_experiment(message.from_user.id, requests=parsed_requests)
         experiment_scheduler.cancel_send_experiment_expired(
             tg_user_id=message.from_user.id)
-        await message.answer(text=LEXICON['success_experiment'], reply_markup=None)
+        await message.answer(text=LEXICON['success_experiment'], reply_markup=ReplyKeyboardRemove())
         await state.clear()
     except NoTextInExperimentResultException:
         await message.answer(text=LEXICON['no_text_in_experiment'], reply_markup=started_experiment_keyboard)
     except Exception:
-        await message.answer(text=SHARED_LEXICON['internal_error'], reply_markup=None)
+        await message.answer(text=SHARED_LEXICON['internal_error'], reply_markup=ReplyKeyboardRemove())
         await state.clear()
