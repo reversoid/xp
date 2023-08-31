@@ -1,5 +1,5 @@
 from config_data import load_config
-from typing import Any, Dict, Optional, Type, TypeVar, Protocol, Union
+from typing import Any, Dict, Optional, Type, TypeVar
 import aiohttp
 from pydantic import BaseModel
 
@@ -13,8 +13,34 @@ Headers = Dict[str, str]
 Params = Dict[str, Any]
 
 
-class DataClassJSON(Protocol):
-    def __init__(self, **data: Any) -> None: pass
+async def raise_for_status(self: aiohttp.ClientResponse) -> None:
+    if 400 <= self.status:
+        # reason should always be not None for a started response
+        assert self.reason is not None
+        message = await self.text()
+        self.release()
+        raise aiohttp.ClientResponseError(
+            self.request_info,
+            self.history,
+            status=self.status,
+            message=message,
+            headers=self.headers)
+
+
+class ApiErrorResponse(BaseModel):
+    statusCode: int
+    message: str
+
+
+class ApiException(Exception):
+    status_code: int
+    message: str
+
+    def __init__(self, status_code, message):
+        self.status_code = status_code
+        self.message = message
+        super().__init__(
+            f"API error - Status: {status_code}, Message: {message}")
 
 
 class ApiService:
@@ -38,8 +64,12 @@ class ApiService:
         return params
 
     async def _handle_response(self, response: aiohttp.ClientResponse, dataclass: Optional[Type[BaseModel]] = None):
-        response.raise_for_status()
-        
+        if not response.ok:
+            error_raw = await response.text()
+            error = ApiErrorResponse.model_validate_json(error_raw)
+            raise ApiException(message=error.message,
+                               status_code=error.statusCode)
+
         data = await response.text()
         if not data or data == "null":
             return None

@@ -1,4 +1,13 @@
-from shared.api_service import ApiService, Payload
+from aiohttp import ClientResponseError
+from shared.api_service import ApiException, ApiService, Payload
+
+
+class AlreadySubscribedException(Exception):
+    pass
+
+
+class NoSuchUserException(Exception):
+    pass
 
 
 class ProfileService(ApiService):
@@ -21,8 +30,15 @@ class ProfileService(ApiService):
         url = f'{self.base_url}/profile/{username}/followers'
         headers = self.get_auth_headers(tg_user_id=tg_user_id)
 
-        await self.put(
-            url, headers=headers)
+        try:
+            await self.put(
+                url, headers=headers)
+        except ApiException as e:
+            if (e.message == 'ALREADY_SUBSCRIBED'):
+                raise AlreadySubscribedException
+            if (e.message == 'NO_SUCH_USER'):
+                raise NoSuchUserException
+            raise e
 
 
 profile_service = ProfileService()

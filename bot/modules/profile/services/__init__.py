@@ -1,1 +1,1 @@
-from .profile_service import profile_service
+from .profile_service import profile_service, AlreadySubscribedException, NoSuchUserException
