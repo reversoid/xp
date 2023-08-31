@@ -2,7 +2,6 @@ from aiogram import Router, F, Bot
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message, ReplyKeyboardRemove
 from modules.experiment.utils.send_observations import send_observations
-from modules.experiment.utils.send_experiments import send_experiments
 from modules.profile.keyboards.next_observations_keyboard import next_observations_keyboard
 from modules.profile.lexicon import LEXICON, BUTTON_LEXICON
 from aiogram.fsm.context import FSMContext
@@ -14,7 +13,7 @@ observations_router = Router()
 
 
 @observations_router.message(Command('my_observations'))
-@observations_router.message(StateFilter(FSMProfile.viewing_experiments), F.text == BUTTON_LEXICON['load_more_observations'])
+@observations_router.message(StateFilter(FSMProfile.viewing_observations), F.text == BUTTON_LEXICON['load_more_observations'])
 async def show_experiments(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     lower_bound = data.get(
