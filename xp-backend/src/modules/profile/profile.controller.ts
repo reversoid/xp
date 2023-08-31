@@ -8,7 +8,6 @@ import {
   Query,
   Request,
   UseGuards,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDTO } from 'src/shared/dto/paginated-query.dto';
@@ -69,6 +68,8 @@ export class ProfileController {
     @Query()
     { limit = 10, lower_bound }: PaginationQueryDTO,
   ) {
+    console.log(lower_bound);
+
     return this.profileService.getUserFollowees(user.id, limit, lower_bound);
   }
 

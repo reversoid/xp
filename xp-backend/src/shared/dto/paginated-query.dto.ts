@@ -1,8 +1,14 @@
-import { IsDateString, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 import { DateTime } from 'luxon';
 import { LimitQueryDTO } from './limit.query.dto';
-import { ApiProperty } from '@nestjs/swagger';
+
+export function ToDateTime() {
+  return Transform(({ value }) => DateTime.fromISO(value), {
+    toClassOnly: true,
+  });
+}
 
 export class PaginationQueryDTO extends LimitQueryDTO {
   @ApiProperty({
@@ -12,7 +18,6 @@ export class PaginationQueryDTO extends LimitQueryDTO {
     description: 'Lower bound date',
   })
   @IsOptional()
-  @IsDateString()
-  @Type(() => DateTime.fromISO)
+  @ToDateTime()
   lower_bound?: DateTime;
 }
