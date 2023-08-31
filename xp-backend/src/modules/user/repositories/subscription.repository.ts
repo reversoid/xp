@@ -74,9 +74,6 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
     });
 
     const result = this.processPaginationByCreatedDate(followees, limit);
-    console.log('result iso', result.next_key?.toISO());
-    console.log('result items', result.items);
-    console.log('lower bound iso', lowerBound?.toISO());
     return result;
   }
 }
