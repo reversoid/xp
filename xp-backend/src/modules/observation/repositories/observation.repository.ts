@@ -49,7 +49,8 @@ export class ObservationRepository extends PaginatedRepository<Observation> {
     const observations = await this.find({
       where: {
         user: { id: userId },
-        created_at: lowerBound && LessThanOrEqual(lowerBound),
+        created_at:
+          lowerBound && LessThanOrEqual(lowerBound.minus({ millisecond: 1 })),
       },
       order: { created_at: 'DESC' },
       take: limit + 1,

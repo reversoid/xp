@@ -61,7 +61,8 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
     const followees = await this.find({
       where: {
         follower: { id: userId },
-        created_at: lowerBound && LessThanOrEqual(lowerBound),
+        created_at:
+          lowerBound && LessThanOrEqual(lowerBound.plus({ millisecond: 1 })),
       },
       relations: {
         followed: true,
@@ -72,6 +73,10 @@ export class SubscriptionRepository extends PaginatedRepository<Subscription> {
       },
     });
 
-    return this.processPaginationByCreatedDate(followees, limit);
+    const result = this.processPaginationByCreatedDate(followees, limit);
+    console.log('result iso', result.next_key?.toISO());
+    console.log('result items', result.items);
+    console.log('lower bound iso', lowerBound?.toISO());
+    return result;
   }
 }

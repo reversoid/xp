@@ -68,8 +68,6 @@ export class ProfileController {
     @Query()
     { limit = 10, lower_bound }: PaginationQueryDTO,
   ) {
-    console.log(lower_bound);
-
     return this.profileService.getUserFollowees(user.id, limit, lower_bound);
   }
 

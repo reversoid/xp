@@ -24,7 +24,8 @@ export class ExperimentRepository extends PaginatedRepository<Experiment> {
       where: {
         user: { id: userId },
         status: ExperimentStatus.COMPLETED,
-        completed_at: lower_bound && LessThanOrEqual(lower_bound),
+        completed_at:
+          lower_bound && LessThanOrEqual(lower_bound.minus({ millisecond: 1 })),
       },
       order: { completed_at: 'DESC' },
       take: limit + 1,
