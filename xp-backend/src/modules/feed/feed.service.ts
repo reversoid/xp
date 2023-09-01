@@ -3,6 +3,7 @@ import { ExperimentRepository } from '../experiment/repository/experiment.reposi
 import { ExperimentViewRepository } from '../experiment/repository/experiment-view.repository';
 import { PaginatedResponse } from 'src/shared/paginated.repository';
 import { Experiment } from '../experiment/entities/experiment.entity';
+import { DateTime } from 'luxon';
 
 class ExceededRandomExperimentsException extends HttpException {
   constructor() {
@@ -39,7 +40,9 @@ export class FeedService {
         Math.min(maxAvailable, limit),
       );
 
-    return { items: experiments, next_key: null };
+    const canSeeMore = maxAvailable - experiments.length > 0;
+
+    return { items: experiments, next_key: canSeeMore ? DateTime.now() : null };
   }
 
   async getExperimentsFromFollowee(userId: number, limit = 10) {
