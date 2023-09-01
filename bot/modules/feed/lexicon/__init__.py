@@ -15,7 +15,7 @@ class Lexicon(TypedDict):
 LEXICON: Lexicon = {
     'feed': 'This is feed. Here you can see what your followees posted recently. Or u can see random experiments from other users.',
     'no_followee_experiments': 'There are no updates for your followee',
-    'showing_random': 'Lets show random experiments',
+    'showing_random': 'Here are random experiments',
     'no_random_experiments': 'There are no available random experiments for now',
     'followee_experiments': 'Here are followee experiments',
     'has_more_feed': 'There is more feed to see, load?',
