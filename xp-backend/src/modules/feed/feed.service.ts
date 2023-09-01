@@ -1,8 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ExperimentRepository } from '../experiment/repository/experiment.repository';
 import { ExperimentViewRepository } from '../experiment/repository/experiment-view.repository';
 import { PaginatedResponse } from 'src/shared/paginated.repository';
 import { Experiment } from '../experiment/entities/experiment.entity';
+
+class ExceededRandomExperimentsException extends HttpException {
+  constructor() {
+    super('EXCEEDED_RANDOM_EXPERIMENTS', 429);
+  }
+}
 
 /** Amount of experiments user is able to see a week */
 export const VIEW_LIMIT_PER_WEEK = 10;
@@ -22,7 +28,7 @@ export class FeedService {
       forUserId,
     );
     if (seenLastWeek >= VIEW_LIMIT_PER_WEEK) {
-      return { items: [], next_key: null };
+      throw new ExceededRandomExperimentsException();
     }
 
     const maxAvailable = VIEW_LIMIT_PER_WEEK - seenLastWeek;
