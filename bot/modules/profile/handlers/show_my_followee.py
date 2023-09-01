@@ -1,7 +1,8 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 from modules.profile.keyboards.follow_keyboard import FollowUserCallback, get_follow_keyboard
+from modules.profile.keyboards.profile_keyboard import ProfileFolloweesCallback
 from modules.profile.keyboards.unfollow_keyboard import UnfollowUserCallback, get_unfollow_keyboard
 from modules.profile.keyboards.next_followees_keyboard import next_followees_keyboard
 from modules.profile.lexicon import LEXICON, BUTTON_LEXICON
@@ -13,33 +14,35 @@ from shared.lexicon import SHARED_LEXICON
 followees_router = Router()
 
 
-@followees_router.message(Command('followees'))
+@followees_router.callback_query(ProfileFolloweesCallback.filter())
 @followees_router.message(StateFilter(FSMProfile.viewing_followees), F.text == BUTTON_LEXICON['load_more_followees'])
-async def show_followees(message: Message, state: FSMContext):
+async def show_followees(message: Message | CallbackQuery, state: FSMContext, bot: Bot, query: CallbackQuery | None = None):
     data = await state.get_data()
     lower_bound = data.get(
-        'lower_bound', None) if message.text == BUTTON_LEXICON['load_more_followees'] else None
+        'lower_bound', None) if isinstance(message, Message) and message.text == BUTTON_LEXICON['load_more_followees'] else None
 
-    profiles = await profile_service.get_followees(message.from_user.id, lower_bound)
+    user_id = query.from_user.id if query else message.from_user.id
+
+    profiles = await profile_service.get_followees(user_id, lower_bound)
 
     if (len(profiles.items) == 0):
-        await message.answer(text=LEXICON['empty_followees'])
+        await bot.send_message(chat_id=user_id, text=LEXICON['empty_followees'])
         return
 
-    await message.answer(text=LEXICON['your_followees']) if not lower_bound else None
+    await bot.send_message(chat_id=user_id, text=LEXICON['your_followees']) if not lower_bound else None
 
     for profile in profiles.items:
         keyboard = get_unfollow_keyboard(profile.id)
-        await message.answer(text=f'{profile.username}', reply_markup=keyboard)
+        await bot.send_message(chat_id=user_id, text=f'{profile.username}', reply_markup=keyboard)
 
     if not profiles.next_key:
         await state.clear()
-        await message.answer(text=LEXICON['no_more_followees'], reply_markup=ReplyKeyboardRemove())
+        await bot.send_message(chat_id=user_id, text=LEXICON['no_more_followees'], reply_markup=ReplyKeyboardRemove())
         return
     else:
         await state.set_state(FSMProfile.viewing_followees)
         await state.update_data(lower_bound=profiles.next_key)
-        await message.answer(text=LEXICON['exists_more_followees'], reply_markup=next_followees_keyboard)
+        await bot.send_message(chat_id=user_id, text=LEXICON['exists_more_followees'], reply_markup=next_followees_keyboard)
 
 
 @followees_router.callback_query(UnfollowUserCallback.filter())

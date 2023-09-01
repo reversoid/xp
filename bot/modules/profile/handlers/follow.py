@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
+from modules.profile.keyboards.profile_keyboard import ProfileFollowCallback
 from modules.profile.lexicon import LEXICON
 from aiogram.fsm.context import FSMContext
 from modules.profile.services import profile_service, NoSuchUserException, AlreadySubscribedException
@@ -11,7 +12,7 @@ from shared.lexicon import SHARED_LEXICON
 follow_router = Router()
 
 
-@follow_router.message(Command('follow'))
+@follow_router.callback_query(ProfileFollowCallback.filter())
 async def handle_follow_command(message: Message, state: FSMContext):
     await state.set_state(FSMProfile.sending_username_to_follow)
     await message.answer(text=LEXICON['send_username'])
