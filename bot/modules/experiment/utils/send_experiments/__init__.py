@@ -30,5 +30,11 @@ async def send_experiments(experiments: list[Experiment], bot: Bot, tg_user_id: 
 
             elif experiment.tg_voice_id:
                 await bot.send_voice(chat_id=tg_user_id, caption=text, reply_markup=keyboard, video_note=experiment.tg_voice_id)
+
+            elif experiment.tg_media_group:
+                item = experiment.tg_media_group[0]
+                document_id = item.audio_id or item.photo_id or item.video_id or item.document_id
+                if document_id:
+                    await bot.send_document(chat_id=tg_user_id, caption=text, reply_markup=keyboard, document=document_id)
         elif text:
             await bot.send_message(chat_id=tg_user_id, text=text, reply_markup=keyboard)

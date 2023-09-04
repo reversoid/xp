@@ -29,9 +29,8 @@ class ExperimentService(ApiService):
 
     async def run_experiment(self, tg_user_id: int, bot: Bot) -> tuple[list[Observation], Experiment]:
         observations = await self.get_random_observations(tg_user_id)
-        if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
-            pass
-            raise NotEnoughObservationsException
+        # if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
+        #     raise NotEnoughObservationsException
 
         await self.mark_observations_as_seen(tg_user_id=tg_user_id, observations_ids=[o.id for o in observations])
 
@@ -52,6 +51,8 @@ class ExperimentService(ApiService):
         headers = self.get_auth_headers(tg_user_id)
         request: UploadInfoRequest = combine_upload_info_requests(
             requests=requests)
+        
+        print(request)
 
         self.__validate_complete_experiment_request(request)
 
