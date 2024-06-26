@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id   String  @id @map("id") @db.VarChar(10)
+  tgId BigInt? @map("tg_id") @db.BigInt()
+
+  username     String @map("username") @db.VarChar(32)
+  passwordHash String @map("password_hash") @db.VarChar(60)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  followers  Subscription[] @relation("followeesRelation")
+  followees  Subscription[] @relation("followersRelation")
+  Experiment Experiment[]
+
+  @@map("users")
+}
+
+model Subscription {
+  fromUserId String @map("from_user_id") @db.VarChar(10)
+  toUserId   String @map("to_user_id") @db.VarChar(10)
+
+  from User @relation("followersRelation", fields: [fromUserId], references: [id])
+  to   User @relation("followeesRelation", fields: [toUserId], references: [id])
+
+  @@unique([fromUserId, toUserId])
+  @@map("subscriptions")
+}
+
+model Observation {
+  id String @id @map("id") @db.VarChar(10)
+
+  text          String? @map("text") @db.Text()
+  tgPhotoId     String? @map("tg_photo_id") @db.VarChar(255)
+  tgVideoId     String? @map("tg_video_id") @db.VarChar(255)
+  tgVoiceId     String? @map("tg_voice_id") @db.VarChar(255)
+  tgDocumentId  String? @map("tg_document_id") @db.VarChar(255)
+  tgVideoNoteId String? @map("tg_video_note_id") @db.VarChar(255)
+
+  mediaGroup ObservationMediaGroupItem[]
+
+  @@map("observations")
+}
+
+model ObservationView {
+  observationId String @map("observation_id") @db.VarChar(10)
+  userId        String @map("user_id") @db.VarChar(10)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  @@unique([observationId, userId])
+  @@map("observation_views")
+}
+
+model ObservationMediaGroupItem {
+  id Int @id @default(autoincrement()) @map("id")
+
+  tgAudioId    String? @map("tg_audio_id") @db.VarChar(255)
+  tgDocumentId String? @map("tg_document_id") @db.VarChar(255)
+  tgPhotoId    String? @map("tg_photo_id") @db.VarChar(255)
+  tgVideoId    String? @map("tg_video_id") @db.VarChar(255)
+
+  observationId String @map("observation_id") @db.VarChar(10)
+
+  observation Observation @relation(fields: [observationId], references: [id])
+
+  @@map("observation_media_group_items")
+}
+
+model Experiment {
+  id String @id @map("id") @db.VarChar(10)
+
+  userId String @map("user_id") @db.VarChar(10)
+
+  text          String? @map("text") @db.Text()
+  tgPhotoId     String? @map("tg_photo_id") @db.VarChar(255)
+  tgVideoId     String? @map("tg_video_id") @db.VarChar(255)
+  tgVoiceId     String? @map("tg_voice_id") @db.VarChar(255)
+  tgDocumentId  String? @map("tg_document_id") @db.VarChar(255)
+  tgVideoNoteId String? @map("tg_video_note_id") @db.VarChar(255)
+
+  experimentGeoId Int? @map("experiment_geo_id") @db.Integer()
+
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  completeBy  DateTime  @map("complete_by") @db.Timestamptz()
+  completedAt DateTime? @map("completed_at") @db.Timestamptz()
+  canceledAt  DateTime? @map("canceled_at") @db.Timestamptz()
+
+  mediaGroup ExperimentMediaGroupItem[]
+  geo        ExperimentGeo?             @relation(fields: [experimentGeoId], references: [id])
+  views      ExperimentView[]
+  user       User                       @relation(fields: [userId], references: [id])
+
+  @@map("experiments")
+}
+
+model ExperimentView {
+  experimentId String @map("experiment_id") @db.VarChar(10)
+  userId       String @map("user_id") @db.VarChar(10)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  experiment Experiment @relation(fields: [experimentId], references: [id])
+
+  @@unique([experimentId, userId])
+  @@map("experiment_views")
+}
+
+model ExperimentMediaGroupItem {
+  id Int @id @default(autoincrement()) @map("id")
+
+  audioId    String? @map("audio_id")
+  documentId String? @map("document_id")
+  photoId    String? @map("photo_id")
+  videoId    String? @map("video_id")
+
+  experimentId String @map("experiment_id") @db.VarChar(10)
+
+  experiment Experiment @relation(fields: [experimentId], references: [id])
+
+  @@map("experiment_media_group_items")
+}
+
+model ExperimentGeo {
+  id Int @id @default(autoincrement())
+
+  longitude          Float @map("longitude") @db.DoublePrecision()
+  latitude           Float @map("latitude") @db.DoublePrecision()
+  horizontalAccuracy Int?  @map("horizontal_accuracy")
+
+  experiment Experiment[]
+}
