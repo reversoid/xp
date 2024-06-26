@@ -11,31 +11,36 @@ This a telegram bot for XP
 6. Run `./dev.sh` to run bot
 
 
-## Architecture
-Application consists of modules.
+## Зависимости
+[aiogram](https://docs.aiogram.dev/en/latest/) – все для интеграции с API телеграм ботов.
+[pydantic](https://docs.pydantic.dev/latest/) – все для валидации данных. 
 
-Each module can have the following layers:
+## Архитектура
+Приложение состоит из модулей и shared-директории.
+
+В shared-директории лежат глобальный lexicon, сущности, использующиеся в боте, утилиты и api-service, от которого наследуются все сервисы, которые делают http-запросы к бекенду.
+
+Каждый модуль имеет свой смысл и состоит из следующих слоев:
 
 ### Handlers
-Describe how the bot react to button clicks, commands, messages.
+Описывают, как боту реагировать на то или иное действие.
 
 ### Keyboards
-Keyboards, buttons and other stuff to send to user. Always used by **handlers**.
+Клавиатуры, кнопки, которые отправляются пользователю. Используются слоем **handlers**.
 
 ### Lexicon
-Contains dictionaries: `semantic_code` -> `translated text`.
+Содержит словари `semantic_code` -> `translated text`.
 
-Semantic code is not shown anywhere except from code. It should be clear for developer. 
-Translated text is shown to user.
 
-For example semantic code "experiment_started" is translated to "You have some hours to do something..."
+`semantic_code` не отображается пользователю, но используется разработчиком. Название должно быть коротким и понятным. 
+`translated_text` отображается пользователю.
+
 
 ### States
-Current step for user. For example, "scrolling feed" or "viewing profile".
+Хранимые состояния пользователя, например `filling_experiment` или `scrolling_feed`.
 
 ### Middlewares
 Reference to [aiogram docs](https://docs.aiogram.dev/en/dev-3.x/dispatcher/middlewares.html)
 
 ### Services
-Logic layer. Does some stuff about data transformations. Makes http requests to backend, throws application errors.
-
+Логический слой. Делает transform входных / выходных данных. Делает запросы к бекенду, кидает семантические ошибки, которые должны быть перехвачены.
