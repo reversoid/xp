@@ -13,10 +13,8 @@ datasource db {
 model User {
   id String @id @map("id") @db.VarChar(10)
 
-  tgId       BigInt @map("tg_id") @db.BigInt()
+  tgId       BigInt @unique @map("tg_id") @db.BigInt()
   tgUsername String @map("tg_username") @db.VarChar(32)
-
-  passwordHash String @map("password_hash") @db.VarChar(60)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 

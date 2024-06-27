@@ -1,50 +1,58 @@
 import fastifyPlugin from "fastify-plugin";
-import { type Session, type User } from "lucia";
-import { SESSION_COOKIE_NAME } from "./lucia.js";
+import { timingSafeEqual } from "node:crypto";
+import { User } from "../models/user.js";
+
+function timingSafeCompare(a: string, b: string) {
+  const bufferA = Buffer.from(a);
+  const bufferB = Buffer.from(b);
+
+  const maxLength = Math.max(bufferA.length, bufferB.length);
+  const paddedA = Buffer.concat([
+    bufferA,
+    Buffer.alloc(maxLength - bufferA.length),
+  ]);
+  const paddedB = Buffer.concat([
+    bufferB,
+    Buffer.alloc(maxLength - bufferB.length),
+  ]);
+  return timingSafeEqual(paddedA, paddedB);
+}
 
 export default fastifyPlugin(
   async (fastify) => {
     fastify.addHook("preHandler", async (request, reply) => {
-      const lucia = fastify.lucia;
+      const apiKey = request.headers["api-key"];
+      const tgUserId = request.headers["tg-user-id"];
+      const userService = fastify.diContainer.resolve("userService");
 
-      const { value: sessionId, valid } = request.unsignCookie(
-        request.cookies[SESSION_COOKIE_NAME] ?? ""
-      );
-
-      if (!valid || !sessionId) {
+      if (typeof apiKey !== "string") {
         request.user = null;
-        request.session = null;
         return;
       }
 
-      const { session, user } = await lucia.validateSession(sessionId);
-
-      if (session && session.fresh) {
-        const cookie = lucia.createSessionCookie(session.id);
-        reply.setCookie(cookie.name, cookie.value, cookie.attributes);
+      if (typeof tgUserId !== "string") {
+        request.user = null;
+        return;
       }
 
-      if (!session) {
-        const blankCookie = lucia.createBlankSessionCookie();
-        reply.setCookie(
-          blankCookie.name,
-          blankCookie.value,
-          blankCookie.attributes
-        );
+      if (!timingSafeCompare(fastify.config.API_KEY, apiKey)) {
+        request.user = null;
+        return;
       }
+
+      const user = await userService.getUserByTgId(BigInt(tgUserId));
 
       request.user = user;
-      request.session = session;
     });
   },
   {
     name: "auth",
+    dependencies: ["env", "di"],
   }
 );
 
 declare module "fastify" {
   export interface FastifyRequest {
     user: User | null;
-    session: Session | null;
   }
 }

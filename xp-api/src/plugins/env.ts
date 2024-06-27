@@ -1,53 +1,24 @@
 import fp from "fastify-plugin";
-import fastifyEnv from "@fastify/env";
+import { z } from "zod";
 
-const envProperties = {
-  PORT: { type: "number" },
+const envSchema = z.object({
+  PORT: z.number().int(),
+  POSTGRES_URL: z.string(),
+  MODE: z.enum(["prod", "stage", "dev"]),
+  API_KEY: z.string(),
+});
 
-  REDIS_PORT: { type: "number" },
-  REDIS_PASSWORD: { type: "string" },
-  REDIS_NAME: { type: "string" },
-
-  POSTGRES_URL: { type: "string" },
-
-  MODE: { type: "string" },
-
-  COOKIE_SECRET: { type: "string" },
-} as const;
-
-type EnvProperties = {
-  [key in keyof typeof envProperties]: (typeof envProperties)[key]["type"] extends infer ValueType
-    ? ValueType extends "number"
-      ? number
-      : ValueType extends "string"
-      ? string
-      : never
-    : never;
-};
+type Env = z.infer<typeof envSchema>;
 
 declare module "fastify" {
   interface FastifyInstance {
-    config: EnvProperties;
+    config: Env;
   }
 }
 
 export default fp(
   async (fastify) => {
-    await fastify.register(fastifyEnv, {
-      schema: {
-        type: "object",
-        properties: envProperties,
-        required: [
-          "PORT",
-          "POSTGRES_URL",
-          "REDIS_NAME",
-          "REDIS_PASSWORD",
-          "REDIS_PORT",
-          "MODE",
-          "COOKIE_SECRET",
-        ] satisfies (keyof typeof envProperties)[],
-      },
-    });
+    fastify.decorate("config", envSchema.parse(process.env));
   },
   { name: "env" }
 );
