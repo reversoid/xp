@@ -26,6 +26,15 @@ model User {
   @@map("users")
 }
 
+model PaidUser {
+  tgUsername String  @id @map("tg_username") @db.VarChar(32)
+  userId     String? @map("user_id") @db.VarChar(10)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  @@map("paid_users")
+}
+
 model Subscription {
   fromUserId String @map("from_user_id") @db.VarChar(10)
   toUserId   String @map("to_user_id") @db.VarChar(10)
