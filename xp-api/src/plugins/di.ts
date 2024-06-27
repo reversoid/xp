@@ -3,8 +3,8 @@ import { fastifyAwilixPlugin } from "@fastify/awilix";
 import { diContainer } from "@fastify/awilix";
 import { asClass, asValue, Lifetime } from "awilix";
 import { PrismaClient } from "@prisma/client";
-import { UserRepository } from "../repositories/user.repository.js";
-import { UserService } from "../services/user.service.js";
+import { UserRepository } from "../repositories/user/user.repository.js";
+import { UserService } from "../services/user/user.service.js";
 
 declare module "@fastify/awilix" {
   interface Cradle {

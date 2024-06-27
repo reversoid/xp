@@ -1,5 +1,6 @@
-import { User } from "../models/user.js";
-import { UserRepository } from "../repositories/user.repository.js";
+import { User } from "../../models/user.js";
+import { UserRepository } from "../../repositories/user/user.repository.js";
+import { CreateUserDto } from "./types.js";
 
 export class UserService {
   userRepository: UserRepository;
@@ -14,5 +15,12 @@ export class UserService {
 
   async getUserPayment(userId: User["id"]) {
     return this.userRepository.getUserPayment(userId);
+  }
+
+  async createUser(dto: CreateUserDto) {
+    return this.userRepository.createUser({
+      tgId: dto.tgId,
+      tgUsername: dto.tgUsername,
+    });
   }
 }

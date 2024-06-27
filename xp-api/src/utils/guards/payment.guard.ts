@@ -10,7 +10,7 @@ export const paymentGuard: preHandlerHookHandler = (
     done({
       code: "403",
       message: "NOT_PAID",
-      name: "AUTH",
+      name: "PAYMENT",
       statusCode: 403,
     });
   }
