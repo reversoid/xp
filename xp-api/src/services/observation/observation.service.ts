@@ -31,6 +31,16 @@ export class ObservationService {
     });
   }
 
+  async markObservationAsSeen(
+    userId: User["id"],
+    observationId: Observation["id"]
+  ) {
+    await this.observationRepository.markObservationAsSeen(
+      userId,
+      observationId
+    );
+  }
+
   async getUserObservations(
     userId: User["id"],
     options: { limit: number; creationOrder: "asc" | "desc"; cursor?: string }

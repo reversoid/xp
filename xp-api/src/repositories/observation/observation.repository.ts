@@ -24,6 +24,17 @@ export class ObservationRepository {
     this.prismaClient = prismaClient;
   }
 
+  async markObservationAsSeen(
+    userId: User["id"],
+    observationId: Observation["id"]
+  ) {
+    await this.prismaClient.observationView.upsert({
+      create: { userId, observationId },
+      update: { createdAt: new Date() },
+      where: { observationId_userId: { observationId, userId } },
+    });
+  }
+
   async getUserObservations(
     userId: User["id"],
     options: { limit: number; creationOrder: "asc" | "desc"; cursor?: string }
