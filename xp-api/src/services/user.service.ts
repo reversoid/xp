@@ -11,4 +11,8 @@ export class UserService {
   async getUserByTgId(tgId: bigint): Promise<User | null> {
     return this.userRepository.getUserByTgId(tgId);
   }
+
+  async getUserPayment(userId: User["id"]) {
+    return this.userRepository.getUserPayment(userId);
+  }
 }

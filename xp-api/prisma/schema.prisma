@@ -22,15 +22,20 @@ model User {
   followees    Subscription[] @relation("followersRelation")
   experiments  Experiment[]
   observations Observation[]
+  paidUsers    PaidUser[]
 
   @@map("users")
 }
 
 model PaidUser {
-  tgUsername String  @id @map("tg_username") @db.VarChar(32)
-  userId     String? @map("user_id") @db.VarChar(10)
+  tgUsername String @id @map("tg_username") @db.VarChar(32)
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  userId String? @map("user_id") @db.VarChar(10)
+
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  lastPaidAt DateTime @default(now()) @map("last_paid_at") @db.Timestamptz()
+
+  user User? @relation(fields: [userId], references: [id])
 
   @@map("paid_users")
 }

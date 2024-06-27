@@ -54,5 +54,6 @@ export default fastifyPlugin(
 declare module "fastify" {
   export interface FastifyRequest {
     user: User | null;
+    paymentInfo: { firstPaidAt: Date; lastPaidAt: Date } | null;
   }
 }

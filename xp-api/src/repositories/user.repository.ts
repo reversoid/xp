@@ -14,4 +14,17 @@ export class UserRepository {
       select: selectUser,
     });
   }
+
+  async getUserPayment(userId: User["id"]) {
+    const paidUser = await this.prismaClient.paidUser.findFirst({
+      where: { userId },
+      select: { createdAt: true, lastPaidAt: true },
+    });
+
+    if (!paidUser) {
+      return null;
+    }
+
+    return { firstPaidAt: paidUser.createdAt, lastPaidAt: paidUser.lastPaidAt };
+  }
 }
