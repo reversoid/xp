@@ -1,7 +1,7 @@
 import { preHandlerHookHandler } from "fastify";
 
 export const authGuard: preHandlerHookHandler = (request, response, done) => {
-  if (!request.session?.id) {
+  if (!request.user) {
     done({
       code: "401",
       message: "UNAUTHORIZED",
@@ -9,5 +9,6 @@ export const authGuard: preHandlerHookHandler = (request, response, done) => {
       statusCode: 401,
     });
   }
+
   done();
 };
