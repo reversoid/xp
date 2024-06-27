@@ -70,6 +70,7 @@ model Observation {
   tgMediaGroup ObservationMediaGroupItem[]
   user         User                        @relation(fields: [userId], references: [id])
   tgGeo        ObservationGeo?
+  views        ObservationView[]
 
   @@map("observations")
 }
@@ -79,6 +80,8 @@ model ObservationView {
   userId        String @map("user_id") @db.VarChar(10)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  observation Observation @relation(fields: [observationId], references: [id])
 
   @@unique([observationId, userId])
   @@map("observation_views")

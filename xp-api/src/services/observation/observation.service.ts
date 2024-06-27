@@ -41,4 +41,14 @@ export class ObservationService {
       cursor: options.cursor,
     });
   }
+
+  async getRandomUnseenObservations(
+    userId: User["id"],
+    limit: number
+  ): Promise<Observation[]> {
+    return this.observationRepository.getRandomUnseenObservations(
+      userId,
+      limit
+    );
+  }
 }

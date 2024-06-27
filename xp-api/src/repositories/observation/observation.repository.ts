@@ -51,6 +51,28 @@ export class ObservationRepository {
     };
   }
 
+  async getRandomUnseenObservations(
+    userId: User["id"],
+    limit: number
+  ): Promise<Observation[]> {
+    // TODO should test this
+    const ids = (await this.prismaClient.$queryRaw`
+      SELECT o.id
+      FROM observations o
+      LEFT JOIN observation_views ov
+      ON o.id = ov.observation_id
+      AND ov.user_id = ${userId}
+      WHERE ov.user_id IS NULL
+      ORDER BY RANDOM()
+      LIMIT ${limit};
+    `) as { id: Observation["id"] }[];
+
+    return this.prismaClient.observation.findMany({
+      where: { id: { in: ids.map((i) => i.id) } },
+      select: selectObservation,
+    });
+  }
+
   async createObservation(
     userId: User["id"],
     dto: CreateObservationDto
