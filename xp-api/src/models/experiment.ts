@@ -1,19 +1,8 @@
 import { z } from "zod";
 import { PrismaSelectEntity } from "../utils/db/select-entity.js";
 import { selectUser, userSchema } from "./user.js";
-
-const mediaGroupSchema = z.object({
-  tgAudioId: z.string().nullable(),
-  tgDocumentId: z.string().nullable(),
-  tgPhotoId: z.string().nullable(),
-  tgVideoId: z.string().nullable(),
-});
-
-const geoSchema = z.object({
-  longitude: z.number(),
-  latitude: z.number(),
-  horizontalAccuracy: z.number().nullable(),
-});
+import { tgGeoSchema } from "./tg-geo.js";
+import { tgMediaGroupItemSchema } from "./tg-media-group-item.js";
 
 export const experimentSchema = z.object({
   id: z.string(),
@@ -24,8 +13,8 @@ export const experimentSchema = z.object({
   tgVoiceId: z.string().nullable(),
   tgDocumentId: z.string().nullable(),
   tgVideoNoteId: z.string().nullable(),
-  tgGeo: geoSchema.nullable(),
-  tgMediaGroup: z.array(mediaGroupSchema),
+  tgGeo: tgGeoSchema.nullable(),
+  tgMediaGroup: z.array(tgMediaGroupItemSchema),
   createdAt: z.date(),
   completeBy: z.date(),
   completedAt: z.date().nullable(),
