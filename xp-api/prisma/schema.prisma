@@ -52,6 +52,8 @@ model Subscription {
 }
 
 model Observation {
+  privateId Int @unique() @default(autoincrement()) @map("_id")
+
   id String @id @map("id") @db.VarChar(10)
 
   userId String @map("user_id") @db.VarChar(10)
@@ -62,6 +64,8 @@ model Observation {
   tgVoiceId     String? @map("tg_voice_id") @db.VarChar(255)
   tgDocumentId  String? @map("tg_document_id") @db.VarChar(255)
   tgVideoNoteId String? @map("tg_video_note_id") @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
   tgMediaGroup ObservationMediaGroupItem[]
   user         User                        @relation(fields: [userId], references: [id])
@@ -110,6 +114,8 @@ model ObservationGeo {
 }
 
 model Experiment {
+  privateId Int @unique() @default(autoincrement()) @map("_id")
+
   id String @id @map("id") @db.VarChar(10)
 
   userId String @map("user_id") @db.VarChar(10)

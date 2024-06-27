@@ -1,6 +1,7 @@
 import { Observation } from "../../models/observation.js";
 import { User } from "../../models/user.js";
 import { ObservationRepository } from "../../repositories/observation/observation.repository.js";
+import { PaginatedData } from "../../utils/pagination/paginated-data.js";
 import { CreateObservationDto } from "./types.js";
 
 export class ObservationService {
@@ -27,6 +28,17 @@ export class ObservationService {
       tgVoiceId: dto.tgVoiceId,
       tgMediaGroup: dto.tgMediaGroup,
       tgGeo: dto.tgGeo,
+    });
+  }
+
+  async getUserObservations(
+    userId: User["id"],
+    options: { limit: number; creationOrder: "asc" | "desc"; cursor?: string }
+  ): Promise<PaginatedData<Observation>> {
+    return this.observationRepository.getUserObservations(userId, {
+      creationOrder: options.creationOrder,
+      limit: options.limit,
+      cursor: options.cursor,
     });
   }
 }

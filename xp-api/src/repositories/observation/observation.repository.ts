@@ -2,12 +2,18 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../../models/user.js";
 import { CreateObservationDto } from "./types.js";
 import { IdGenerator } from "../../utils/db/create-id.js";
-import { Observation, selectObservation } from "../../models/observation.js";
+import {
+  Observation,
+  observationSchema,
+  selectObservation,
+} from "../../models/observation.js";
 import { TgGeo } from "../../models/tg-geo.js";
 import {
   selectTgMediaGroupItem,
   TgMediaGroupItem,
 } from "../../models/tg-media-group-item.js";
+import { decodeCursor, encodeCursor } from "../../utils/pagination/cursor.js";
+import { PaginatedData } from "../../utils/pagination/paginated-data.js";
 
 export class ObservationRepository {
   private readonly prismaClient: PrismaClient;
@@ -16,6 +22,33 @@ export class ObservationRepository {
 
   constructor({ prismaClient }: { prismaClient: PrismaClient }) {
     this.prismaClient = prismaClient;
+  }
+
+  async getUserObservations(
+    userId: User["id"],
+    options: { limit: number; creationOrder: "asc" | "desc"; cursor?: string }
+  ): Promise<PaginatedData<Observation>> {
+    const decodedCursor = options.cursor ? decodeCursor(options.cursor) : null;
+
+    const observations = await this.prismaClient.observation.findMany({
+      where: { userId },
+      take: options.limit + 1,
+      orderBy: {
+        id: options.creationOrder,
+      },
+      select: { ...selectObservation, privateId: true },
+
+      cursor: decodedCursor ? { privateId: decodedCursor } : undefined,
+    });
+
+    const cursor = observations.at(options.limit)?.privateId;
+
+    return {
+      items: observations
+        .slice(0, options.limit)
+        .map((o) => observationSchema.parse(o)),
+      cursor: cursor ? encodeCursor(cursor) : null,
+    };
   }
 
   async createObservation(

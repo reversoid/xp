@@ -41,6 +41,7 @@
     "fastify-type-provider-zod": "^1.2.0",
     "fastify-zod": "^1.4.0",
     "oslo": "^1.2.0",
+    "sqids": "^0.3.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
