@@ -31,15 +31,19 @@ export class UserRepository {
   }
 
   async getUserPayment(userId: User["id"]) {
-    const paidUser = await this.prismaClient.paidUser.findFirst({
+    const paidUser = await this.prismaClient.subscription.findFirst({
       where: { userId },
-      select: { createdAt: true, lastPaidAt: true },
+      select: { createdAt: true, paidUntil: true, updatedAt: true },
     });
 
     if (!paidUser) {
       return null;
     }
 
-    return { firstPaidAt: paidUser.createdAt, lastPaidAt: paidUser.lastPaidAt };
+    return {
+      firstPaidAt: paidUser.createdAt,
+      lastPaidAt: paidUser.updatedAt,
+      paidUntil: paidUser.paidUntil,
+    };
   }
 }

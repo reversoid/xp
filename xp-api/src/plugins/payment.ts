@@ -23,6 +23,10 @@ export default fastifyPlugin(
 
 declare module "fastify" {
   export interface FastifyRequest {
-    paymentInfo: { firstPaidAt: Date; lastPaidAt: Date } | null;
+    paymentInfo: {
+      firstPaidAt: Date;
+      lastPaidAt: Date;
+      paidUntil: Date;
+    } | null;
   }
 }

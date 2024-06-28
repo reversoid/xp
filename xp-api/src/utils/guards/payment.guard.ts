@@ -5,8 +5,7 @@ export const paymentGuard: preHandlerHookHandler = (
   response,
   done
 ) => {
-  // TODO check for payment info dates
-  if (!request.paymentInfo) {
+  if (!request.paymentInfo || new Date() > request.paymentInfo.paidUntil) {
     done({
       code: "403",
       message: "NOT_PAID",

@@ -18,36 +18,24 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-  followers    Subscription[] @relation("followeesRelation")
-  followees    Subscription[] @relation("followersRelation")
   experiments  Experiment[]
   observations Observation[]
-  paidUsers    PaidUser[]
+  subscription Subscription?
 
   @@map("users")
 }
 
-model PaidUser {
+model Subscription {
   tgUsername String @id @map("tg_username") @db.VarChar(32)
 
-  userId String? @map("user_id") @db.VarChar(10)
+  userId String? @unique @map("user_id") @db.VarChar(10)
 
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  lastPaidAt DateTime @default(now()) @map("last_paid_at") @db.Timestamptz()
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  paidUntil DateTime @map("paid_until")
 
   user User? @relation(fields: [userId], references: [id])
 
-  @@map("paid_users")
-}
-
-model Subscription {
-  fromUserId String @map("from_user_id") @db.VarChar(10)
-  toUserId   String @map("to_user_id") @db.VarChar(10)
-
-  from User @relation("followersRelation", fields: [fromUserId], references: [id])
-  to   User @relation("followeesRelation", fields: [toUserId], references: [id])
-
-  @@unique([fromUserId, toUserId])
   @@map("subscriptions")
 }
 
