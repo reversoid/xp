@@ -7,6 +7,9 @@ import { UserRepository } from "../repositories/user/user.repository.js";
 import { UserService } from "../services/user/user.service.js";
 import { ObservationRepository } from "../repositories/observation/observation.repository.js";
 import { ObservationService } from "../services/observation/observation.service.js";
+import { ExperimentRepository } from "../repositories/experiment/experiment.repository.js";
+import { ExperimentService } from "../services/experiment/experiment.service.js";
+import { AuthService } from "../services/auth/auth.service.js";
 
 declare module "@fastify/awilix" {
   interface Cradle {
@@ -17,6 +20,11 @@ declare module "@fastify/awilix" {
 
     observationRepository: ObservationRepository;
     observationService: ObservationService;
+
+    experimentRepository: ExperimentRepository;
+    experimentService: ExperimentService;
+
+    authService: AuthService;
   }
 }
 
@@ -35,6 +43,15 @@ const initDI = ({ prismaClient }: { prismaClient: PrismaClient }) => {
     observationService: asClass(ObservationService, {
       lifetime: Lifetime.SINGLETON,
     }),
+
+    experimentRepository: asClass(ExperimentRepository, {
+      lifetime: Lifetime.SINGLETON,
+    }),
+    experimentService: asClass(ExperimentService, {
+      lifetime: Lifetime.SINGLETON,
+    }),
+
+    authService: asClass(AuthService, { lifetime: Lifetime.SINGLETON }),
 
     prismaClient: asValue(prismaClient),
   });
