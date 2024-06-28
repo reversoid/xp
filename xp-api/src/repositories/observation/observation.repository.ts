@@ -45,7 +45,7 @@ export class ObservationRepository {
       where: { userId },
       take: options.limit + 1,
       orderBy: {
-        id: options.creationOrder,
+        privateId: options.creationOrder,
       },
       select: { ...selectObservation, privateId: true },
 
@@ -105,7 +105,7 @@ export class ObservationRepository {
 
       let tgGeo: TgGeo | null = null;
       if (dto.tgGeo) {
-        tgGeo = await tx.observationGeo.create({
+        tgGeo = await tx.tgGeo.create({
           data: {
             latitude: dto.tgGeo.latitude,
             longitude: dto.tgGeo.longitude,
@@ -119,7 +119,7 @@ export class ObservationRepository {
       if (dto.tgMediaGroup) {
         tgMediaGroup = await Promise.all(
           dto.tgMediaGroup.map((item) =>
-            tx.observationMediaGroupItem.create({
+            tx.tgMediaGroupItem.create({
               data: {
                 observationId: observation.id,
                 tgAudioId: item.tgAudioId,

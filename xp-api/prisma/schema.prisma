@@ -55,10 +55,10 @@ model Observation {
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-  tgMediaGroup ObservationMediaGroupItem[]
-  user         User                        @relation(fields: [userId], references: [id])
-  tgGeo        ObservationGeo?
+  user         User               @relation(fields: [userId], references: [id])
   views        ObservationView[]
+  tgMediaGroup TgMediaGroupItem[]
+  TgGeo        TgGeo?
 
   @@map("observations")
 }
@@ -73,35 +73,6 @@ model ObservationView {
 
   @@unique([observationId, userId])
   @@map("observation_views")
-}
-
-model ObservationMediaGroupItem {
-  id Int @id @default(autoincrement()) @map("id")
-
-  tgAudioId    String? @map("tg_audio_id") @db.VarChar(255)
-  tgDocumentId String? @map("tg_document_id") @db.VarChar(255)
-  tgPhotoId    String? @map("tg_photo_id") @db.VarChar(255)
-  tgVideoId    String? @map("tg_video_id") @db.VarChar(255)
-
-  observationId String @map("observation_id") @db.VarChar(10)
-
-  observation Observation @relation(fields: [observationId], references: [id])
-
-  @@map("observation_media_group_items")
-}
-
-model ObservationGeo {
-  id Int @id @default(autoincrement())
-
-  longitude          Float @map("longitude") @db.DoublePrecision()
-  latitude           Float @map("latitude") @db.DoublePrecision()
-  horizontalAccuracy Int?  @map("horizontal_accuracy")
-
-  observationId String @unique @map("observation_id") @db.VarChar(10)
-
-  observation Observation @relation(fields: [observationId], references: [id])
-
-  @@map("observation_geos")
 }
 
 model Experiment {
@@ -123,10 +94,10 @@ model Experiment {
   completedAt DateTime? @map("completed_at") @db.Timestamptz()
   canceledAt  DateTime? @map("canceled_at") @db.Timestamptz()
 
-  tgMediaGroup ExperimentMediaGroupItem[]
-  tgGeo        ExperimentGeo?
+  tgMediaGroup TgMediaGroupItem[]
+  tgGeo        TgGeo?
   views        ExperimentView[]
-  user         User                       @relation(fields: [userId], references: [id])
+  user         User               @relation(fields: [userId], references: [id])
 
   @@map("experiments")
 }
@@ -143,30 +114,35 @@ model ExperimentView {
   @@map("experiment_views")
 }
 
-model ExperimentMediaGroupItem {
+model TgMediaGroupItem {
   id Int @id @default(autoincrement()) @map("id")
 
-  audioId    String? @map("audio_id")
-  documentId String? @map("document_id")
-  photoId    String? @map("photo_id")
-  videoId    String? @map("video_id")
+  tgAudioId    String? @map("tg_audio_id")
+  tgDocumentId String? @map("tg_document_id")
+  tgPhotoId    String? @map("tg_photo_id")
+  tgVideoId    String? @map("tg_video_id")
 
-  experimentId String @map("experiment_id") @db.VarChar(10)
+  experimentId  String? @map("experiment_id") @db.VarChar(10)
+  observationId String? @map("observation_id") @db.VarChar(10)
 
-  experiment Experiment @relation(fields: [experimentId], references: [id])
+  observation Observation? @relation(fields: [observationId], references: [id])
+  experiment  Experiment?  @relation(fields: [experimentId], references: [id])
 
-  @@map("experiment_media_group_items")
+  @@map("tg_media_group_items")
 }
 
-model ExperimentGeo {
+model TgGeo {
   id Int @id @default(autoincrement())
 
   longitude          Float @map("longitude") @db.DoublePrecision()
   latitude           Float @map("latitude") @db.DoublePrecision()
   horizontalAccuracy Int?  @map("horizontal_accuracy")
 
-  experimentId String     @unique @map("experiment_id") @db.VarChar(10)
-  experiment   Experiment @relation(fields: [experimentId], references: [id])
+  observationId String? @unique @map("observation_id") @db.VarChar(10)
+  experimentId  String? @unique @map("experiment_id") @db.VarChar(10)
 
-  @@map("experiment_geos")
+  observation Observation? @relation(fields: [observationId], references: [id])
+  experiment  Experiment?  @relation(fields: [experimentId], references: [id])
+
+  @@map("observation_tg_geos")
 }
