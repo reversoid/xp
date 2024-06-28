@@ -21,7 +21,7 @@ const getStatus: FastifyPluginAsyncZod = async (fastify): Promise<void> => {
         await subscriptionService.getUserSubscription(user.id);
 
       if (existingSubscription) {
-        if (new Date() <= existingSubscription.paidUntil) {
+        if (new Date() <= existingSubscription.until) {
           return reply.send({ status: SubscriptionStatuses.ACTIVE });
         }
 

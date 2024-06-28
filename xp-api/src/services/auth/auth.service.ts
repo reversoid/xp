@@ -16,6 +16,9 @@ export class AuthService {
       throw new UserAlreadyExistsException();
     }
 
-    return this.userService.createUser({ tgId: tgUserId, tgUsername });
+    return this.userService.createUser({
+      tgId: tgUserId,
+      tgUsername,
+    });
   }
 }

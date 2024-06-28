@@ -31,7 +31,7 @@ model Subscription {
   userId String? @unique @map("user_id") @db.VarChar(10)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  paidUntil DateTime @map("paid_until")
+  until     DateTime @map("until")
 
   user User? @relation(fields: [userId], references: [id])
 
@@ -143,5 +143,5 @@ model TgGeo {
   observation Observation? @relation(fields: [observationId], references: [id])
   experiment  Experiment?  @relation(fields: [experimentId], references: [id])
 
-  @@map("observation_tg_geos")
+  @@map("tg_geos")
 }

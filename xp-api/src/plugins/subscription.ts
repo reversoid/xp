@@ -1,4 +1,5 @@
 import fastifyPlugin from "fastify-plugin";
+import { Subscription } from "../models/subscription.js";
 
 export default fastifyPlugin(
   async (fastify) => {
@@ -10,13 +11,14 @@ export default fastifyPlugin(
       const user = request.user;
 
       if (!user) {
-        return (request.paymentInfo = null);
+        return (request.subscription = null);
       }
 
-      const paymentInfo = await subscriptionService.getUserSubscription(
+      const subscription = await subscriptionService.getUserSubscription(
         user.id
       );
-      request.paymentInfo = paymentInfo;
+
+      request.subscription = subscription;
     });
   },
   {
@@ -27,9 +29,6 @@ export default fastifyPlugin(
 
 declare module "fastify" {
   export interface FastifyRequest {
-    paymentInfo: {
-      firstPaidAt: Date;
-      paidUntil: Date;
-    } | null;
+    subscription: Subscription | null;
   }
 }

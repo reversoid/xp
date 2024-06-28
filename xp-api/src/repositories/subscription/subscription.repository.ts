@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { User } from "../../models/user.js";
+import { selectSubscription } from "../../models/subscription.js";
 
 export class SubscriptionRepository {
   private readonly prismaClient: PrismaClient;
@@ -24,16 +25,24 @@ export class SubscriptionRepository {
   async getUserSubscription(userId: User["id"]) {
     const subscription = await this.prismaClient.subscription.findFirst({
       where: { userId },
-      select: { createdAt: true, paidUntil: true },
+      select: selectSubscription,
     });
 
     if (!subscription) {
       return null;
     }
 
-    return {
-      firstPaidAt: subscription.createdAt,
-      paidUntil: subscription.paidUntil,
-    };
+    return subscription;
+  }
+
+  async createSubscription(
+    userId: User["id"],
+    tgUsername: User["tgUsername"],
+    until: Date
+  ) {
+    return this.prismaClient.subscription.create({
+      data: { tgUsername, until, userId },
+      select: selectSubscription,
+    });
   }
 }
