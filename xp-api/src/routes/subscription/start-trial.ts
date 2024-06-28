@@ -1,5 +1,6 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { authGuard } from "../../utils/guards/auth.guard.js";
+import { TrialAlreadyTakenException } from "../../services/subscription/errors.js";
 
 const startTrial: FastifyPluginAsyncZod = async (fastify): Promise<void> => {
   const subscriptionService = fastify.diContainer.resolve(
@@ -12,19 +13,20 @@ const startTrial: FastifyPluginAsyncZod = async (fastify): Promise<void> => {
     async function (request, reply) {
       const user = request.user!;
 
-      const existingSubscription =
-        await subscriptionService.getUserSubscription(user.id);
+      try {
+        const subscription = await subscriptionService.createTrialSubscription(
+          user.id,
+          user.tgUsername
+        );
 
-      if (existingSubscription) {
-        return reply.conflict("HAVE_SUBSCRIPTION");
+        return reply.send({ subscription });
+      } catch (error) {
+        if (error instanceof TrialAlreadyTakenException) {
+          return reply.conflict("TRIAL_ALREADY_TAKEN");
+        }
+
+        throw error;
       }
-
-      const subscription = await subscriptionService.createTrialSubscription(
-        user.id,
-        user.tgUsername
-      );
-
-      return reply.send({ subscription });
     }
   );
 };
