@@ -29,21 +29,4 @@ export class UserRepository {
       select: selectUser,
     });
   }
-
-  async getUserPayment(userId: User["id"]) {
-    const paidUser = await this.prismaClient.subscription.findFirst({
-      where: { userId },
-      select: { createdAt: true, paidUntil: true, updatedAt: true },
-    });
-
-    if (!paidUser) {
-      return null;
-    }
-
-    return {
-      firstPaidAt: paidUser.createdAt,
-      lastPaidAt: paidUser.updatedAt,
-      paidUntil: paidUser.paidUntil,
-    };
-  }
 }

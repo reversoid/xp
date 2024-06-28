@@ -3,7 +3,9 @@ import fastifyPlugin from "fastify-plugin";
 export default fastifyPlugin(
   async (fastify) => {
     fastify.addHook("preHandler", async (request, reply) => {
-      const userService = fastify.diContainer.resolve("userService");
+      const subscriptionService = fastify.diContainer.resolve(
+        "subscriptionService"
+      );
 
       const user = request.user;
 
@@ -11,7 +13,9 @@ export default fastifyPlugin(
         return (request.paymentInfo = null);
       }
 
-      const paymentInfo = await userService.getUserPayment(user.id);
+      const paymentInfo = await subscriptionService.getUserSubscription(
+        user.id
+      );
       request.paymentInfo = paymentInfo;
     });
   },
@@ -25,7 +29,6 @@ declare module "fastify" {
   export interface FastifyRequest {
     paymentInfo: {
       firstPaidAt: Date;
-      lastPaidAt: Date;
       paidUntil: Date;
     } | null;
   }

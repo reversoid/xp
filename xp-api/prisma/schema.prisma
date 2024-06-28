@@ -31,7 +31,6 @@ model Subscription {
   userId String? @unique @map("user_id") @db.VarChar(10)
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
   paidUntil DateTime @map("paid_until")
 
   user User? @relation(fields: [userId], references: [id])
