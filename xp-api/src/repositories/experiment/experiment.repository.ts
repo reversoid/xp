@@ -33,7 +33,7 @@ export class ExperimentRepository {
         userId,
         canceledAt: null,
         completedAt: null,
-        completeBy: { lte: new Date() },
+        completeBy: { gte: new Date() },
       },
     });
   }
@@ -46,6 +46,32 @@ export class ExperimentRepository {
         completeBy: dayjs().add(24, "hours").toDate(),
         userId,
       },
+    });
+  }
+
+  async markExperimentAsCompleted(
+    experimentId: Experiment["id"]
+  ): Promise<Experiment> {
+    return this.prismaClient.experiment.update({
+      select: selectExperiment,
+      data: {
+        completedAt: new Date(),
+        canceledAt: null,
+      },
+      where: { id: experimentId },
+    });
+  }
+
+  async markExperimentAsCanceled(
+    experimentId: Experiment["id"]
+  ): Promise<Experiment> {
+    return this.prismaClient.experiment.update({
+      select: selectExperiment,
+      data: {
+        canceledAt: new Date(),
+        completedAt: null,
+      },
+      where: { id: experimentId },
     });
   }
 
@@ -67,7 +93,7 @@ export class ExperimentRepository {
           id: experimentId,
           canceledAt: null,
           completedAt: null,
-          completeBy: { lte: new Date() },
+          completeBy: { gte: new Date() },
         },
         select: selectExperiment,
       });
