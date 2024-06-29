@@ -10,17 +10,14 @@ class Lexicon(TypedDict):
 
 LEXICON: Lexicon = {
     'log_observation': """
-        Your observation could take any form: a word, a screenshot, a manifesto, a voice memo or a 2-second video shot.
-        What made you curious today?
-        Type /cancel to abort.
+        Наблюдение может принимать любую форму: слово, скриншот, манифест, голосовое или видео. \n\nЧто пробудило любопытство в тебе сегодня?
     """,
 
-    'log_observation_success': 'Your observation is logged.',
+    'log_observation_success': ' Наблюдение залогировано',
 
     'not_supported_data': """
-        I cannot understand this type of data.
-        Your observation could take any form: a word, a screenshot, a manifesto, a voice memo or a 2-second video shot.
+        Такой формат пока не поддерживается. Попробуй загрузить по-другому
     """,
 
-    'send_one_item': 'Please, send one item'
+    'send_one_item': 'Одно наблюдение — одно сообщение'
 }

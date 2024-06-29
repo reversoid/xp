@@ -13,19 +13,19 @@ class Lexicon(TypedDict):
 
 
 CORE_LEXICON: Lexicon = {
-    'cmd_start': 'This bot can do a lot of things...',
+    'cmd_start': 'Это твоя площадка для тренировки мышления. Здесь ты будешь развивать свой уникальный метод общения с миром через решение нестандартных задач \n\nДобро пожаловать в твой XP',
 
-    'cmd_help': 'This is what this bot can do...',
+    'cmd_help': '/start - начало диалога\n/log_observation — залогировать наблюдение\n/run_experiment — провести свой эксперимент\n/profile — увидеть архив своих наблюдений и экспериментов',
 
-    'cannot_undertand': "I do not understand :(",
+    'cannot_undertand': "Непонятная команда :(",
 
-    'fill_username': 'Please, input your username',
+    'fill_username': 'Введи свой юзернейм',
 
-    'welcome': 'Welcome!',
+    'welcome': 'Хей',
 
-    'username_already_taken': 'This username is already taken... \n\n Try to send another one.',
+    'username_already_taken': 'Это имя уже занято \n\n Попробуй другое',
 
-    'bad_username_message': 'I need your username, please...',
+    'bad_username_message': 'Введи свой юзернейм',
 
-    'wrong_username_format': 'This is not format of usernames... it should be...'
+    'wrong_username_format': 'Неподходящий формат для юзернейма. Попробуй заново'
 }

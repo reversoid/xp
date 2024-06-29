@@ -16,32 +16,28 @@ class Lexicon(TypedDict):
 
 LEXICON: Lexicon = {
     'experiment_started': """
-        You have 24 hours to run an experiment. Then upload it in the following format:
-        — Experiment Name
-        — Result Artefacts
-        — Process Artefacts if desired
+        У тебя есть 24 часа. Затем прикрепи своё решение в формате:\n—Название эксперимента\n—Артефакты результата \n—Артефакты процесса, если хочешь
     """,
 
     'confirm_experiment': """
-        The goal is to make up a task based on 3 observations of others and share your solution. You will have 24 hours. Add process artefacts if desired.
-        Ready?
+        Цель — придумать задачу, основанную на трех наблюдениях других людей, и поделиться своим решением. У тебя будет на это 24 часа. Если хочешь, прикрепи также документацию процесса\n\nГотовность?
     """,
 
-    'continue_experiment': 'I got it. \n\n Continue?',
+    'continue_experiment': 'Принято. \n\nПродолжить?',
 
-    'success_experiment': 'Success!',
+    'success_experiment': 'Удачно!',
 
-    'no_text_in_experiment': 'No text in experiment... Provide it please',
+    'no_text_in_experiment': 'У эксперимента должно быть хотя бы название. Добавь в сообщение текст',
 
-    'cancel_experiment': 'You cancelled the experiment',
+    'cancel_experiment': 'Эксперимент отменен',
 
-    'experiment_not_started': 'Experiment is not started',
+    'experiment_not_started': 'Эксперимент не начат',
 
-    'experiment_already_started': 'Experiment is already started',
+    'experiment_already_started': 'Эксперимент уже начат',
 
-    'not_enough_observations': 'Not enough observations to continue... please wait for more!',
+    'not_enough_observations': 'Пока в сети недостаточно наблюдений, чтобы начать эксперементировать..',
 
-    'experiment_expired': 'Your experiment expired! Just start a new one'
+    'experiment_expired': 'Этот эксперимент истёк. Чтобы начать новый, жми /run_experiment'
 }
 
 
@@ -51,6 +47,6 @@ class ButtonLexicon(TypedDict):
 
 
 BUTTON_LEXICON: ButtonLexicon = {
-    'cancel': 'Cancel',
-    'finish': 'Finish'
+    'cancel': 'Отменить',
+    'finish': 'Завершить'
 }

@@ -7,7 +7,7 @@ class StartExperimentCallback(CallbackData, prefix='experiment'):
 
 
 _confirm_start_experiment_button = InlineKeyboardButton(
-    text='Absolutely', callback_data=StartExperimentCallback().pack())
+    text='Готовность', callback_data=StartExperimentCallback().pack())
 
 confirm_start_experiment_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[[_confirm_start_experiment_button]])
