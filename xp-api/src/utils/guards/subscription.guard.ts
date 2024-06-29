@@ -1,6 +1,6 @@
 import { preHandlerHookHandler } from "fastify";
 
-export const paymentGuard: preHandlerHookHandler = (
+export const subscriptionGuard: preHandlerHookHandler = (
   request,
   response,
   done
