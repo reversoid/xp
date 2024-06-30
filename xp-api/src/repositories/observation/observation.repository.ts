@@ -66,7 +66,6 @@ export class ObservationRepository {
     userId: User["id"],
     limit: number
   ): Promise<Observation[]> {
-    // TODO should test this
     const ids = (await this.prismaClient.$queryRaw`
       SELECT o.id
       FROM observations o

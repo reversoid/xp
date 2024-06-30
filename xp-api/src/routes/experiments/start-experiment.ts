@@ -18,7 +18,7 @@ const getRandomObservations: FastifyPluginAsyncZod = async (
       const user = request.user!;
 
       try {
-        const experiment = experimentService.startExperiment(user.id);
+        const experiment = await experimentService.startExperiment(user.id);
 
         return reply.send({ experiment });
       } catch (error) {
