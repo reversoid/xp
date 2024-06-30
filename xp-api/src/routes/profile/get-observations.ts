@@ -13,7 +13,7 @@ const getObservations: FastifyPluginAsyncZod = async (
       preHandler: [authGuard],
       schema: {
         querystring: z.object({
-          limit: z.number().int().min(1).default(5),
+          limit: z.coerce.number().int().min(1).default(5),
           cursor: z.string().nullish(),
         }),
       },

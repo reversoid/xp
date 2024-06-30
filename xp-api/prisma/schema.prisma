@@ -57,7 +57,7 @@ model Observation {
   user         User               @relation(fields: [userId], references: [id])
   views        ObservationView[]
   tgMediaGroup TgMediaGroupItem[]
-  TgGeo        TgGeo?
+  tgGeo        TgGeo?
 
   @@map("observations")
 }

@@ -13,7 +13,9 @@ const getRandomObservations: FastifyPluginAsyncZod = async (
     {
       preHandler: [authGuard, subscriptionGuard],
       schema: {
-        querystring: z.object({ limit: z.number().int().min(1).default(3) }),
+        querystring: z.object({
+          limit: z.coerce.number().int().min(1).default(3),
+        }),
       },
     },
     async function (request, reply) {
