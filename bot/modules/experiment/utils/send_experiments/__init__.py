@@ -1,5 +1,5 @@
 from modules.feed.keyboards.follow_keyboard import get_follow_keyboard
-from shared.my_types import Experiment
+from shared.models import Experiment
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup
 from shared.utils.convert.experiment_to_media_group import experiment_to_media_group_with_text

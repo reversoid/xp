@@ -1,4 +1,4 @@
-from shared.my_types import Observation
+from shared.models import Observation
 from aiogram import Bot
 
 

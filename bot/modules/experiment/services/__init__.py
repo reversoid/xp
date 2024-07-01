@@ -5,7 +5,7 @@ from modules.experiment.services.exceptions import AlreadyStartedExperiment, Not
 from modules.experiment.services.responses import RandomObservationsResponse
 from shared.api_service import ApiException, ApiService, Params, Payload
 
-from shared.my_types import Experiment, Observation, UploadInfoRequest
+from shared.models import Experiment, Observation, UploadInfoRequest
 from shared.utils.convert.message_to_upload_request import combine_upload_info_requests
 
 

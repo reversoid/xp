@@ -11,7 +11,7 @@ from shared.lexicon import SHARED_LEXICON
 from modules.experiment.keyboards import StartExperimentCallback, started_experiment_keyboard
 from modules.experiment.services import NotEnoughObservationsException, experiment_service, AlreadyStartedExperiment
 from modules.experiment.states import FSMExperiment
-from shared.my_types import Observation
+from shared.models import Observation
 
 router: Router = Router()
 

@@ -7,7 +7,7 @@ from modules.core.middlewares.AlbumMiddleware import AlbumMiddleware
 from modules.experiment.lexicon import LEXICON
 from modules.experiment.states import FSMExperiment
 from shared.utils.convert.message_to_upload_request import process_message_files, process_media_group_files
-from shared.my_types import UploadInfoRequest
+from shared.models import UploadInfoRequest
 
 router: Router = Router()
 

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from shared.my_types import Experiment
+from shared.models import Experiment
 
 
 class FeedResponse(BaseModel):

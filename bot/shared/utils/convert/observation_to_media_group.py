@@ -1,4 +1,4 @@
-from shared.my_types import MediaGroupItem, Observation, ObservationDTO
+from shared.models import MediaGroupItem, Observation, ObservationDTO
 from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
 
 

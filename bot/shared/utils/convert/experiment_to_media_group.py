@@ -1,4 +1,4 @@
-from shared.my_types import Experiment, MediaGroupItem
+from shared.models import Experiment, MediaGroupItem
 from aiogram.types import InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo
 
 

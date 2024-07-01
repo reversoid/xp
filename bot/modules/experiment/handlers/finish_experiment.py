@@ -12,7 +12,7 @@ from modules.experiment.middlewares.SchedulerMiddleware import ExperimentSchedul
 from modules.experiment.states import FSMExperiment
 from modules.experiment.services import experiment_service, NoTextInExperimentResultException
 from shared.lexicon import SHARED_LEXICON
-from shared.my_types import UploadInfoRequest
+from shared.models import UploadInfoRequest
 
 router: Router = Router()
 

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from shared.my_types import Experiment, Observation
+from shared.models import Experiment, Observation
 
 
 class UserResponse(BaseModel):

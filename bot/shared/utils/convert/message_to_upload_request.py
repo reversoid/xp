@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from shared.my_types import GeoDTO, MediaGroupItemDTO, UploadInfoRequest
+from shared.models import GeoDTO, MediaGroupItemDTO, UploadInfoRequest
 
 
 def process_media_group_files(messages: list[Message]) -> UploadInfoRequest:
