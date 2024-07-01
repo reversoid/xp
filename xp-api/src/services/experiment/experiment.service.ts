@@ -41,6 +41,12 @@ export class ExperimentService {
     return this.experimentRepository.createEmptyExperiment(userId);
   }
 
+  async getUserActiveExperiment(
+    userId: User["id"]
+  ): Promise<Experiment | null> {
+    return this.experimentRepository.getUserActiveExperiment(userId);
+  }
+
   async completeExperiment(
     userId: User["id"],
     dto: CompleteExperimentDto
