@@ -1,4 +1,4 @@
-from config_data import load_config
+from config import load_config
 from typing import Any, Dict, Optional, Type, TypeVar
 import aiohttp
 from pydantic import BaseModel
@@ -14,7 +14,6 @@ Params = Dict[str, Any]
 
 
 class ApiErrorResponse(BaseModel):
-    statusCode: int
     message: str
 
 
@@ -26,12 +25,15 @@ class ApiException(Exception):
         self.status_code = status_code
         self.message = message
         super().__init__(
-            f"API error - Status: {status_code}, Message: {message}")
+            f"HTTP error.\nStatus: {status_code}.\nMessage: {message}")
 
 
 class ApiService:
     base_url = config.api.url
-    api_secret = config.api.api_secret
+    api_key = config.api.api_key
+    
+    def get_url(self, path: str) -> str:
+        return f"{self.base_url}/{path}"
 
     def get_auth_headers(self, tg_user_id: Optional[int] = None) -> Headers:
         """Generates headers to access to API
@@ -44,9 +46,9 @@ class ApiService:
         Returns:
             Headers: Headers to provide to request
         """
-        params: Headers = {'secret_key': self.api_secret}
+        params: Headers = {'api-key': self.api_key}
         if tg_user_id != None:
-            params['tg_user_id'] = str(tg_user_id)
+            params['tg-user-id'] = str(tg_user_id)
         return params
 
     async def _handle_response(self, response: aiohttp.ClientResponse, dataclass: Optional[Type[BaseModel]] = None):
@@ -54,7 +56,7 @@ class ApiService:
             error_raw = await response.text()
             error = ApiErrorResponse.model_validate_json(error_raw)
             raise ApiException(message=error.message,
-                               status_code=error.statusCode)
+                               status_code=response.status)
 
         data = await response.text()
         if not data or data == "null":

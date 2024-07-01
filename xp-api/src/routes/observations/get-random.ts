@@ -23,12 +23,12 @@ const getRandomObservations: FastifyPluginAsyncZod = async (
 
       const { limit } = request.query;
 
-      const observation = await observationService.getRandomUnseenObservations(
+      const observations = await observationService.getRandomUnseenObservations(
         user.id,
         limit
       );
 
-      return reply.send({ observation });
+      return reply.send({ observations });
     }
   );
 };

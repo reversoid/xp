@@ -2,7 +2,7 @@ import asyncio
 import logging
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from aiogram import Bot, Dispatcher
-from config_data.config import load_config
+from config import load_config
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from modules.core.middlewares.SchedulerMiddleware import SchedulerMiddleware

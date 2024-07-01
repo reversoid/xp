@@ -10,7 +10,7 @@ class TgBot:
 @dataclass
 class Api:
     url: str
-    api_secret: str
+    api_key: str
 
 
 @dataclass
@@ -37,7 +37,7 @@ def load_config(path: str | None = None) -> Config:
     env.read_env(path)
 
     bot = TgBot(token=env('BOT_TOKEN'))
-    api = Api(url=env('API_URL'), api_secret=env('API_SECRET'))
+    api = Api(url=env('API_URL'), api_key=env('API_KEY'))
     redis = Redis(host=env('REDIS_HOST'), password=env(
         'REDIS_PASSWORD'), port=int(env('REDIS_PORT')))
     database = Database(redis=redis)

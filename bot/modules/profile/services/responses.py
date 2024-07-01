@@ -1,24 +1,16 @@
 from pydantic import BaseModel
-
-from shared.models import Experiment, Observation
-
-
-class UserResponse(BaseModel):
-    id: int
-    tg_id: int
-    username: str
+from shared.models import Experiment, Observation, User
 
 
-class PaginatedUsersResponse(BaseModel):
-    next_key: str | None = None
-    items: list[UserResponse]
+class ProfileResponse(BaseModel):
+    user: User
 
 
 class PaginatedObservationsResponse(BaseModel):
-    next_key: str | None = None
+    cursor: str | None = None
     items: list[Observation]
 
 
 class PaginatedExperimentsResponse(BaseModel):
-    next_key: str | None = None
+    cursor: str | None = None
     items: list[Experiment]
