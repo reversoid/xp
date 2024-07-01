@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from shared.models import Experiment, Observation, User
+from core.models import Experiment, Observation, User
 
 
 class ProfileResponse(BaseModel):

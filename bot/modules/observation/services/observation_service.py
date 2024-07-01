@@ -1,33 +1,22 @@
-from shared.models import Observation, TgGeo
-from shared.utils.convert.message_to_payload import process_message_files
-from .exceptions import NoDataForObservation
-from shared.api_service import ApiService, Payload
 from aiogram.types import Message
-from .dto import CreateObservationDto
-from .responses import GetRandomObservationsResponse
+from core.api_services.observation_service.dto import CreateObservationDto
+from core.api_services.observation_service import observation_service as api_service
+from core.models import TgGeo
+from .exceptions import NoDataForObservation
 
 
-class ObservationService(ApiService):
-    async def create_observation(self, tg_user_id: int, message: Message):
-        url = self.get_url("observations")
-        headers = self.get_auth_headers(tg_user_id)
-
-        dto = self.__message_to_observation_dto(message)
+class ObservationService:
+    def create_observation(self, tg_user_id: int, message: Message):
+        dto = self.__message_to_observation_dto(message=message)
         self.__validate_new_observation_dto(dto)
 
-        await self.post(url, payload=dto.model_dump(), headers=headers)
+        return api_service.create_observation(tg_user_id, dto)
 
-    async def get_random_observations(self, tg_user_id: int):
-        url = self.get_url("observations/random")
-        headers = self.get_auth_headers(tg_user_id)
-
-        await self.get(url, headers=headers, dataclass=GetRandomObservationsResponse)
+    def get_random_observations(self, tg_user_id: int):
+        return api_service.get_random_observations(tg_user_id)
 
     async def mark_observation_as_viewed(self, tg_user_id: int, observation_id: str):
-        url = self.get_url(f"observations/{observation_id}/views")
-        headers = self.get_auth_headers(tg_user_id)
-
-        await self.put(url, headers=headers)
+        await api_service.mark_observation_as_viewed(tg_user_id, observation_id)
 
     def __message_to_observation_dto(self, message: Message) -> CreateObservationDto:
         text = message.text or message.caption

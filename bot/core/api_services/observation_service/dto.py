@@ -1,4 +1,4 @@
-from shared.models import TgGeo, TgMediaGroupItem
+from core.models import TgGeo, TgMediaGroupItem
 from pydantic import BaseModel
 
 
