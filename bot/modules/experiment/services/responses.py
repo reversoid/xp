@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from shared.my_types import Experiment, Observation, UploadInfoRequest
+from shared.models import Experiment, Observation, UploadInfoRequest
 
 
 class RandomObservationsResponse(BaseModel):
