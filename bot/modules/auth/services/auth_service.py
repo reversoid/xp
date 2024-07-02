@@ -16,6 +16,7 @@ class AuthService(ApiService):
         except ApiException as e:
             if e.message == "USER_ALREADY_EXISTS":
                 raise UserExistsException
+            raise e
 
 
 auth_service = AuthService()

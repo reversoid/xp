@@ -1,7 +1,11 @@
 from pydantic import BaseModel
 
-from shared.models import Experiment, Observation
+from core.models import Experiment
 
 
 class CurrentExperimentResponse:
+    experiment: Experiment | None = None
+
+
+class StartExperimentResponse:
     experiment: Experiment | None = None

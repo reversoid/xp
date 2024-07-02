@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from shared.models import TgGeo, TgMediaGroupItem
+from core.models import TgGeo, TgMediaGroupItem
 
 
 class CompleteExperimentDto(BaseModel):

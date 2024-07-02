@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from shared.models import Observation
+from core.models import Observation
 
 
 class GetRandomObservationsResponse(BaseModel):

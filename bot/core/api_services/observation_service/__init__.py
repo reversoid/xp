@@ -1,2 +1,2 @@
 from .observation_service import observation_service
-from .exceptions import NoDataForObservation
+from ....modules.observation.services.exceptions import NoDataForObservation
