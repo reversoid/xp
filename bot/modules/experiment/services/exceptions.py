@@ -4,3 +4,11 @@ class NotStartedExperimentException(Exception):
 
 class NotEnoughObservationsException(Exception):
     pass
+
+
+class AlreadyStartedExperimentException(Exception):
+    pass
+
+
+class NoTextInExperimentDtoException(Exception):
+    pass

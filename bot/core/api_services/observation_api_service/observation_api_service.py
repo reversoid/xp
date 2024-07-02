@@ -10,15 +10,18 @@ class ObservationApiService(ApiService):
 
         await self.post(url, payload=dto.model_dump(), headers=headers)
 
-    async def get_random_observations(self, tg_user_id: int):
+    async def get_random_observations(self, tg_user_id: int, limit: int):
         url = self.get_url("observations/random")
         headers = self.get_auth_headers(tg_user_id)
 
         response: GetRandomObservationsResponse = await self.get(
-            url, headers=headers, dataclass=GetRandomObservationsResponse
+            url,
+            headers=headers,
+            dataclass=GetRandomObservationsResponse,
+            params={limit: limit},
         )
 
-        return response
+        return response.observations
 
     async def mark_observation_as_viewed(self, tg_user_id: int, observation_id: str):
         url = self.get_url(f"observations/{observation_id}/views")

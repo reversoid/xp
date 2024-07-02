@@ -3,7 +3,7 @@ from core.models import Experiment, Observation, User
 
 
 class ProfileResponse(BaseModel):
-    user: User
+    user: User | None
 
 
 class PaginatedObservationsResponse(BaseModel):

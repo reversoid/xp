@@ -1,9 +1,12 @@
-from .exceptions import (
-    AlreadyStartedExperiment,
+from .exceptions import AlreadyStartedExperimentException, NoActiveExperimentException
+from .responses import (
+    CurrentExperimentResponse,
+    StartExperimentResponse,
+    CompleteExperimentResponse,
 )
-from .responses import CurrentExperimentResponse, StartExperimentResponse
 from shared.api_service import ApiException, ApiService
 from core.models import Experiment
+from .dto import CompleteExperimentDto
 
 
 class ExperimentApiService(ApiService):
@@ -16,6 +19,26 @@ class ExperimentApiService(ApiService):
         )
         return response.experiment
 
+    async def complete_experiment(
+        self, tg_user_id: int, dto: CompleteExperimentDto
+    ) -> Experiment:
+        url = f"{self.base_url}/experiments"
+        headers = self.get_auth_headers(tg_user_id)
+        payload = dto.model_dump()
+
+        try:
+            response: CompleteExperimentResponse = await self.patch(
+                url,
+                headers=headers,
+                dataclass=CompleteExperimentResponse,
+                payload=payload,
+            )
+            return response.experiment
+        except ApiException as e:
+            if e.message == "NO_ACTIVE_EXPERIMENT":
+                raise NoActiveExperimentException
+            raise e
+
     async def start_experiment(self, tg_user_id: int) -> Experiment:
         url = f"{self.base_url}/experiments"
         headers = self.get_auth_headers(tg_user_id)
@@ -26,7 +49,7 @@ class ExperimentApiService(ApiService):
             return response.experiment
         except ApiException as e:
             if e.message == "ALREADY_STARTED_EXPERIMENT":
-                raise AlreadyStartedExperiment
+                raise AlreadyStartedExperimentException
             raise e
 
 

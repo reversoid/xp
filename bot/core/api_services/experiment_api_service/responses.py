@@ -8,4 +8,8 @@ class CurrentExperimentResponse:
 
 
 class StartExperimentResponse:
-    experiment: Experiment | None = None
+    experiment: Experiment
+
+
+class CompleteExperimentResponse:
+    experiment: Experiment

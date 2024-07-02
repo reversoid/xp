@@ -4,10 +4,11 @@ from .responses import (
     ProfileResponse,
 )
 from shared.api_service import ApiService, Params
+from core.models import User
 
 
 class ProfileApiService(ApiService):
-    async def get_profile(self, tg_user_id: int) -> PaginatedExperimentsResponse:
+    async def get_profile(self, tg_user_id: int) -> User:
         url = self.get_url("profile")
 
         headers = self.get_auth_headers(tg_user_id=tg_user_id)
@@ -15,7 +16,7 @@ class ProfileApiService(ApiService):
         response: ProfileResponse = await self.get(
             url=url, headers=headers, dataclass=ProfileResponse
         )
-        return response
+        return response.user
 
     async def get_my_experiments(
         self, tg_user_id: int, cursor: str | None = None
