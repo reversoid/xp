@@ -1,6 +1,6 @@
 class ExperimentService:
     async def run_experiment(
-        self, tg_user_id: int, bot: Bot
+        self, tg_user_id: int
     ) -> tuple[list[Observation], Experiment]:
         observations = await self.get_random_observations(tg_user_id)
         # if (len(observations) < RANDOM_OBSERVATIONS_AMOUNT):
@@ -59,3 +59,6 @@ class ExperimentService:
     def __validate_complete_experiment_request(self, request: UploadInfoRequest):
         if not request.text:
             raise NoTextInExperimentResultException
+
+
+experiment_service = ExperimentService()

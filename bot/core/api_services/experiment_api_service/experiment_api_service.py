@@ -1,14 +1,12 @@
-from modules.experiment.exceptions.exceptions import NoTextInExperimentResultException
 from .exceptions import (
     AlreadyStartedExperiment,
 )
 from .responses import CurrentExperimentResponse, StartExperimentResponse
-from shared.api_service import ApiException, ApiService, Params, Payload
-
+from shared.api_service import ApiException, ApiService
 from core.models import Experiment
 
 
-class ExperimentService(ApiService):
+class ExperimentApiService(ApiService):
 
     async def get_user_current_experiment(self, tg_user_id: int) -> Experiment | None:
         url = f"{self.base_url}/experiments"
@@ -32,4 +30,4 @@ class ExperimentService(ApiService):
             raise e
 
 
-experiment_service = ExperimentService()
+experiment_api_service = ExperimentApiService()

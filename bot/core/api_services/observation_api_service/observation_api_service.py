@@ -1,12 +1,9 @@
-from shared.utils.convert.message_to_payload import process_message_files
-from ....modules.observation.services.exceptions import NoDataForObservation
-from shared.api_service import ApiService, Payload
-from aiogram.types import Message
+from shared.api_service import ApiService
 from .dto import CreateObservationDto
 from .responses import GetRandomObservationsResponse
 
 
-class ObservationService(ApiService):
+class ObservationApiService(ApiService):
     async def create_observation(self, tg_user_id: int, dto: CreateObservationDto):
         url = self.get_url("observations")
         headers = self.get_auth_headers(tg_user_id)
@@ -30,4 +27,4 @@ class ObservationService(ApiService):
         await self.put(url, headers=headers)
 
 
-observation_service = ObservationService()
+observation_api_service = ObservationApiService()

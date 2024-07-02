@@ -1,6 +1,8 @@
 from aiogram.types import Message
-from core.api_services.observation_service.dto import CreateObservationDto
-from core.api_services.observation_service import observation_service as api_service
+from core.api_services.observation_api_service.dto import CreateObservationDto
+from core.api_services.observation_api_service import (
+    observation_api_service,
+)
 from core.models import TgGeo
 from .exceptions import NoDataForObservation
 
@@ -10,13 +12,15 @@ class ObservationService:
         dto = self.__message_to_observation_dto(message=message)
         self.__validate_new_observation_dto(dto)
 
-        return api_service.create_observation(tg_user_id, dto)
+        return observation_api_service.create_observation(tg_user_id, dto)
 
     def get_random_observations(self, tg_user_id: int):
-        return api_service.get_random_observations(tg_user_id)
+        return observation_api_service.get_random_observations(tg_user_id)
 
     async def mark_observation_as_viewed(self, tg_user_id: int, observation_id: str):
-        await api_service.mark_observation_as_viewed(tg_user_id, observation_id)
+        await observation_api_service.mark_observation_as_viewed(
+            tg_user_id, observation_id
+        )
 
     def __message_to_observation_dto(self, message: Message) -> CreateObservationDto:
         text = message.text or message.caption
