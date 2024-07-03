@@ -22,6 +22,9 @@ OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT = 3
 
 
 class ExperimentService:
+    async def get_current_experiment(self, tg_user_id: int):
+        return experiment_api_service.get_user_current_experiment(tg_user_id)
+
     async def start_experiment(
         self, tg_user_id: int
     ) -> tuple[list[Observation], Experiment]:
