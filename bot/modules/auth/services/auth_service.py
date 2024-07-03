@@ -1,6 +1,6 @@
-from core.api_services.auth_api_service import auth_api_service
 from core.api_services.auth_api_service.exceptions import UserExistsException
 from .exceptions import UserAlreadyExistsException
+from core.api_services.auth_api_service.auth_api_service import auth_api_service
 
 
 class AuthService:

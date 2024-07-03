@@ -25,7 +25,7 @@ class ExperimentService:
     async def get_current_experiment(self, tg_user_id: int):
         return experiment_api_service.get_user_current_experiment(tg_user_id)
 
-    async def get_observations_for_experiment(tg_user_id: int):
+    async def get_observations_for_experiment(self, tg_user_id: int):
         observations = await observation_api_service.get_random_observations(
             tg_user_id, OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT
         )
@@ -36,7 +36,7 @@ class ExperimentService:
         return observations
 
     async def mark_observations_as_seen(
-        tg_user_id: int, observations: list[Observation]
+        self, tg_user_id: int, observations: list[Observation]
     ):
         for o in observations:
             await observation_api_service.mark_observation_as_viewed(tg_user_id, o.id)
