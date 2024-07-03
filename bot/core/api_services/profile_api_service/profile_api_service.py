@@ -18,7 +18,7 @@ class ProfileApiService(ApiService):
         )
         return response.user
 
-    async def get_my_experiments(
+    async def get_user_experiments(
         self, tg_user_id: int, cursor: str | None = None
     ) -> PaginatedExperimentsResponse:
         url = self.get_url("profile/experiments")
@@ -37,7 +37,7 @@ class ProfileApiService(ApiService):
         )
         return response
 
-    async def get_my_observations(
+    async def get_observations(
         self, tg_user_id: int, cursor: str | None = None
     ) -> PaginatedObservationsResponse:
         url = self.get_url("/profile/observations")
