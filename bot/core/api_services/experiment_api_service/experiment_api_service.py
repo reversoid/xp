@@ -4,7 +4,7 @@ from .responses import (
     StartExperimentResponse,
     CompleteExperimentResponse,
 )
-from shared.api_service import ApiException, ApiService
+from core.api_services.utils.api_service import ApiException, ApiService
 from core.models import Experiment
 from .dto import CompleteExperimentDto
 

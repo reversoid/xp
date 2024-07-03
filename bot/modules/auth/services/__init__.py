@@ -1,2 +1,2 @@
 from .auth_service import auth_service
-from .exceptionts import UserExistsException
+from .exceptions import UserAlreadyExistsException

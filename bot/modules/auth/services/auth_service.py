@@ -1,22 +1,13 @@
-from shared.api_service import ApiException, ApiService, Headers, Params, Payload
-from .dto import RegisterUserDto
-from .exceptionts import UserExistsException
+from core.api_services.auth_api_service import UserExistsException, auth_api_service
+from .exceptions import UserAlreadyExistsException
 
 
-class AuthService(ApiService):
+class AuthService:
     async def register(self, tg_user_id: int, tg_username: str):
-        url = self.get_url("auth/register")
-
-        dto = RegisterUserDto(tgId=tg_user_id, tgUsername=tg_username)
-
-        payload = dto.model_dump()
-
         try:
-            await self.post(url, payload=payload)
-        except ApiException as e:
-            if e.message == "USER_ALREADY_EXISTS":
-                raise UserExistsException
-            raise e
+            await auth_api_service.register(tg_user_id, tg_username)
+        except UserExistsException:
+            raise UserAlreadyExistsException
 
 
 auth_service = AuthService()

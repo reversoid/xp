@@ -1,4 +1,4 @@
-from shared.api_service import ApiService
+from core.api_services.utils.api_service import ApiService
 from .dto import CreateObservationDto
 from .responses import GetRandomObservationsResponse
 

@@ -3,7 +3,7 @@ from .responses import (
     PaginatedObservationsResponse,
     ProfileResponse,
 )
-from shared.api_service import ApiService, Params
+from core.api_services.utils.api_service import ApiService, Params
 from core.models import User
 
 
