@@ -2,13 +2,14 @@ from aiogram import Bot, Dispatcher, Router, F
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart
 from config.config import load_config
-from modules.core.lexicon import CORE_LEXICON
+from modules.root.lexicon import CORE_LEXICON
 from aiogram.fsm.context import FSMContext
 from aiogram.types import FSInputFile
 
 from modules.auth.services import auth_service
 from modules.profile.services import profile_service
 from aiogram.fsm.storage.redis import Redis
+from ..keyboards.start_trial_keyboard import go_trial_keyboard
 
 start_router: Router = Router()
 
@@ -53,6 +54,14 @@ async def handle_start_command(
         caption=f'Привет, {tg_username} \n\n{CORE_LEXICON["cmd_start"]}',
         reply_markup=ReplyKeyboardRemove(),
     )
-
     if not existing_file_id:
         await redis.set(FILE_ID_KEY, result.video.file_id)
+
+    current_subscription_status = await profile_service.get_subscription_status(
+        tg_user_id
+    )
+
+    if current_subscription_status == "EXPIRED":
+        await message.answer(CORE_LEXICON["subscription_expired"])
+    elif current_subscription_status == "NO_SUBSCRIPTION":
+        await message.answer(CORE_LEXICON["can_trial"], reply_markup=go_trial_keyboard)

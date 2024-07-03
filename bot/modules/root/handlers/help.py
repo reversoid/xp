@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from modules.core.lexicon import CORE_LEXICON
+from modules.root.lexicon import CORE_LEXICON
 
 
 help_router: Router = Router()

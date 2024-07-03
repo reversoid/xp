@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from modules.core.middlewares.AlbumMiddleware import AlbumMiddleware
+from modules.root.middlewares.AlbumMiddleware import AlbumMiddleware
 from modules.observation.lexicon import LEXICON
 from modules.observation.services import observation_service
 from modules.observation.services import NoDataForObservation

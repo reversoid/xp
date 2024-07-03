@@ -1,7 +1,7 @@
 from typing import Awaitable, Callable, Any
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
-from modules.core.middlewares.SchedulerMiddleware import CoreScheduler
+from modules.root.middlewares.SchedulerMiddleware import CoreScheduler
 from .ExperimentScheduler import ExperimentScheduler
 
 
@@ -17,13 +17,12 @@ class ExperiementSchedulerMiddleware(BaseMiddleware):
         self,
         handler: Callable[[Message, dict[str, Any]], Awaitable[Any]],
         event: Message,
-        data: dict[str, Any]
+        data: dict[str, Any],
     ) -> Any:
-        core_scheduler = data.get('scheduler')
+        core_scheduler = data.get("scheduler")
         if not core_scheduler or not isinstance(core_scheduler, CoreScheduler):
             raise SchedulerNotProvidedException
 
-        data['experiment_scheduler'] = ExperimentScheduler(
-            scheduler=core_scheduler)
+        data["experiment_scheduler"] = ExperimentScheduler(scheduler=core_scheduler)
 
         return await handler(event, data)

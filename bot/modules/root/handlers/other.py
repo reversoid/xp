@@ -1,6 +1,6 @@
 from aiogram import Router
 from aiogram.types import Message, ReplyKeyboardRemove
-from modules.core.lexicon import CORE_LEXICON
+from modules.root.lexicon import CORE_LEXICON
 
 
 other_router: Router = Router()
