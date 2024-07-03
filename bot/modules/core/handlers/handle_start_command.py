@@ -15,6 +15,7 @@ start_router: Router = Router()
 
 FILE_ID_KEY = "welcome_file_id"
 
+# TODO can move?
 config = load_config()
 
 redis = Redis(
