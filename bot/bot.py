@@ -11,7 +11,6 @@ from modules.core.middlewares.SchedulerMiddleware import SchedulerMiddleware
 from modules.core.handlers import core_router, other_router
 from modules.core.utils import set_main_menu
 from modules.experiment.handlers import experiment_router
-from modules.feed.handlers import feed_router
 from modules.observation.handlers import observation_router
 from modules.profile.handlers import profile_router
 
@@ -22,8 +21,11 @@ async def main():
     config = load_config()
     bot = Bot(token=config.bot.token)
 
-    redis = Redis(host=config.database.redis.host,
-                  password=config.database.redis.password, port=config.database.redis.port)
+    redis = Redis(
+        host=config.database.redis.host,
+        password=config.database.redis.password,
+        port=config.database.redis.port,
+    )
 
     storage = RedisStorage(redis=redis)
 
@@ -37,19 +39,15 @@ async def main():
     # Конфигурируем логирование
     logging.basicConfig(
         level=logging.INFO,
-        format='%(filename)s:%(lineno)d #%(levelname)-8s '
-               '[%(asctime)s] - %(name)s - %(message)s')
+        format="%(filename)s:%(lineno)d #%(levelname)-8s "
+        "[%(asctime)s] - %(name)s - %(message)s",
+    )
 
     # Выводим в консоль информацию о начале запуска бота
-    logger.info('Starting bot')
+    logger.info("Starting bot")
 
     dp.include_routers(
-        core_router,
-        experiment_router,
-        feed_router,
-        observation_router,
-        profile_router,
-        other_router
+        core_router, experiment_router, observation_router, profile_router, other_router
     )
 
     await set_main_menu(bot)
@@ -59,5 +57,6 @@ async def main():
     scheduler.start()
     await dp.start_polling(bot)
 
-if (__name__ == '__main__'):
+
+if __name__ == "__main__":
     asyncio.run(main())

@@ -9,8 +9,8 @@ from .exceptions import NoDataForObservation
 
 
 class ObservationService:
-    def create_observation(self, tg_user_id: int, message: Message):
-        dto = self.__message_to_observation_dto(message=message)
+    def create_observation(self, tg_user_id: int, messages: list[Message]):
+        dto = self.__message_to_observation_dto(messages=messages)
         self.__validate_new_observation_dto(dto)
 
         return observation_api_service.create_observation(tg_user_id, dto)
