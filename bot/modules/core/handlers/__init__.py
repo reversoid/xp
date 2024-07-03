@@ -4,6 +4,7 @@ from aiogram import Router, F
 from aiogram.filters import ExceptionTypeFilter
 from aiogram.types import Message
 from ..lexicon.core_lexicon import CORE_LEXICON
+from .other import other_router
 
 core_router = Router()
 

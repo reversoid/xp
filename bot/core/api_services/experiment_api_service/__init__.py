@@ -1,3 +1,3 @@
 from .experiment_api_service import experiment_api_service
 from .dto import CompleteExperimentDto
-from .exceptions import AlreadyStartedExperiment
+from .exceptions import AlreadyStartedExperimentException, NoActiveExperimentException

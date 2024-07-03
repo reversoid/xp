@@ -9,7 +9,7 @@ from modules.core.middlewares.SchedulerMiddleware import SchedulerMiddleware
 
 
 from modules.core.handlers import core_router, other_router
-from modules.core.utils import set_main_menu
+from modules.core.utils.set_main_menu import set_main_menu
 from modules.experiment.handlers import experiment_router
 from modules.observation.handlers import observation_router
 from modules.profile.handlers import profile_router
