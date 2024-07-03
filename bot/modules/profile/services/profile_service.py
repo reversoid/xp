@@ -1,8 +1,9 @@
 from core.api_services.profile_api_service import profile_api_service
+from core.models import User
 
 
 class ProfileService:
-    async def get_user(tg_user_id: int):
+    async def get_user(tg_user_id: int) -> User | None:
         user = await profile_api_service.get_profile(tg_user_id)
         return user
 

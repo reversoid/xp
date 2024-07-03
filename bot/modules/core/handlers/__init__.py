@@ -1,4 +1,3 @@
-from .other import other_router
 from .handle_start_command import start_router as _start_router
 from .help import help_router
 from aiogram import Router, F
