@@ -44,7 +44,7 @@ class ExperimentApiService(ApiService):
         headers = self.get_auth_headers(tg_user_id)
         try:
             response: StartExperimentResponse = await self.put(
-                url, headers=headers, dataclass=StartExperimentResponse
+                url, headers=headers, dataclass=StartExperimentResponse, payload={}
             )
             return response.experiment
         except ApiException as e:

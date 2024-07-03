@@ -3,13 +3,13 @@ from pydantic import BaseModel
 from core.models import Experiment
 
 
-class CurrentExperimentResponse:
+class CurrentExperimentResponse(BaseModel):
     experiment: Experiment | None = None
 
 
-class StartExperimentResponse:
+class StartExperimentResponse(BaseModel):
     experiment: Experiment
 
 
-class CompleteExperimentResponse:
+class CompleteExperimentResponse(BaseModel):
     experiment: Experiment

@@ -74,7 +74,7 @@ class ProfileApiService(ApiService):
     async def get_observations(
         self, tg_user_id: int, cursor: str | None = None
     ) -> PaginatedObservationsResponse:
-        url = self.get_url("/profile/observations")
+        url = self.get_url("profile/observations")
         limit = 5
 
         headers = self.get_auth_headers(tg_user_id=tg_user_id)

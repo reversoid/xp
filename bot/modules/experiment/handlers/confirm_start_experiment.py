@@ -38,7 +38,7 @@ async def confirm_start_experiment(
             tg_user_id=query.from_user.id
         )
 
-        complete_by = datetime.fromisoformat(experiment.completeBy)
+        complete_by = experiment.completeBy
 
         experiment_scheduler.schedule_send_experiment_expired(
             bot, query.from_user.id, date=complete_by
@@ -48,7 +48,7 @@ async def confirm_start_experiment(
             bot=bot, observations=observations, tg_user_id=query.from_user.id
         )
 
-        await experiment_service.mark_observations_as_seen(observations)
+        await experiment_service.mark_observations_as_seen(tg_user_id, observations)
 
         await bot.send_message(
             chat_id=query.from_user.id,

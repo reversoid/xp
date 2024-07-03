@@ -15,8 +15,11 @@ class ObservationService:
 
         return observation_api_service.create_observation(tg_user_id, dto)
 
-    def get_random_observations(self, tg_user_id: int):
-        return observation_api_service.get_random_observations(tg_user_id)
+    async def get_random_observations(self, tg_user_id: int, limit: int):
+        observations = await observation_api_service.get_random_observations(
+            tg_user_id, limit
+        )
+        return observations
 
     async def mark_observation_as_viewed(self, tg_user_id: int, observation_id: str):
         await observation_api_service.mark_observation_as_viewed(

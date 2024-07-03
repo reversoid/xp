@@ -36,7 +36,7 @@ async def show_experiments(
 
     user_id = query.from_user.id if query else message.from_user.id
 
-    experiments = await profile_service.get_my_experiments(user_id, lower_bound)
+    experiments = await profile_service.get_user_experiments(user_id, lower_bound)
     if len(experiments.items) == 0:
         await bot.send_message(chat_id=user_id, text=LEXICON["empty_experiments"])
         return

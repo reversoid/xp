@@ -36,7 +36,7 @@ async def show_observations(
 
     user_id = query.from_user.id if query else message.from_user.id
 
-    observations = await profile_service.get_my_observations(
+    observations = await profile_service.get_user_observations(
         message.from_user.id, lower_bound
     )
     if len(observations.items) == 0:

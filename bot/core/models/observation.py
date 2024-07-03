@@ -4,6 +4,7 @@ from .user import User
 from .tg_geo import TgGeo
 from .tg_media_group_item import TgMediaGroupItem
 
+
 class Observation(BaseModel):
     id: str
     tgText: Optional[str]

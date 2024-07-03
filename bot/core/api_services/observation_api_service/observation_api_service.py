@@ -18,7 +18,7 @@ class ObservationApiService(ApiService):
             url,
             headers=headers,
             dataclass=GetRandomObservationsResponse,
-            params={limit: limit},
+            params={"limit": str(limit)},
         )
 
         return response.observations
@@ -27,7 +27,7 @@ class ObservationApiService(ApiService):
         url = self.get_url(f"observations/{observation_id}/views")
         headers = self.get_auth_headers(tg_user_id)
 
-        await self.put(url, headers=headers)
+        await self.put(url, headers=headers, payload={})
 
 
 observation_api_service = ObservationApiService()

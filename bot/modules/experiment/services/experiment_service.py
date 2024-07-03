@@ -3,12 +3,12 @@ from core.api_services.experiment_api_service.exceptions import (
     NoActiveExperimentException,
 )
 from core.models import Experiment, Observation
-from core.api_services.observation_api_service import observation_api_service
 from core.api_services.experiment_api_service import (
     experiment_api_service,
     CompleteExperimentDto,
 )
 from core.models import TgGeo
+from modules.observation.services import observation_service
 from .exceptions import (
     NotEnoughObservationsException,
     NoTextInExperimentDtoException,
@@ -23,10 +23,13 @@ OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT = 3
 
 class ExperimentService:
     async def get_current_experiment(self, tg_user_id: int):
-        return experiment_api_service.get_user_current_experiment(tg_user_id)
+        experiment = await experiment_api_service.get_user_current_experiment(
+            tg_user_id
+        )
+        return experiment
 
     async def get_observations_for_experiment(self, tg_user_id: int):
-        observations = await observation_api_service.get_random_observations(
+        observations = await observation_service.get_random_observations(
             tg_user_id, OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT
         )
 
@@ -39,7 +42,7 @@ class ExperimentService:
         self, tg_user_id: int, observations: list[Observation]
     ):
         for o in observations:
-            await observation_api_service.mark_observation_as_viewed(tg_user_id, o.id)
+            await observation_service.mark_observation_as_viewed(tg_user_id, o.id)
 
     async def create_experiment(self, tg_user_id: int) -> Experiment:
         try:
