@@ -9,7 +9,6 @@ from modules.experiment.middlewares.SchedulerMiddleware import ExperimentSchedul
 from modules.experiment.services.exceptions import AlreadyStartedExperimentException
 from modules.experiment.keyboards import (
     StartExperimentCallback,
-    started_experiment_keyboard,
 )
 from modules.experiment.services import (
     NotEnoughObservationsException,
@@ -54,7 +53,6 @@ async def confirm_start_experiment(
         await bot.send_message(
             chat_id=query.from_user.id,
             text=LEXICON["experiment_started"],
-            reply_markup=started_experiment_keyboard,
         )
 
         await state.set_state(FSMExperiment.completing)
