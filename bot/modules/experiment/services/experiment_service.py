@@ -25,9 +25,7 @@ class ExperimentService:
     async def get_current_experiment(self, tg_user_id: int):
         return experiment_api_service.get_user_current_experiment(tg_user_id)
 
-    async def start_experiment(
-        self, tg_user_id: int
-    ) -> tuple[list[Observation], Experiment]:
+    async def get_observations_for_experiment(tg_user_id: int):
         observations = await observation_api_service.get_random_observations(
             tg_user_id, OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT
         )
@@ -35,17 +33,21 @@ class ExperimentService:
         if len(observations) < OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT:
             raise NotEnoughObservationsException
 
+        return observations
+
+    async def mark_observations_as_seen(
+        tg_user_id: int, observations: list[Observation]
+    ):
+        for o in observations:
+            await observation_api_service.mark_observation_as_viewed(tg_user_id, o.id)
+
+    async def create_experiment(self, tg_user_id: int) -> Experiment:
         try:
             experiment: Experiment = await experiment_api_service.start_experiment(
                 tg_user_id
             )
 
-            for o in observations:
-                await observation_api_service.mark_observation_as_viewed(
-                    tg_user_id, o.id
-                )
-
-            return observations, experiment
+            return experiment
 
         except AlreadyStartedExperimentException:
             raise AlreadyStartedException

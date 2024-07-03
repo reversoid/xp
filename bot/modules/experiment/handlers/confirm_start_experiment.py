@@ -28,8 +28,14 @@ async def confirm_start_experiment(
     state: FSMContext,
     experiment_scheduler: ExperimentScheduler,
 ):
+    tg_user_id = query.from_user.id
+
     try:
-        observations, experiment = await experiment_service.start_experiment(
+        observations = await experiment_service.get_observations_for_experiment(
+            tg_user_id
+        )
+
+        experiment = await experiment_service.create_experiment(
             tg_user_id=query.from_user.id
         )
 
@@ -43,6 +49,8 @@ async def confirm_start_experiment(
             bot=bot, observations=observations, tg_user_id=query.from_user.id
         )
 
+        await experiment_service.mark_observations_as_seen(observations)
+
         await bot.send_message(
             chat_id=query.from_user.id,
             text=LEXICON["experiment_started"],
@@ -50,23 +58,23 @@ async def confirm_start_experiment(
         )
 
         await state.set_state(FSMExperiment.completing)
-        (
-            await query.message.edit_reply_markup(reply_markup=None)
-            if query.message
-            else None
-        )
+        if query.message:
+            query.message.edit_reply_markup(reply_markup=None)
+
+        await query.answer()
 
     except AlreadyStartedExperimentException:
         await bot.send_message(
             chat_id=query.from_user.id, text=LEXICON["experiment_already_started"]
         )
         await state.set_state(FSMExperiment.completing)
+        await query.answer()
 
     except NotEnoughObservationsException:
         await bot.send_message(
             chat_id=query.from_user.id, text=LEXICON["not_enough_observations"]
         )
-    finally:
+        await state.clear()
         await query.answer()
 
     await query.message.edit_reply_markup(reply_markup=None) if query.message else None
