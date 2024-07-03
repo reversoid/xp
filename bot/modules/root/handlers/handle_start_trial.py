@@ -19,7 +19,7 @@ async def handle_start_trial(query: CallbackQuery, bot: Bot):
         await bot.send_message(tg_user_id, CORE_LEXICON["trial_success"])
 
     except AlreadyTakenTrialException:
-        await bot.send_message(tg_user_id, CORE_LEXICON["trial_success"])
+        await bot.send_message(tg_user_id, CORE_LEXICON["trial_failed"])
 
     finally:
         await query.answer()

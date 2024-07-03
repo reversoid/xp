@@ -44,7 +44,7 @@ class ProfileApiService(ApiService):
 
         try:
             response: GetTriaResponse = await self.put(
-                url=url, headers=headers, dataclass=GetTriaResponse
+                url=url, headers=headers, dataclass=GetTriaResponse, payload={}
             )
             return response.subscription
         except ApiException as e:
