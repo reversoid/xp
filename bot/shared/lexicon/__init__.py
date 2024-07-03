@@ -7,6 +7,6 @@ class Lexicon(TypedDict):
 
 
 SHARED_LEXICON: Lexicon = {
-    'internal_error': "Well... I am broken...",
-    'ok': 'Okay'
+    "internal_error": "У меня возникла ошибка. Свяжитесь с",
+    "ok": "Окэй",
 }
