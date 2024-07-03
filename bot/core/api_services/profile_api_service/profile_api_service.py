@@ -3,7 +3,9 @@ from typing import Literal
 from core.api_services.profile_api_service.exceptions import TrialAlreadyTakenException
 from core.models.subscription import Subscription
 from .responses import (
+    PaginatedExperiments,
     PaginatedExperimentsResponse,
+    PaginatedObservations,
     PaginatedObservationsResponse,
     ProfileResponse,
     GetSubscriptionStatusResponse,
@@ -54,7 +56,7 @@ class ProfileApiService(ApiService):
 
     async def get_user_experiments(
         self, tg_user_id: int, cursor: str | None = None
-    ) -> PaginatedExperimentsResponse:
+    ) -> PaginatedExperiments:
         url = self.get_url("profile/experiments")
         limit = 5
 
@@ -69,11 +71,11 @@ class ProfileApiService(ApiService):
             params=params,
             dataclass=PaginatedExperimentsResponse,
         )
-        return response
+        return response.experiments
 
     async def get_observations(
         self, tg_user_id: int, cursor: str | None = None
-    ) -> PaginatedObservationsResponse:
+    ) -> PaginatedObservations:
         url = self.get_url("profile/observations")
         limit = 5
 
@@ -85,7 +87,7 @@ class ProfileApiService(ApiService):
         response: PaginatedObservationsResponse = await self.get(
             url, headers=headers, params=params, dataclass=PaginatedObservationsResponse
         )
-        return response
+        return response.observations
 
 
 profile_api_service = ProfileApiService()

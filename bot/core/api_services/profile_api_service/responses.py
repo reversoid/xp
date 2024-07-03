@@ -8,14 +8,22 @@ class ProfileResponse(BaseModel):
     user: User | None
 
 
-class PaginatedObservationsResponse(BaseModel):
+class PaginatedObservations(BaseModel):
     cursor: str | None = None
     items: list[Observation]
 
 
-class PaginatedExperimentsResponse(BaseModel):
+class PaginatedObservationsResponse(BaseModel):
+    observations: PaginatedObservations
+
+
+class PaginatedExperiments(BaseModel):
     cursor: str | None = None
     items: list[Experiment]
+
+
+class PaginatedExperimentsResponse(BaseModel):
+    experiments: PaginatedObservations
 
 
 class GetSubscriptionStatusResponse(BaseModel):
