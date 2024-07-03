@@ -6,14 +6,14 @@ import { tgGeoSchema } from "../../models/tg-geo.js";
 import { tgMediaGroupItemSchema } from "../../models/tg-media-group-item.js";
 
 const createObservationSchema = z.object({
-  tgText: z.string().optional(),
-  tgPhotoId: z.string().optional(),
-  tgVideoId: z.string().optional(),
-  tgVoiceId: z.string().optional(),
-  tgDocumentId: z.string().optional(),
-  tgVideoNoteId: z.string().optional(),
-  tgGeo: tgGeoSchema.optional(),
-  tgMediaGroup: z.array(tgMediaGroupItemSchema).optional(),
+  tgText: z.string().nullish(),
+  tgPhotoId: z.string().nullish(),
+  tgVideoId: z.string().nullish(),
+  tgVoiceId: z.string().nullish(),
+  tgDocumentId: z.string().nullish(),
+  tgVideoNoteId: z.string().nullish(),
+  tgGeo: tgGeoSchema.nullish(),
+  tgMediaGroup: z.array(tgMediaGroupItemSchema).nullish(),
 });
 
 const createObservation: FastifyPluginAsyncZod = async (
@@ -42,14 +42,14 @@ const createObservation: FastifyPluginAsyncZod = async (
       } = request.body;
 
       const observation = await observationService.createObservation(user.id, {
-        tgDocumentId,
-        tgGeo,
-        tgMediaGroup,
-        tgPhotoId,
-        tgText,
-        tgVideoId,
-        tgVideoNoteId,
-        tgVoiceId,
+        tgDocumentId: tgDocumentId ?? undefined,
+        tgGeo: tgGeo ?? undefined,
+        tgMediaGroup: tgMediaGroup ?? undefined,
+        tgPhotoId: tgPhotoId ?? undefined,
+        tgText: tgText ?? undefined,
+        tgVideoId: tgVideoId ?? undefined,
+        tgVideoNoteId: tgVideoNoteId ?? undefined,
+        tgVoiceId: tgVoiceId ?? undefined,
       });
 
       return reply.send({ observation });
