@@ -18,7 +18,8 @@ async def handle_start_command(message: Message, state: FSMContext):
     response = await auth_service.is_user_registered(message.from_user.id)
 
     if (response.registered):
-        await message.answer(text=f'Привет, {response.username}! \n\n{CORE_LEXICON["cmd_start"]}', reply_markup=ReplyKeyboardRemove())
+        #await message.answer(text=f'Привет, {response.username} \n\n{CORE_LEXICON["cmd_start"]}', reply_markup=ReplyKeyboardRemove())
+        await message.answer_video(video="CgACAgIAAxkBAAIIkWaC-mZtOFXVSZERgxKJasvkZqE4AAKoUwACyAURSFIoxT4AASK2gTUE", caption=f'Привет, {response.username} \n\n{CORE_LEXICON["cmd_start"]}', reply_markup=ReplyKeyboardRemove())
         # TODO check if user has running experiment
     else:
         await state.set_state(FSMRegistration.fill_username)
