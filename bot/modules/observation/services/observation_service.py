@@ -10,7 +10,7 @@ from .exceptions import NoDataForObservation
 
 class ObservationService:
     def create_observation(self, tg_user_id: int, messages: list[Message]):
-        dto = self.__message_to_observation_dto(messages=messages)
+        dto = self.__messages_to_observation_dto(messages=messages)
         self.__validate_new_observation_dto(dto)
 
         return observation_api_service.create_observation(tg_user_id, dto)
@@ -26,7 +26,7 @@ class ObservationService:
             tg_user_id, observation_id
         )
 
-    def __message_to_observation_dto(
+    def __messages_to_observation_dto(
         self, messages: list[Message]
     ) -> CreateObservationDto:
         dto: CreateObservationDto
@@ -82,11 +82,11 @@ class ObservationService:
             not dto.tgText
             and not dto.tgPhotoId
             and not dto.tgVideoId
-            and not dto.tgVideoId
             and not dto.tgVideoNoteId
             and not dto.tgDocumentId
             and not dto.tgGeo
             and not dto.tgMediaGroup
+            and not dto.tgVoiceId
         ):
             raise NoDataForObservation
 
