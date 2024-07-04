@@ -7,10 +7,16 @@ from modules.experiment.handlers.complete_experiment import router as _handle_ro
 from modules.experiment.middlewares.experiment_scheduler_middleware import (
     ExperiementSchedulerMiddleware,
 )
+from shared.middlewares.subscription_middleware.subscription_middleware import (
+    SubscriptionMiddleware,
+)
 
 
 experiment_router = Router()
 experiment_router.message.middleware.register(ExperiementSchedulerMiddleware())
 experiment_router.callback_query.middleware.register(ExperiementSchedulerMiddleware())
+
+experiment_router.message.middleware.register(SubscriptionMiddleware())
+
 
 experiment_router.include_routers(_start_router, _confirm_start_router, _handle_router)

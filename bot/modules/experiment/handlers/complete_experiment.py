@@ -1,5 +1,5 @@
-from aiogram import Router, F
-from aiogram.filters import StateFilter, Command
+from aiogram import Router
+from aiogram.filters import StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from shared.middlewares.album_middleware import AlbumMiddleware
@@ -17,27 +17,13 @@ router: Router = Router()
 router.message.middleware.register(AlbumMiddleware())
 
 
-@router.message(StateFilter(FSMExperiment.completing), F.media_group_id == None)
-async def complete_experiment_with_message(message: Message, state: FSMContext):
-    tg_user_id = message.from_user.id
-    try:
-        await experiment_service.complete_experiment(tg_user_id, [message])
-        await message.answer(LEXICON["success_experiment"])
-        await state.clear()
-    except NotStartedExperimentException:
-        await state.clear()
-        await message.answer(LEXICON["experiment_not_started"])
-    except NoTextInExperimentDtoException:
-        await message.answer(LEXICON["no_text_in_experiment"])
-
-
-@router.message(StateFilter(FSMExperiment.completing), F.media_group_id != None)
-async def complete_experiment_with_media_group(
+@router.message(StateFilter(FSMExperiment.completing))
+async def complete_experiment_with_message(
     message: Message, state: FSMContext, album: list[Message]
 ):
     tg_user_id = message.from_user.id
     try:
-        await experiment_service.complete_experiment(tg_user_id, album)
+        await experiment_service.complete_experiment(tg_user_id, album or [message])
         await message.answer(LEXICON["success_experiment"])
         await state.clear()
     except NotStartedExperimentException:
