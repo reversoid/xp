@@ -93,16 +93,16 @@ class ExperimentService:
             media_group: list[TgMediaGroupItem] = []
 
             for message in messages:
-                text += message.text or message.caption
+                text += message.text or message.caption or ""
                 media_group_item = TgMediaGroupItem(
-                    tgAudioId=message.audio.file_id,
-                    tgDocumentId=message.document.file_id,
-                    tgPhotoId=message.photo[-1].file_id,
-                    tgVideoId=message.video.file_id,
+                    tgAudioId=message.audio.file_id if message.audio else None,
+                    tgDocumentId=message.document.file_id if message.document else None,
+                    tgPhotoId=message.photo[-1].file_id if message.photo else None,
+                    tgVideoId=message.video.file_id if message.video else None,
                 )
                 media_group.append(media_group_item)
 
-            dto = CompleteExperimentDto(tgText=text, tgMediaGroup=media_group_item)
+            dto = CompleteExperimentDto(tgText=text, tgMediaGroup=media_group)
 
         self.__validate_complete_experiment_dto(dto)
         try:

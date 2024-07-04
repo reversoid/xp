@@ -64,16 +64,16 @@ class ObservationService:
             media_group: list[TgMediaGroupItem] = []
 
             for message in messages:
-                text += message.text or message.caption
+                text += message.text or message.caption or ""
                 media_group_item = TgMediaGroupItem(
-                    tgAudioId=message.audio.file_id,
-                    tgDocumentId=message.document.file_id,
-                    tgPhotoId=message.photo[-1].file_id,
-                    tgVideoId=message.video.file_id,
+                    tgAudioId=message.audio.file_id if message.audio else None,
+                    tgDocumentId=message.document.file_id if message.document else None,
+                    tgPhotoId=message.photo[-1].file_id if message.photo[-1] else None,
+                    tgVideoId=message.video.file_id if message.video else None,
                 )
                 media_group.append(media_group_item)
 
-            dto = CreateObservationDto(tgText=text, tgMediaGroup=media_group_item)
+            dto = CreateObservationDto(tgText=text, tgMediaGroup=media_group)
 
         return dto
 

@@ -20,4 +20,4 @@ async def handle_log_observation(message: Message, state: FSMContext):
 @router.message(Command("cancel"))
 async def handle_cancel_log_observation(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer(text=SHARED_LEXICON["ok"])
+    await message.answer(text=SHARED_LEXICON["canceled"])

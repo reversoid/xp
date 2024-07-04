@@ -35,8 +35,6 @@ async def send_observations(
                 voice=observation.tgVoiceId,
                 caption=observation.tgText,
             )
-        elif observation.tgText:
-            await bot.send_message(chat_id=tg_user_id, text=observation.tgText)
         elif observation.tgMediaGroup:
             await send_media_group(
                 tg_user_id=tg_user_id,
@@ -44,3 +42,5 @@ async def send_observations(
                 text=observation.tgText,
                 bot=bot,
             )
+        elif observation.tgText:
+            await bot.send_message(chat_id=tg_user_id, text=observation.tgText)

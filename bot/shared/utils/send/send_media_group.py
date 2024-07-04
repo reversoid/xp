@@ -17,6 +17,7 @@ async def send_media_group(
 ):
     media: list[MediaGroupItem] = []
 
+    caption_added = False
     for item in media_group:
         caption = text if not caption_added else None
         caption_added = True

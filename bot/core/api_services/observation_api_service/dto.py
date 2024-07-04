@@ -3,11 +3,11 @@ from pydantic import BaseModel
 
 
 class CreateObservationDto(BaseModel):
-    tgText: str | None
-    tgPhotoId: str | None
-    tgVideoId: str | None
-    tgVoiceId: str | None
-    tgDocumentId: str | None
-    tgVideoNoteId: str | None
-    tgGeo: TgGeo | None
-    tgMediaGroup: list[TgMediaGroupItem] | None
+    tgText: str | None = None
+    tgPhotoId: str | None = None
+    tgVideoId: str | None = None
+    tgVoiceId: str | None = None
+    tgDocumentId: str | None = None
+    tgVideoNoteId: str | None = None
+    tgGeo: TgGeo | None = None
+    tgMediaGroup: list[TgMediaGroupItem] | None = None
