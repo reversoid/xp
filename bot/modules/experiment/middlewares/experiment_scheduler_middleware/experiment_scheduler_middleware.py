@@ -1,8 +1,8 @@
 from typing import Awaitable, Callable, Any
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
-from modules.root.middlewares.SchedulerMiddleware import CoreScheduler
-from .ExperimentScheduler import ExperimentScheduler
+from modules.root.middlewares.scheduler_middleware import CoreScheduler
+from .experiment_scheduler import ExperimentScheduler
 
 
 class SchedulerNotProvidedException(Exception):

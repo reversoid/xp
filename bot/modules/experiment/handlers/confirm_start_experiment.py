@@ -5,7 +5,9 @@ from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
-from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
+from modules.experiment.middlewares.experiment_scheduler_middleware import (
+    ExperimentScheduler,
+)
 from modules.experiment.services.exceptions import AlreadyStartedExperimentException
 from modules.experiment.keyboards import (
     StartExperimentCallback,

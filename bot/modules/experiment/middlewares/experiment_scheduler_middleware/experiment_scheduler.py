@@ -1,6 +1,6 @@
 from datetime import datetime
 from aiogram import Bot
-from modules.root.middlewares.SchedulerMiddleware import CoreScheduler
+from modules.root.middlewares.scheduler_middleware import CoreScheduler
 from modules.experiment.lexicon import LEXICON
 
 

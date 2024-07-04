@@ -3,7 +3,7 @@ from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from .Scheduler import CoreScheduler
+from .scheduler import CoreScheduler
 
 
 class SchedulerMiddleware(BaseMiddleware):
@@ -15,7 +15,7 @@ class SchedulerMiddleware(BaseMiddleware):
         self,
         handler: Callable[[Message, dict[str, Any]], Awaitable[Any]],
         event: Message,
-        data: dict[str, Any]
+        data: dict[str, Any],
     ) -> Any:
-        data['scheduler'] = self._scheduler
+        data["scheduler"] = self._scheduler
         return await handler(event, data)

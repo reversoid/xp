@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import StateFilter, Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from modules.root.middlewares.AlbumMiddleware import AlbumMiddleware
+from shared.middlewares.album_middleware import AlbumMiddleware
 
 from modules.experiment.lexicon import LEXICON
 from modules.experiment.states import FSMExperiment
@@ -11,7 +11,6 @@ from modules.experiment.services import (
     NoTextInExperimentDtoException,
     NotStartedExperimentException,
 )
-from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
 

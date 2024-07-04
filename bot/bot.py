@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from config import load_config
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from modules.root.middlewares.SchedulerMiddleware import SchedulerMiddleware
+from modules.root.middlewares.scheduler_middleware import SchedulerMiddleware
 
 
 from modules.root.handlers import core_router, other_router, error_router

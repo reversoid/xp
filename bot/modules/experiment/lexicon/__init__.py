@@ -4,10 +4,8 @@ from typing import TypedDict
 class Lexicon(TypedDict):
     experiment_started: str
     confirm_experiment: str
-    continue_experiment: str
     success_experiment: str
     no_text_in_experiment: str
-    cancel_experiment: str
     experiment_not_started: str
     experiment_already_started: str
     not_enough_observations: str

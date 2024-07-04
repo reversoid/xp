@@ -4,7 +4,7 @@ from modules.experiment.handlers.confirm_start_experiment import (
     router as _confirm_start_router,
 )
 from modules.experiment.handlers.complete_experiment import router as _handle_router
-from modules.experiment.middlewares.SchedulerMiddleware import (
+from modules.experiment.middlewares.experiment_scheduler_middleware import (
     ExperiementSchedulerMiddleware,
 )
 
