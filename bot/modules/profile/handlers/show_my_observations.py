@@ -20,6 +20,9 @@ async def show_observations(
         ProfileObservationsCallback.unpack(query.data).cursor if query.data else None
     )
 
+    if cursor and query.message:
+        await query.message.edit_reply_markup(reply_markup=None)
+
     tg_user_id = query.from_user.id
 
     observations = await profile_service.get_user_observations(tg_user_id, cursor)
@@ -28,7 +31,8 @@ async def show_observations(
         await bot.send_message(chat_id=tg_user_id, text=LEXICON["empty_observations"])
         return
 
-    await bot.send_message(chat_id=tg_user_id, text=LEXICON["your_observations"])
+    if not cursor:
+        await bot.send_message(chat_id=tg_user_id, text=LEXICON["your_observations"])
 
     await send_observations(
         bot=bot, tg_user_id=tg_user_id, observations=observations.items

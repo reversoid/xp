@@ -21,6 +21,9 @@ async def show_experiments(
         ProfileExperimentsCallback.unpack(query.data).cursor if query.data else None
     )
 
+    if cursor:
+        await query.message.edit_reply_markup(reply_markup=None)
+
     tg_user_id = query.from_user.id
 
     experiments = await profile_service.get_user_experiments(tg_user_id, cursor)
@@ -29,7 +32,8 @@ async def show_experiments(
         await bot.send_message(chat_id=tg_user_id, text=LEXICON["empty_experiments"])
         return
 
-    await bot.send_message(chat_id=tg_user_id, text=LEXICON["your_experiments"])
+    if not cursor:
+        await bot.send_message(chat_id=tg_user_id, text=LEXICON["your_experiments"])
 
     await send_experiments(
         bot=bot, tg_user_id=tg_user_id, experiments=experiments.items
@@ -40,7 +44,6 @@ async def show_experiments(
         await bot.send_message(
             chat_id=tg_user_id,
             text=LEXICON["no_more_experiments"],
-            reply_markup=ReplyKeyboardRemove(),
         )
         return
 
