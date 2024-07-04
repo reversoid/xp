@@ -19,7 +19,7 @@ router.message.middleware.register(AlbumMiddleware())
 
 @router.message(StateFilter(FSMExperiment.completing))
 async def complete_experiment_with_message(
-    message: Message, state: FSMContext, album: list[Message]
+    message: Message, state: FSMContext, album: list[Message] = None
 ):
     tg_user_id = message.from_user.id
     try:
