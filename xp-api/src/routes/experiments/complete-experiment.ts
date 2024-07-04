@@ -8,13 +8,13 @@ import { tgMediaGroupItemSchema } from "../../models/tg-media-group-item.js";
 
 const completeExperimentSchema = z.object({
   tgText: z.string(),
-  tgPhotoId: z.string().optional(),
-  tgVideoId: z.string().optional(),
-  tgVoiceId: z.string().optional(),
-  tgDocumentId: z.string().optional(),
-  tgVideoNoteId: z.string().optional(),
-  tgGeo: tgGeoSchema.optional(),
-  tgMediaGroup: z.array(tgMediaGroupItemSchema).optional(),
+  tgPhotoId: z.string().nullish(),
+  tgVideoId: z.string().nullish(),
+  tgVoiceId: z.string().nullish(),
+  tgDocumentId: z.string().nullish(),
+  tgVideoNoteId: z.string().nullish(),
+  tgGeo: tgGeoSchema.nullish(),
+  tgMediaGroup: z.array(tgMediaGroupItemSchema).nullish(),
 });
 
 const completeExperiment: FastifyPluginAsyncZod = async (
@@ -44,13 +44,13 @@ const completeExperiment: FastifyPluginAsyncZod = async (
       try {
         const experiment = await experimentService.completeExperiment(user.id, {
           tgText,
-          tgDocumentId,
-          tgGeo,
-          tgMediaGroup,
-          tgPhotoId,
-          tgVideoId,
-          tgVideoNoteId,
-          tgVoiceId,
+          tgDocumentId: tgDocumentId ?? undefined,
+          tgGeo: tgGeo ?? undefined,
+          tgMediaGroup: tgMediaGroup ?? undefined,
+          tgPhotoId: tgPhotoId ?? undefined,
+          tgVideoId: tgVideoId ?? undefined,
+          tgVideoNoteId: tgVideoNoteId ?? undefined,
+          tgVoiceId: tgVoiceId ?? undefined,
         });
 
         return reply.send({ experiment });

@@ -1,12 +1,18 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+from aiogram.types import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+)
 from modules.profile.lexicon import BUTTON_LEXICON
+from .profile_keyboard import ProfileObservationsCallback
 
 
-_cancel_button = KeyboardButton(
-    text=BUTTON_LEXICON['cancel_showing_observations'])
-_load_more_button = KeyboardButton(
-    text=BUTTON_LEXICON['load_more_observations'])
+def _get_more_button(cursor: str):
+    return InlineKeyboardButton(
+        text=BUTTON_LEXICON["load_more_observations"],
+        callback_data=ProfileObservationsCallback(cursor=cursor).pack(),
+    )
 
 
-next_observations_keyboard = ReplyKeyboardMarkup(
-    resize_keyboard=True, one_time_keyboard=True, is_persistent=True, keyboard=[[_cancel_button, _load_more_button]], selective=True)
+def get_next_observations_keyboard(cursor: str):
+    print("cursor is", cursor)
+    return InlineKeyboardMarkup(inline_keyboard=[[_get_more_button(cursor)]])

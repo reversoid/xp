@@ -1,45 +1,80 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
-from modules.experiment.middlewares.SchedulerMiddleware import ExperimentScheduler
-from modules.experiment.utils.send_observations import send_observations
-from shared.lexicon import SHARED_LEXICON
-from modules.experiment.keyboards import StartExperimentCallback, started_experiment_keyboard
-from modules.experiment.services import NotEnoughObservationsException, experiment_service, AlreadyStartedExperiment
+from modules.experiment.middlewares.experiment_scheduler_middleware import (
+    ExperimentScheduler,
+)
+from modules.experiment.services.exceptions import AlreadyStartedExperimentException
+from modules.experiment.keyboards import (
+    StartExperimentCallback,
+)
+from modules.experiment.services import (
+    NotEnoughObservationsException,
+    experiment_service,
+)
 from modules.experiment.states import FSMExperiment
-from shared.my_types import Observation
+from shared.utils.send.send_observations import send_observations
 
 router: Router = Router()
 
 
 @router.callback_query(StartExperimentCallback.filter())
-async def confirm_start_experiment(query: CallbackQuery, bot: Bot, state: FSMContext, experiment_scheduler: ExperimentScheduler):
+async def confirm_start_experiment(
+    query: CallbackQuery,
+    bot: Bot,
+    state: FSMContext,
+    experiment_scheduler: ExperimentScheduler,
+):
+    tg_user_id = query.from_user.id
+
     try:
-        observations, experiment = await experiment_service.run_experiment(tg_user_id=query.from_user.id, bot=bot)
-        complete_by = datetime.fromisoformat(experiment.complete_by)
+        observations = await experiment_service.get_observations_for_experiment(
+            tg_user_id
+        )
+
+        experiment = await experiment_service.create_experiment(
+            tg_user_id=query.from_user.id
+        )
+
+        complete_by = experiment.completeBy
 
         experiment_scheduler.schedule_send_experiment_expired(
-            bot, query.from_user.id, date=complete_by)
+            bot, query.from_user.id, date=complete_by
+        )
 
-        await send_observations(bot=bot, observations=observations, tg_user_id=query.from_user.id)
+        await send_observations(
+            bot=bot, observations=observations, tg_user_id=query.from_user.id
+        )
 
-        await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_started'],  reply_markup=started_experiment_keyboard)
+        await experiment_service.mark_observations_as_seen(tg_user_id, observations)
+
+        await bot.send_message(
+            chat_id=query.from_user.id,
+            text=LEXICON["experiment_started"],
+        )
+
         await state.set_state(FSMExperiment.completing)
-        await query.message.edit_reply_markup(reply_markup=None) if query.message else None
+        if query.message:
+            query.message.edit_reply_markup(reply_markup=None)
 
-    except AlreadyStartedExperiment:
-        await bot.send_message(chat_id=query.from_user.id, text=LEXICON['experiment_already_started'])
+        await query.answer()
+
+    except AlreadyStartedExperimentException:
+        await bot.send_message(
+            chat_id=query.from_user.id, text=LEXICON["experiment_already_started"]
+        )
         await state.set_state(FSMExperiment.completing)
+        await query.answer()
 
     except NotEnoughObservationsException:
-        await bot.send_message(chat_id=query.from_user.id, text=LEXICON['not_enough_observations'])
+        await bot.send_message(
+            chat_id=query.from_user.id, text=LEXICON["not_enough_observations"]
+        )
+        await state.clear()
+        await query.answer()
 
-    except Exception:
-        await bot.send_message(chat_id=query.from_user.id, text=SHARED_LEXICON['internal_error'])
-
-    await query.answer()
     await query.message.edit_reply_markup(reply_markup=None) if query.message else None

@@ -1,0 +1,2 @@
+class AlreadyTakenTrialException(Exception):
+    pass
