@@ -1,4 +1,4 @@
-from aiogram import Router, F, Bot
+from aiogram import Router, Bot
 from aiogram.types import ReplyKeyboardRemove, CallbackQuery
 from modules.profile.keyboards.next_observations_keyboard import (
     get_next_observations_keyboard,

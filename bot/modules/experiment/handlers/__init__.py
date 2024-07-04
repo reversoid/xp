@@ -1,5 +1,5 @@
 from aiogram import Router
-from modules.experiment.handlers.run_experiment import router as _start_router
+from modules.experiment.handlers.start_experiment import router as _start_router
 from modules.experiment.handlers.confirm_start_experiment import (
     router as _confirm_start_router,
 )

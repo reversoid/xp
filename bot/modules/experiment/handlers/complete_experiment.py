@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.filters import StateFilter
+from aiogram.filters import StateFilter, Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from modules.root.middlewares.AlbumMiddleware import AlbumMiddleware
@@ -11,6 +11,7 @@ from modules.experiment.services import (
     NoTextInExperimentDtoException,
     NotStartedExperimentException,
 )
+from shared.lexicon import SHARED_LEXICON
 
 router: Router = Router()
 
@@ -45,3 +46,9 @@ async def complete_experiment_with_media_group(
         await message.answer(LEXICON["experiment_not_started"])
     except NoTextInExperimentDtoException:
         await message.answer(LEXICON["no_text_in_experiment"])
+
+
+@router.message(Command("cancel"))
+async def cancel_experiment(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(text=SHARED_LEXICON["canceled"])
