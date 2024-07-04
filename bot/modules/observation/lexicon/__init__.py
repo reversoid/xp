@@ -4,7 +4,7 @@ from typing import TypedDict
 class Lexicon(TypedDict):
     log_observation: str
     log_observation_success: str
-    no_data: str
+    not_supported_data: str
 
 
 LEXICON: Lexicon = {
@@ -12,7 +12,7 @@ LEXICON: Lexicon = {
         Наблюдение может принимать любую форму: слово, скриншот, манифест, голосовое или видео. \n\nЧто пробудило любопытство в тебе сегодня?
     """,
     "log_observation_success": "Наблюдение залогировано",
-    "no_data": """
-        Нет данных для наблюдения. Одно наблюдение – одно сообщение
+    "not_supported_data": """
+        Такой формат не поддерживается. Попробуйте загрузить что-то другое
     """,
 }
