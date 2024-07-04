@@ -24,11 +24,3 @@ class PaginatedExperiments(BaseModel):
 
 class PaginatedExperimentsResponse(BaseModel):
     experiments: PaginatedObservations
-
-
-class GetSubscriptionStatusResponse(BaseModel):
-    status: Literal["ACTIVE", "EXPIRED", "NO_SUBSCRIPTION"]
-
-
-class GetTriaResponse(BaseModel):
-    subscription: Subscription

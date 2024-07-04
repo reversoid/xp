@@ -1,7 +1,9 @@
 from core.api_services.profile_api_service import profile_api_service
 from core.models import User
 from modules.profile.services.exceptions import AlreadyTakenTrialException
-from core.api_services.profile_api_service.exceptions import TrialAlreadyTakenException
+from core.api_services.subscription_api_service.exceptions import (
+    TrialAlreadyTakenException,
+)
 
 
 class ProfileService:
