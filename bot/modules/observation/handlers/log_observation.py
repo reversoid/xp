@@ -5,13 +5,13 @@ from aiogram.fsm.context import FSMContext
 from modules.observation.lexicon import LEXICON
 from modules.observation.states import FSMObservation
 from shared.lexicon import SHARED_LEXICON
-from shared.middlewares.payment_middleware import PaymentMiddleware
+from shared.middlewares.subscription_middleware import SubscriptionMiddleware
 
 router: Router = Router()
 
 # TODO check payment
 
-router.message.middleware.register(PaymentMiddleware())
+router.message.middleware.register(SubscriptionMiddleware())
 
 
 @router.message(Command("log_observation"))

@@ -9,7 +9,7 @@ from aiogram.types import FSInputFile
 from modules.auth.services import auth_service
 from modules.profile.services import profile_service
 from aiogram.fsm.storage.redis import Redis
-from ..keyboards.start_trial_keyboard import go_trial_keyboard
+from ..keyboards.start_trial_keyboard import start_trial_keyboard
 
 start_router: Router = Router()
 
@@ -64,4 +64,6 @@ async def handle_start_command(
     if current_subscription_status == "EXPIRED":
         await message.answer(CORE_LEXICON["subscription_expired"])
     elif current_subscription_status == "NO_SUBSCRIPTION":
-        await message.answer(CORE_LEXICON["can_trial"], reply_markup=go_trial_keyboard)
+        await message.answer(
+            CORE_LEXICON["can_trial"], reply_markup=start_trial_keyboard
+        )

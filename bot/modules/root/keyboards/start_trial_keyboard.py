@@ -3,12 +3,12 @@ from aiogram.filters.callback_data import CallbackData
 from ..lexicon.core_lexicon import BUTTON_LEXICON
 
 
-class GoTrialCallback(CallbackData, prefix="go-trial-button"):
+class StartTrialCallback(CallbackData, prefix="start-trial-button"):
     pass
 
 
-_go_trial_button = InlineKeyboardButton(
-    text=BUTTON_LEXICON["go_trial"], callback_data=GoTrialCallback().pack()
+_start_trial_button = InlineKeyboardButton(
+    text=BUTTON_LEXICON["go_trial"], callback_data=StartTrialCallback().pack()
 )
 
-go_trial_keyboard = InlineKeyboardMarkup(inline_keyboard=[[_go_trial_button]])
+start_trial_keyboard = InlineKeyboardMarkup(inline_keyboard=[[_start_trial_button]])
