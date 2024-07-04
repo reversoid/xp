@@ -46,9 +46,3 @@ async def complete_experiment_with_media_group(
         await message.answer(LEXICON["experiment_not_started"])
     except NoTextInExperimentDtoException:
         await message.answer(LEXICON["no_text_in_experiment"])
-
-
-@router.message(Command("cancel"))
-async def cancel_experiment(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer(text=SHARED_LEXICON["canceled"])
