@@ -14,5 +14,5 @@ async def handle_feed_command(message: Message):
     user = await profile_service.get_user(tg_user_id)
 
     await message.answer(
-        text=f"Hello, {user.tgUsername}", reply_markup=profile_keyboard
+        text=LEXICON["welcome_profile"](user.tgUsername), reply_markup=profile_keyboard
     )

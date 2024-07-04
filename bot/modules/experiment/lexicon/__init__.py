@@ -31,8 +31,7 @@ LEXICON: Lexicon = {
 
 
 class ButtonLexicon(TypedDict):
-    cancel: str
-    finish: str
+    start: str
 
 
-BUTTON_LEXICON: ButtonLexicon = {"cancel": "Отменить", "finish": "Завершить"}
+BUTTON_LEXICON: ButtonLexicon = {"start": "Готовность"}
