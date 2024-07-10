@@ -73,6 +73,7 @@ export class ObservationRepository {
       ON o.id = ov.observation_id
       AND ov.user_id = ${userId}
       WHERE ov.user_id IS NULL
+      AND o.user_id != ${userId}
       ORDER BY RANDOM()
       LIMIT ${limit};
     `) as { id: Observation["id"] }[];
