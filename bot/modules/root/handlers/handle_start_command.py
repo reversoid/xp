@@ -10,6 +10,7 @@ from modules.auth.services import auth_service
 from modules.profile.services import profile_service
 from aiogram.fsm.storage.redis import Redis
 from ..keyboards.start_trial_keyboard import start_trial_keyboard
+from modules.subcription.services import subscription_service
 
 start_router: Router = Router()
 
@@ -57,7 +58,7 @@ async def handle_start_command(
     if not existing_file_id:
         await redis.set(FILE_ID_KEY, result.video.file_id)
 
-    current_subscription_status = await profile_service.get_subscription_status(
+    current_subscription_status = await subscription_service.get_subscription_status(
         tg_user_id
     )
 
