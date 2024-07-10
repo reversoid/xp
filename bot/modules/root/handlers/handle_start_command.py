@@ -1,4 +1,4 @@
-from aiogram import Bot, Dispatcher, Router, F
+from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart
 from config.config import load_config
@@ -50,9 +50,10 @@ async def handle_start_command(
         else FSInputFile("static/sphere.mp4")
     )
 
+    first_name = message.from_user.first_name
     result = await message.answer_video(
         video=file,
-        caption=f'Привет, {tg_username} \n\n{CORE_LEXICON["cmd_start"]}',
+        caption=f'Привет, {first_name} \n\n{CORE_LEXICON["cmd_start"]}',
         reply_markup=ReplyKeyboardRemove(),
     )
     if not existing_file_id:
