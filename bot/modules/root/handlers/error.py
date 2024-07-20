@@ -7,7 +7,7 @@ from shared.middlewares.subscription_middleware import (
     ExpiredSubscriptionException,
     NoSubscriptionException,
 )
-from ..keyboards.start_trial_keyboard import start_trial_keyboard
+from ..keyboards.trial_keyboard import start_with_learn_more_trial_keyboard
 
 error_router = Router()
 
@@ -23,7 +23,9 @@ async def handle_my_custom_exception(event: ErrorEvent, message: Message):
     ExceptionTypeFilter(NoSubscriptionException), F.update.message.as_("message")
 )
 async def handle_my_custom_exception(event: ErrorEvent, message: Message):
-    await message.answer(ROOT_LEXICON["can_trial"], reply_markup=start_trial_keyboard)
+    await message.answer(
+        ROOT_LEXICON["can_trial"], reply_markup=start_with_learn_more_trial_keyboard
+    )
 
 
 @error_router.error(F.update.message.as_("message"))

@@ -1,7 +1,7 @@
 from aiogram import Router, Bot
 from aiogram.types import CallbackQuery
 from modules.root.lexicon import ROOT_LEXICON
-from ..keyboards.start_trial_keyboard import StartTrialCallback
+from ..keyboards.trial_keyboard import StartTrialCallback
 from modules.subcription.services import (
     AlreadyTakenTrialException,
     subscription_service,

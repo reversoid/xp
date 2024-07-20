@@ -8,6 +8,7 @@ class Lexicon(TypedDict):
     internal_error: str
     subscription_expired: str
     can_trial: str
+    about_trial: str
     trial_success: str
     trial_failed: str
 
@@ -21,11 +22,16 @@ ROOT_LEXICON: Lexicon = {
     "can_trial": "У вас нет подписки, хотите начать пробный период?",
     "trial_success": "Вы оформили пробную подписку на 7 дней",
     "trial_failed": "Вы уже оформляли пробную подписку :(",
+    "about_trial": "Some info about trial...",
 }
 
 
 class ButtonLexicon(TypedDict):
     go_trial: str
+    learn_more_trial: str
 
 
-BUTTON_LEXICON: ButtonLexicon = {"go_trial": "Вперед!"}
+BUTTON_LEXICON: ButtonLexicon = {
+    "go_trial": "Вперед!",
+    "learn_more_trial": "О подписке",
+}
