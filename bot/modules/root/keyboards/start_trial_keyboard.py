@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters.callback_data import CallbackData
-from ..lexicon.core_lexicon import BUTTON_LEXICON
+from ..lexicon.root_lexicon import BUTTON_LEXICON
 
 
 class StartTrialCallback(CallbackData, prefix="start-trial-button"):

@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart
 from config.config import load_config
-from modules.root.lexicon import CORE_LEXICON
+from modules.root.lexicon import ROOT_LEXICON
 from aiogram.fsm.context import FSMContext
 from aiogram.types import FSInputFile
 
@@ -53,7 +53,7 @@ async def handle_start_command(
     first_name = message.from_user.first_name
     result = await message.answer_video(
         video=file,
-        caption=f'Привет, {first_name} \n\n{CORE_LEXICON["cmd_start"]}',
+        caption=ROOT_LEXICON["cmd_start"](first_name),
         reply_markup=ReplyKeyboardRemove(),
     )
     if not existing_file_id:
@@ -64,8 +64,8 @@ async def handle_start_command(
     )
 
     if current_subscription_status == "EXPIRED":
-        await message.answer(CORE_LEXICON["subscription_expired"])
+        await message.answer(ROOT_LEXICON["subscription_expired"])
     elif current_subscription_status == "NO_SUBSCRIPTION":
         await message.answer(
-            CORE_LEXICON["can_trial"], reply_markup=start_trial_keyboard
+            ROOT_LEXICON["can_trial"], reply_markup=start_trial_keyboard
         )
