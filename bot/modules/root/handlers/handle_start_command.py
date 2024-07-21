@@ -1,10 +1,10 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart
 from config.config import load_config
 from modules.root.lexicon import ROOT_LEXICON
 from aiogram.fsm.context import FSMContext
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, InlineKeyboardMarkup
 
 from modules.auth.services import auth_service
 from modules.profile.services import profile_service
@@ -27,6 +27,26 @@ redis = Redis(
 )
 
 
+async def send_welcome_text(
+    message: Message, text: str, reply_markup: InlineKeyboardMarkup = None
+):
+    existing_file_id = await redis.get(FILE_ID_KEY)
+    file = (
+        existing_file_id.decode()
+        if existing_file_id
+        else FSInputFile("static/sphere.mp4")
+    )
+
+    sent_message = await message.answer_video(
+        video=file,
+        caption=text,
+        reply_markup=reply_markup,
+    )
+
+    if not existing_file_id:
+        await redis.set(FILE_ID_KEY, sent_message.video.file_id)
+
+
 @start_router.message(CommandStart())
 async def handle_start_command(
     message: Message,
@@ -43,29 +63,17 @@ async def handle_start_command(
     if not user:
         await auth_service.register(tg_user_id, tg_username)
 
-    existing_file_id = await redis.get(FILE_ID_KEY)
-    file = (
-        existing_file_id.decode()
-        if existing_file_id
-        else FSInputFile("static/sphere.mp4")
-    )
-
-    first_name = message.from_user.first_name
-    result = await message.answer_video(
-        video=file,
-        caption=ROOT_LEXICON["cmd_start"](first_name),
-        reply_markup=ReplyKeyboardRemove(),
-    )
-    if not existing_file_id:
-        await redis.set(FILE_ID_KEY, result.video.file_id)
-
     current_subscription_status = await subscription_service.get_subscription_status(
         tg_user_id
     )
 
-    if current_subscription_status == "EXPIRED":
-        await message.answer(ROOT_LEXICON["subscription_expired"])
-    elif current_subscription_status == "NO_SUBSCRIPTION":
-        await message.answer(
-            ROOT_LEXICON["can_trial"], reply_markup=start_with_learn_more_trial_keyboard
-        )
+    # TODO some welcome logic
+
+    # if current_subscription_status == "EXPIRED":
+    #     await send_welcome_text(
+    #         message=message, text=ROOT_LEXICON["subscription_expired"]
+    #     )
+    # elif current_subscription_status == "NO_SUBSCRIPTION":
+    #     await message.answer(
+    #         ROOT_LEXICON["can_trial"], reply_markup=start_with_learn_more_trial_keyboard
+    #     )
