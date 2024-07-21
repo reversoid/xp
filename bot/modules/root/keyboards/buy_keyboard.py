@@ -26,5 +26,8 @@ _learn_more_button = InlineKeyboardButton(
 buy_subscripiton_keyboard = InlineKeyboardMarkup(inline_keyboard=[[_buy_button]])
 
 buy_with_learn_more_subscription_keyboard = InlineKeyboardMarkup(
-    inline_keyboard=[[_buy_button], [_learn_more_button]]
+    inline_keyboard=[
+        [_learn_more_button],
+        [_buy_button],
+    ]
 )

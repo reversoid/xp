@@ -16,7 +16,10 @@ error_router = Router()
     ExceptionTypeFilter(ExpiredSubscriptionException), F.update.message.as_("message")
 )
 async def handle_my_custom_exception(event: ErrorEvent, message: Message):
-    await message.answer(ROOT_LEXICON["subscription_expired"])
+    await message.answer(
+        ROOT_LEXICON["subscription_expired"],
+        reply_markup=buy_with_learn_more_subscription_keyboard,
+    )
 
 
 @error_router.error(
@@ -24,7 +27,7 @@ async def handle_my_custom_exception(event: ErrorEvent, message: Message):
 )
 async def handle_my_custom_exception(event: ErrorEvent, message: Message):
     await message.answer(
-        ROOT_LEXICON["can_trial"],
+        ROOT_LEXICON["no_subscription"],
         reply_markup=buy_with_learn_more_subscription_keyboard,
     )
 

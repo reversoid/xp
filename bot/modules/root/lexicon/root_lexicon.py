@@ -11,6 +11,7 @@ class Lexicon(TypedDict):
     subscription_expired: str
     about_subscription: str
     buy_subscription: str
+    no_subscription: str
 
 
 ROOT_LEXICON: Lexicon = {
@@ -20,7 +21,8 @@ ROOT_LEXICON: Lexicon = {
     "cmd_help": "/start - начало диалога\n/log_observation — залогировать наблюдение\n/run_experiment — провести свой эксперимент\n/profile — увидеть архив своих наблюдений и экспериментов",
     "cannot_undertand": "Непонятная команда :(",
     "internal_error": "Ошибка... Свяжитесь с создателем",
-    "subscription_expired": "Кажется, у вас закончилась подписка. Хотите продолжить? Напишите...",
+    "subscription_expired": "Кажется, у вас закончилась подписка. Для того чтобы пользоваться нужно купить...",
+    "no_subscription": "Кажется, у вас нет подписки... Для того чтобы работать, надо покупать...",
     "about_subscription": "Some info about trial...",
     "buy_subscription": "Write to @anoianmari",
 }
