@@ -32,6 +32,6 @@ class ButtonLexicon(TypedDict):
 
 
 BUTTON_LEXICON: ButtonLexicon = {
-    "buy_subscription": "Вперед!",
+    "buy_subscription": "Купить",
     "learn_more_subscription": "О подписке",
 }
