@@ -5,9 +5,14 @@ from .other import other_router
 from .error import error_router
 from .handle_buy_subscription import buy_subscription_router
 from .handle_learn_more_subscription import learn_more_subscription_router
+from .handle_check_subscription import check_subscription_router
 
 core_router = Router()
 
 core_router.include_routers(
-    _start_router, help_router, buy_subscription_router, learn_more_subscription_router
+    _start_router,
+    help_router,
+    buy_subscription_router,
+    learn_more_subscription_router,
+    check_subscription_router,
 )

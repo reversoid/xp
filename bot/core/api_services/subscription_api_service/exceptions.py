@@ -1,2 +1,0 @@
-class TrialAlreadyTakenException(Exception):
-    pass

@@ -12,6 +12,8 @@ class Lexicon(TypedDict):
     about_subscription: str
     buy_subscription: str
     no_subscription: str
+    check_subscription_success: str
+    check_subscription_failed: str
 
 
 ROOT_LEXICON: Lexicon = {
@@ -25,15 +27,19 @@ ROOT_LEXICON: Lexicon = {
     "no_subscription": "Кажется, у вас нет подписки... Для того чтобы работать, надо покупать...",
     "about_subscription": "Some info about trial...",
     "buy_subscription": "Write to @anoianmari",
+    "check_subscription_failed": "Пока нет подписки",
+    "check_subscription_success": "Ура! Есть подписка!",
 }
 
 
 class ButtonLexicon(TypedDict):
     buy_subscription: str
     learn_more_subscription: str
+    check_subscription: str
 
 
 BUTTON_LEXICON: ButtonLexicon = {
     "buy_subscription": "Купить",
     "learn_more_subscription": "О подписке",
+    "check_subscription": "Проверить",
 }
