@@ -22,6 +22,7 @@ async def handle_check_subscription(query: CallbackQuery, bot: Bot):
         await bot.send_message(
             tg_user_id, text=ROOT_LEXICON["check_subscription_success"]
         )
+        await bot.send_message(tg_user_id, text=ROOT_LEXICON["welcome_subscription"])
     else:
         await bot.send_message(
             tg_user_id,
