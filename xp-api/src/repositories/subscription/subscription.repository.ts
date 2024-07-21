@@ -34,15 +34,4 @@ export class SubscriptionRepository {
 
     return subscription;
   }
-
-  async createSubscription(
-    userId: User["id"],
-    tgUsername: User["tgUsername"],
-    until: Date
-  ) {
-    return this.prismaClient.subscription.create({
-      data: { tgUsername, until, userId },
-      select: selectSubscription,
-    });
-  }
 }
