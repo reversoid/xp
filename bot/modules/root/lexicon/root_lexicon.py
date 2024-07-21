@@ -2,18 +2,18 @@ from typing import TypedDict, Callable
 
 
 class Lexicon(TypedDict):
-    cannot_undertand: str
     welcome_subscription: Callable[[str], str]
     welcome_no_subscription: Callable[[str], str]
     welcome_expired_subscription: Callable[[str], str]
-    cmd_help: str
-    internal_error: str
+    no_subscription: str
     subscription_expired: str
     about_subscription: str
     buy_subscription: str
-    no_subscription: str
     check_subscription_success: str
     check_subscription_failed: str
+    cannot_undertand: str
+    cmd_help: str
+    internal_error: str
 
 
 ROOT_LEXICON: Lexicon = {
