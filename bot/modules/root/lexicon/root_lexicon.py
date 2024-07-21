@@ -9,10 +9,8 @@ class Lexicon(TypedDict):
     cmd_help: str
     internal_error: str
     subscription_expired: str
-    can_trial: str
-    about_trial: str
-    trial_success: str
-    trial_failed: str
+    about_subscription: str
+    buy_subscription: str
 
 
 ROOT_LEXICON: Lexicon = {
@@ -23,19 +21,17 @@ ROOT_LEXICON: Lexicon = {
     "cannot_undertand": "Непонятная команда :(",
     "internal_error": "Ошибка... Свяжитесь с создателем",
     "subscription_expired": "Кажется, у вас закончилась подписка. Хотите продолжить? Напишите...",
-    "can_trial": "У вас нет подписки, хотите начать пробный период?",
-    "trial_success": "Вы оформили пробную подписку на 7 дней",
-    "trial_failed": "Вы уже оформляли пробную подписку :(",
-    "about_trial": "Some info about trial...",
+    "about_subscription": "Some info about trial...",
+    "buy_subscription": "Write to @anoianmari",
 }
 
 
 class ButtonLexicon(TypedDict):
-    go_trial: str
-    learn_more_trial: str
+    buy_subscription: str
+    learn_more_subscription: str
 
 
 BUTTON_LEXICON: ButtonLexicon = {
-    "go_trial": "Вперед!",
-    "learn_more_trial": "О подписке",
+    "buy_subscription": "Вперед!",
+    "learn_more_subscription": "О подписке",
 }

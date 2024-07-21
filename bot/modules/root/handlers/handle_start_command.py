@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.filters import CommandStart
 from config.config import load_config
 from modules.root.lexicon import ROOT_LEXICON
@@ -9,7 +9,10 @@ from aiogram.types import FSInputFile, InlineKeyboardMarkup
 from modules.auth.services import auth_service
 from modules.profile.services import profile_service
 from aiogram.fsm.storage.redis import Redis
-from ..keyboards.trial_keyboard import start_with_learn_more_trial_keyboard
+from ..keyboards.buy_keyboard import (
+    buy_subscripiton_keyboard,
+    buy_with_learn_more_subscription_keyboard,
+)
 from modules.subcription.services import subscription_service
 
 start_router: Router = Router()
@@ -67,13 +70,20 @@ async def handle_start_command(
         tg_user_id
     )
 
-    # TODO some welcome logic
-
-    # if current_subscription_status == "EXPIRED":
-    #     await send_welcome_text(
-    #         message=message, text=ROOT_LEXICON["subscription_expired"]
-    #     )
-    # elif current_subscription_status == "NO_SUBSCRIPTION":
-    #     await message.answer(
-    #         ROOT_LEXICON["can_trial"], reply_markup=start_with_learn_more_trial_keyboard
-    #     )
+    first_name = message.from_user.first_name
+    if current_subscription_status == "ACTIVE":
+        await send_welcome_text(
+            message=message, text=ROOT_LEXICON["welcome_subscription"](first_name)
+        )
+    elif current_subscription_status == "EXPIRED":
+        await send_welcome_text(
+            message=message,
+            text=ROOT_LEXICON["welcome_expired_subscription"](first_name),
+            reply_markup=buy_subscripiton_keyboard,
+        )
+    elif current_subscription_status == "NO_SUBSCRIPTION":
+        await send_welcome_text(
+            message=message,
+            text=ROOT_LEXICON["welcome_no_subscription"](first_name),
+            reply_markup=buy_with_learn_more_subscription_keyboard,
+        )
