@@ -95,22 +95,9 @@ model Experiment {
 
   tgMediaGroup TgMediaGroupItem[]
   tgGeo        TgGeo?
-  views        ExperimentView[]
   user         User               @relation(fields: [userId], references: [id])
 
   @@map("experiments")
-}
-
-model ExperimentView {
-  experimentId String @map("experiment_id") @db.VarChar(10)
-  userId       String @map("user_id") @db.VarChar(10)
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-
-  experiment Experiment @relation(fields: [experimentId], references: [id])
-
-  @@unique([experimentId, userId])
-  @@map("experiment_views")
 }
 
 model TgMediaGroupItem {
