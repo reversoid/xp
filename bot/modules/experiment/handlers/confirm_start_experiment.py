@@ -1,13 +1,10 @@
-from datetime import datetime
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 
 from modules.experiment.lexicon import LEXICON
-from modules.experiment.middlewares.experiment_scheduler_middleware import (
-    ExperimentScheduler,
-)
+
 from modules.experiment.services.exceptions import AlreadyStartedExperimentException
 from modules.experiment.keyboards import (
     StartExperimentCallback,
@@ -17,6 +14,7 @@ from modules.experiment.services import (
     experiment_service,
 )
 from modules.experiment.states import FSMExperiment
+from modules.root.middlewares.scheduler_middleware.scheduler import CoreScheduler
 from shared.utils.send.send_observations import send_observations
 
 router: Router = Router()
@@ -27,7 +25,7 @@ async def confirm_start_experiment(
     query: CallbackQuery,
     bot: Bot,
     state: FSMContext,
-    experiment_scheduler: ExperimentScheduler,
+    scheduler: CoreScheduler,
 ):
     tg_user_id = query.from_user.id
 
@@ -42,8 +40,14 @@ async def confirm_start_experiment(
 
         complete_by = experiment.completeBy
 
-        experiment_scheduler.schedule_send_experiment_expired(
-            bot, query.from_user.id, date=complete_by, state=state
+        async def handle_expired_experiment():
+            await state.clear()
+            await query.message.answer(text=LEXICON["experiment_expired"])
+
+        scheduler.schedule_task(
+            task_id=experiment.id,
+            callback=handle_expired_experiment,
+            date=complete_by,
         )
 
         await send_observations(
