@@ -43,7 +43,7 @@ async def confirm_start_experiment(
         complete_by = experiment.completeBy
 
         experiment_scheduler.schedule_send_experiment_expired(
-            bot, query.from_user.id, date=complete_by
+            bot, query.from_user.id, date=complete_by, state=state
         )
 
         await send_observations(

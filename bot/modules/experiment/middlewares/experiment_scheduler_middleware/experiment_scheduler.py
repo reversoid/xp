@@ -1,5 +1,6 @@
 from datetime import datetime
 from aiogram import Bot
+from aiogram.fsm.context import FSMContext
 from modules.root.middlewares.scheduler_middleware import CoreScheduler
 from modules.experiment.lexicon import LEXICON
 
@@ -13,9 +14,10 @@ class ExperimentScheduler:
         self._scheduler = scheduler
 
     def schedule_send_experiment_expired(
-        self, bot: Bot, tg_user_id: int, date: datetime
+        self, bot: Bot, tg_user_id: int, date: datetime, state: FSMContext
     ):
         async def callback():
+            await state.clear()
             await bot.send_message(
                 chat_id=tg_user_id, text=LEXICON["experiment_expired"]
             )
