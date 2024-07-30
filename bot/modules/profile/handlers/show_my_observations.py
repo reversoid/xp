@@ -29,6 +29,7 @@ async def show_observations(
 
     if len(observations.items) == 0:
         await bot.send_message(chat_id=tg_user_id, text=LEXICON["empty_observations"])
+        await query.answer()
         return
 
     if not cursor:
@@ -45,6 +46,7 @@ async def show_observations(
             text=LEXICON["no_more_observations"],
             reply_markup=ReplyKeyboardRemove(),
         )
+        await query.answer()
         return
 
     await bot.send_message(
@@ -52,3 +54,4 @@ async def show_observations(
         text=LEXICON["exists_more_observations"],
         reply_markup=get_next_observations_keyboard(observations.cursor),
     )
+    await query.answer()

@@ -1,5 +1,5 @@
 from aiogram import Router, F, Bot
-from aiogram.types import ReplyKeyboardRemove, CallbackQuery
+from aiogram.types import CallbackQuery
 from modules.profile.keyboards.next_experiments_keyboard import (
     get_next_experiments_keyboard,
 )
@@ -30,6 +30,7 @@ async def show_experiments(
 
     if len(experiments.items) == 0:
         await bot.send_message(chat_id=tg_user_id, text=LEXICON["empty_experiments"])
+        await query.answer()
         return
 
     if not cursor:
@@ -45,6 +46,8 @@ async def show_experiments(
             chat_id=tg_user_id,
             text=LEXICON["no_more_experiments"],
         )
+        await query.answer()
+
         return
 
     await bot.send_message(
@@ -52,3 +55,4 @@ async def show_experiments(
         text=LEXICON["exists_more_experiments"],
         reply_markup=get_next_experiments_keyboard(experiments.cursor),
     )
+    await query.answer()
