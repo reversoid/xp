@@ -2,6 +2,7 @@ from aiogram import Router
 from aiogram.filters import StateFilter
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from modules.root.middlewares.scheduler_middleware.scheduler import CoreScheduler
 from shared.middlewares.album_middleware import AlbumMiddleware
 
 from modules.experiment.lexicon import LEXICON
@@ -19,11 +20,19 @@ router.message.middleware.register(AlbumMiddleware())
 
 @router.message(StateFilter(FSMExperiment.completing))
 async def complete_experiment_with_message(
-    message: Message, state: FSMContext, album: list[Message] = None
+    message: Message,
+    state: FSMContext,
+    scheduler: CoreScheduler,
+    album: list[Message] = None,
 ):
     tg_user_id = message.from_user.id
     try:
-        await experiment_service.complete_experiment(tg_user_id, album or [message])
+        experiment = await experiment_service.complete_experiment(
+            tg_user_id, album or [message]
+        )
+
+        scheduler.cancel_scheduled_task(task_id=experiment.id)
+
         await message.answer(LEXICON["success_experiment"])
         await state.clear()
     except NotStartedExperimentException:
