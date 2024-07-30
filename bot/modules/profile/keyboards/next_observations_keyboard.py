@@ -14,5 +14,4 @@ def _get_more_button(cursor: str):
 
 
 def get_next_observations_keyboard(cursor: str):
-    print("cursor is", cursor)
     return InlineKeyboardMarkup(inline_keyboard=[[_get_more_button(cursor)]])

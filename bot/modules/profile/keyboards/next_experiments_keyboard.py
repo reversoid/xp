@@ -9,7 +9,7 @@ from .profile_keyboard import ProfileExperimentsCallback
 def _get_more_button(cursor: str):
     return InlineKeyboardButton(
         text=BUTTON_LEXICON["load_more_experiments"],
-        callback_data=ProfileExperimentsCallback(cursor=cursor),
+        callback_data=ProfileExperimentsCallback(cursor=cursor).pack(),
     )
 
 
