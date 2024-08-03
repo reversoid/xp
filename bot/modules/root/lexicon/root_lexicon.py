@@ -17,18 +17,18 @@ class Lexicon(TypedDict):
 
 
 ROOT_LEXICON: Lexicon = {
-    "welcome_subscription": lambda name: f"Привет {name} \n\nЭто твоя площадка для тренировки мышления. Здесь ты будешь развивать свой уникальный метод общения с миром через решение нестандартных задач \n\nДобро пожаловать в твой XP",
+    "welcome_subscription": lambda name: f"Привет {name} \n\nЭто твоя площадка для развития мышления инноватора. Преврати этого бота в свою галерею самых красивых наблюдений и фабрику по производству креативных экспериментов.\n\nПомни, что все идеи сплетены — насыщая бота своими наблюдениями, ты обогащаешь всю сеть.\n\nHave fun. Gain more XP",
     "welcome_expired_subscription": lambda name: f"Привет {name} \n\n SUBSCRIPTION EXPIRED",
-    "welcome_no_subscription": lambda name: f"Привет {name} \n\n WOULD LIKE TO START SUB?",
+    "welcome_no_subscription": lambda name: f"Привет {name} \n\n У тебя пока нет подписки. Хочешь подключить?",
     "cmd_help": "/start - начало диалога\n/log_observation — залогировать наблюдение\n/run_experiment — провести свой эксперимент\n/profile — увидеть архив своих наблюдений и экспериментов",
-    "cannot_undertand": "Непонятная команда :(",
+    "cannot_undertand": "Непонятная команда",
     "internal_error": "Ошибка... Свяжитесь с создателем",
-    "subscription_expired": "Кажется, у вас закончилась подписка. Для того чтобы пользоваться нужно купить...",
-    "no_subscription": "Кажется, у вас нет подписки... Для того чтобы работать, надо покупать...",
-    "about_subscription": "Some info about trial...",
-    "buy_subscription": "Write to @anoianmari",
+    "subscription_expired": "У тебя закончилась подписка — такое бывает",
+    "no_subscription": "У тебя пока нет подписки",
+    "about_subscription": "Подписка даёт возможность использовать бота в течение месяца. Если ты видишь это сообщение, значит, ты вытянул счастливый билет — первые два месяца твоя подписка стоит 500 рублей. Пиши @anoianmari",
+    "buy_subscription": "Напиши @anoianmari",
     "check_subscription_failed": "Пока нет подписки",
-    "check_subscription_success": "Ура! Есть подписка!",
+    "check_subscription_success": "Отлично! Подписка в кармане",
 }
 
 

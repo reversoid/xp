@@ -1,6 +1,6 @@
 MENU_COMMANDS = {
-    "/profile": "Твой профиль",
-    "/log_observation": "Зафиксировать наблюдение",
-    "/run_experiment": "Начать эксперимент",
-    "/help": "Помощь",
+    "/profile": "your observations & experiments",
+    "/log_observation": "capture what makes you curious",
+    "/run_experiment": "transform observations into something unexpected",
+    "/help": "something wrong?",
 }
