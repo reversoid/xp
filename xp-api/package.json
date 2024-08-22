@@ -16,7 +16,7 @@
     "dev": "pnpm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"pnpm:watch:ts\" \"pnpm:dev:start\"",
     "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
     "preinstall": "npx only-allow pnpm",
-    "start:dev": "docker compose -f docker-compose.dev.yml up -d && pnpm run dev"
+    "start:dev": "docker compose -f docker-compose.dev.yml up -d && pnpx prisma migrate dev && pnpm run dev"
   },
   "keywords": [],
   "author": "",

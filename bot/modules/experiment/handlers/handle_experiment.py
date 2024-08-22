@@ -18,8 +18,8 @@ router: Router = Router()
 router.message.middleware.register(AlbumMiddleware())
 
 
-@router.message(StateFilter(FSMExperiment.completing), Command("run_experiment"))
-async def complete_experiment_with_message(
+@router.message(StateFilter(FSMExperiment.completing), Command("cancel"))
+async def cancel_experiment(
     message: Message,
     state: FSMContext,
     scheduler: CoreScheduler,

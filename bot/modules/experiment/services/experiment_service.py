@@ -33,8 +33,9 @@ class ExperimentService:
             tg_user_id, OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT
         )
 
-        if len(observations) < OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT:
-            raise NotEnoughObservationsException
+        # TODO uncomment on production
+        # if len(observations) < OBSERVATIONS_AMOUNT_TO_START_EXPERIMENT:
+        #     raise NotEnoughObservationsException
 
         return observations
 
