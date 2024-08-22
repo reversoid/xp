@@ -1,11 +1,8 @@
 {
+  "private": true,
   "name": "core-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +10,7 @@
     "prisma": "^5.15.0",
     "typescript": "^5.2.2"
   },
+  "type": "module",
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.15.0",
@@ -22,5 +20,11 @@
   },
   "prisma": {
     "schema": "db/prisma/schema.prisma"
-  }
+  },
+  "exports": {
+    "./db": "./src/db/index.ts",
+    "./models/*": "./src/models/*.ts",
+    "./repositories/*": "./src/repositories/*.ts",
+    "./services/*": "./src/services/*.ts"
+  }  
 }

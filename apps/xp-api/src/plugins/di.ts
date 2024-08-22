@@ -10,7 +10,7 @@ import {
   ExperimentService,
   ObservationService,
   SubscriptionService,
-} from "core-sdk/services";
+} from "core-sdk/services/index";
 
 declare module "@fastify/awilix" {
   interface Cradle {

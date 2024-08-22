@@ -1,0 +1,14 @@
+version: "0.5"
+
+processes:
+  xp_api:
+    command: pnpm dev
+    working_dir: "./apps/xp-api"
+    availability:
+      restart: "always"
+
+  xp_bot:
+    command: pymon bot.py
+    working_dir: "./apps/xp-bot"
+    availability:
+      restart: "always"

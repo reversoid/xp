@@ -1,6 +1,6 @@
 import fastifyPlugin from "fastify-plugin";
 import { timingSafeEqual } from "node:crypto";
-import { User } from "core-sdk/models/user.js";
+import { User } from "core-sdk/models/user";
 
 function timingSafeCompare(a: string, b: string) {
   const bufferA = Buffer.from(a);

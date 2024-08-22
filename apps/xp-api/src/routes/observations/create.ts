@@ -2,8 +2,8 @@ import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { authGuard } from "../../utils/guards/auth.guard.js";
 import { subscriptionGuard } from "../../utils/guards/subscription.guard.js";
 import { z } from "zod";
-import { tgGeoSchema } from "core-sdk/models/tg-geo.js";
-import { tgMediaGroupItemSchema } from "core-sdk/models/tg-media-group-item.js";
+import { tgGeoSchema } from "core-sdk/models/tg-geo";
+import { tgMediaGroupItemSchema } from "core-sdk/models/tg-media-group-item";
 
 const createObservationSchema = z.object({
   tgText: z.string().nullish(),

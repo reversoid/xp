@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "sourceMap": true,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
-    "target": "ES2022",
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "target": "ESNext",
     "esModuleInterop": true,
     "strict": true
   },

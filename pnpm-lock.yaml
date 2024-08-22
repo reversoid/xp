@@ -25,6 +25,9 @@ importers:
       awilix:
         specifier: ^10.0.2
         version: 10.0.2
+      core-sdk:
+        specifier: workspace:*
+        version: link:../../packages/core-sdk
       fastify:
         specifier: ^4.26.1
         version: 4.28.1
@@ -47,9 +50,6 @@ importers:
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
-      core-sdk:
-        specifier: workspace:^
-        version: link:../../packages/core-sdk
       fastify-tsconfig:
         specifier: ^2.0.0
         version: 2.0.0

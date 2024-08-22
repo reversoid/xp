@@ -1,4 +1,4 @@
-import { Subscription } from "core-sdk/models/subscription.js";
+import { Subscription } from "core-sdk/models/subscription";
 import fastifyPlugin from "fastify-plugin";
 
 export default fastifyPlugin(

@@ -1,6 +1,6 @@
+import { UserAlreadyExistsException } from "core-sdk/services/auth/errors";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { UserAlreadyExistsException } from "core-sdk/services/auth/errors.js";
 
 export const registerSchema = z.object({
   tgId: z.coerce.bigint(),

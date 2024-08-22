@@ -31,12 +31,12 @@
     "fastify-cli": "^6.1.1",
     "fastify-plugin": "^4.0.0",
     "fastify-type-provider-zod": "^1.2.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "core-sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.4.4",
     "concurrently": "^8.2.2",
-    "core-sdk": "workspace:^",
     "fastify-tsconfig": "^2.0.0",
     "prisma": "^5.15.0",
     "typescript": "^5.2.2"

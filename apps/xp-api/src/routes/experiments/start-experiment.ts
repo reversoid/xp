@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { authGuard } from "../../utils/guards/auth.guard.js";
 import { subscriptionGuard } from "../../utils/guards/subscription.guard.js";
-import { AlreadyStartedExperimentException } from "core-sdk/services";
+import { AlreadyStartedExperimentException } from "core-sdk/services/experiment/errors";
 
 const getRandomObservations: FastifyPluginAsyncZod = async (
   fastify

@@ -1,1 +1,1 @@
-docker compose -f docker-compose.dev.yml up -d && pymon bot.py
+pymon bot.py
