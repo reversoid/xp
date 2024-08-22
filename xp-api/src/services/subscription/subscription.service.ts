@@ -12,6 +12,14 @@ export class SubscriptionService {
     this.subscriptionRepository = subscriptionRepository;
   }
 
+  async upsertSubscription(tgUsername: string, until: Date) {
+    return this.subscriptionRepository.upsertSubscription(tgUsername, until);
+  }
+
+  async deleteSubscription(tgUsername: string) {
+    return this.subscriptionRepository.deleteSubscription(tgUsername);
+  }
+
   async getUserSubscription(userId: User["id"]) {
     return this.subscriptionRepository.getUserSubscription(userId);
   }

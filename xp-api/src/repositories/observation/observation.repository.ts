@@ -74,6 +74,7 @@ export class ObservationRepository {
       AND ov.user_id = ${userId}
       WHERE ov.user_id IS NULL
       AND o.user_id != ${userId}
+      AND o.is_approved = true
       ORDER BY RANDOM()
       LIMIT ${limit};
     `) as { id: Observation["id"] }[];
@@ -134,6 +135,22 @@ export class ObservationRepository {
       }
 
       return { ...observation, tgMediaGroup, tgGeo };
+    });
+  }
+
+  async approveObservation(
+    observationId: Observation["id"]
+  ): Promise<Observation> {
+    return this.prismaClient.observation.update({
+      where: { id: observationId },
+      data: { isApproved: true },
+      select: selectObservation,
+    });
+  }
+
+  async deleteObservation(observationId: Observation["id"]): Promise<void> {
+    await this.prismaClient.observation.delete({
+      where: { id: observationId },
     });
   }
 }

@@ -61,4 +61,14 @@ export class ObservationService {
       limit
     );
   }
+
+  async approveObservation(
+    observationId: Observation["id"]
+  ): Promise<Observation> {
+    return this.observationRepository.approveObservation(observationId);
+  }
+
+  async deleteObservation(observationId: Observation["id"]): Promise<void> {
+    return this.observationRepository.deleteObservation(observationId);
+  }
 }
