@@ -6,11 +6,30 @@ const deleteObservation: FastifyPluginAsyncZod = async (
 ): Promise<void> => {
   const observationService = fastify.diContainer.resolve("observationService");
 
-  fastify.delete(
-    "/:observationId",
+  fastify.addHook("preHandler", (reqest, reply) => {
+    return;
+  });
+
+  fastify.patch(
+    "/waitlist/:observationId",
     {
-      // TODO need admin auth handler?
-      preHandler: [],
+      schema: {
+        params: z.object({ observationId: z.string().min(10).max(10) }),
+      },
+    },
+    async function (request, reply) {
+      const observationId = request.params.observationId;
+      const observation = await observationService.approveObservation(
+        observationId
+      );
+
+      return reply.send({ observation });
+    }
+  );
+
+  fastify.delete(
+    "/waitlist/:observationId",
+    {
       schema: {
         params: z.object({ observationId: z.string().min(10).max(10) }),
       },
