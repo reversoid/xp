@@ -7,6 +7,10 @@ class CurrentExperimentResponse(BaseModel):
     experiment: Experiment | None = None
 
 
+class CancelExperimentResponse(BaseModel):
+    experiment: Experiment
+
+
 class StartExperimentResponse(BaseModel):
     experiment: Experiment
 

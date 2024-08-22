@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.filters import StateFilter
+from aiogram.filters import StateFilter, Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from modules.root.middlewares.scheduler_middleware.scheduler import CoreScheduler
@@ -18,6 +18,21 @@ router: Router = Router()
 router.message.middleware.register(AlbumMiddleware())
 
 
+@router.message(StateFilter(FSMExperiment.completing), Command("run_experiment"))
+async def complete_experiment_with_message(
+    message: Message,
+    state: FSMContext,
+    scheduler: CoreScheduler,
+):
+    experiment = await experiment_service.cancel_experiment(message.from_user.id)
+    scheduler.cancel_scheduled_task(task_id=f"expired_{experiment.id}")
+    scheduler.cancel_scheduled_task(task_id=f"remind_1_{experiment.id}")
+    scheduler.cancel_scheduled_task(task_id=f"remind_2_{experiment.id}")
+    await state.clear()
+
+    await message.answer(LEXICON["experiment_canceled"])
+
+
 @router.message(StateFilter(FSMExperiment.completing))
 async def complete_experiment_with_message(
     message: Message,
@@ -31,7 +46,9 @@ async def complete_experiment_with_message(
             tg_user_id, album or [message]
         )
 
-        scheduler.cancel_scheduled_task(task_id=experiment.id)
+        scheduler.cancel_scheduled_task(task_id=f"expired_{experiment.id}")
+        scheduler.cancel_scheduled_task(task_id=f"remind_1_{experiment.id}")
+        scheduler.cancel_scheduled_task(task_id=f"remind_2_{experiment.id}")
 
         await message.answer(LEXICON["success_experiment"])
         await state.clear()

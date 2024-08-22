@@ -1,3 +1,4 @@
+from datetime import timedelta
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram import Bot
@@ -44,10 +45,25 @@ async def confirm_start_experiment(
             await state.clear()
             await query.message.answer(text=LEXICON["experiment_expired"])
 
+        async def handle_remind_experiment(time: int):
+            await query.message.answer(text=LEXICON["experiment_will_expire"](time))
+
         scheduler.schedule_task(
-            task_id=experiment.id,
+            task_id=f"expired_{experiment.id}",
             callback=handle_expired_experiment,
             date=complete_by,
+        )
+
+        scheduler.schedule_task(
+            task_id=f"remind_1_{experiment.id}",
+            callback=lambda: handle_remind_experiment(8),
+            date=complete_by - timedelta(hours=8),
+        )
+
+        scheduler.schedule_task(
+            task_id=f"remind_2_{experiment.id}",
+            callback=lambda: handle_remind_experiment(2),
+            date=complete_by - timedelta(hours=2),
         )
 
         await send_observations(

@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Callable, TypedDict
 
 
 class Lexicon(TypedDict):
@@ -10,11 +10,13 @@ class Lexicon(TypedDict):
     experiment_already_started: str
     not_enough_observations: str
     experiment_expired: str
+    experiment_will_expire: Callable[[int], str]
+    experiment_canceled: str
 
 
 LEXICON: Lexicon = {
     "experiment_started": """
-        У тебя есть 24 часа. Затем прикрепи своё решение в формате:\n—Название эксперимента\n—Артефакты результата \n—Артефакты процесса, если хочешь
+        У тебя есть 24 часа. Затем прикрепи своё решение в формате:\n—Название эксперимента\n—Артефакты результата \n—Артефакты процесса, если хочешь \n\nДля остановки эксперимента введи /cancel
     """,
     "confirm_experiment": """
         Цель — придумать задачу, основанную на трех наблюдениях других людей, и поделиться своим решением. У тебя будет на это 24 часа. Результат эксперимента должен быть отправлен одним сообщением. Если хочешь, прикрепи также документацию процесса\n\nГотовность?
@@ -25,6 +27,8 @@ LEXICON: Lexicon = {
     "experiment_already_started": "Эксперимент уже начат",
     "not_enough_observations": "Пока в сети недостаточно наблюдений, чтобы начать эксперементировать..",
     "experiment_expired": "Этот эксперимент истёк. Чтобы начать новый, жми /run_experiment",
+    "experiment_will_expire": lambda time: f"Эксперимент закончится через ${time}ч",
+    "experiment_canceled": "Эксперимент завершен",
 }
 
 

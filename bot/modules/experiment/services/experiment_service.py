@@ -55,6 +55,17 @@ class ExperimentService:
         except AlreadyStartedExperimentException:
             raise AlreadyStartedException
 
+    async def cancel_experiment(self, tg_user_id: int) -> Experiment:
+        try:
+            experiment: Experiment = await experiment_api_service.cancel_experiment(
+                tg_user_id
+            )
+
+            return experiment
+
+        except NoActiveExperimentException:
+            raise NotStartedExperimentException
+
     async def complete_experiment(
         self, tg_user_id: int, messages: list[Message]
     ) -> Experiment:

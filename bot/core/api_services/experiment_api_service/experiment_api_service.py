@@ -1,5 +1,6 @@
 from .exceptions import AlreadyStartedExperimentException, NoActiveExperimentException
 from .responses import (
+    CancelExperimentResponse,
     CurrentExperimentResponse,
     StartExperimentResponse,
     CompleteExperimentResponse,
@@ -18,6 +19,19 @@ class ExperimentApiService(ApiService):
             url, headers=headers, dataclass=CurrentExperimentResponse
         )
         return response.experiment
+
+    async def cancel_experiment(self, tg_user_id: int) -> Experiment:
+        url = f"{self.base_url}/experiments"
+        headers = self.get_auth_headers(tg_user_id)
+        try:
+            response: CurrentExperimentResponse = await self.delete(
+                url, headers=headers, dataclass=CancelExperimentResponse
+            )
+            return response.experiment
+        except ApiException as e:
+            if e.message == "NO_ACTIVE_EXPERIMENT":
+                raise NoActiveExperimentException
+            raise e
 
     async def complete_experiment(
         self, tg_user_id: int, dto: CompleteExperimentDto
