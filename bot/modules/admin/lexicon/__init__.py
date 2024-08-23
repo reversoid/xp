@@ -6,6 +6,7 @@ class Lexicon(TypedDict):
     command_subscription: str
     wrong_subscription_format: str
     subscription_success: Callable[[str, str], str]
+    canceled: str
 
 
 LEXICON: Lexicon = {
@@ -13,4 +14,5 @@ LEXICON: Lexicon = {
     "command_subscription": "Введите имя пользователя и длительность подписки в следующем формате:\n\n@username 10 days\n\n Нажмите /cancel для отмены",
     "wrong_subscription_format": "Неверный формат",
     "subscription_success": lambda username, until: f"Успешно.\n\nПодписка для @{username} активна до {until}",
+    "canceled": "Отменено",
 }

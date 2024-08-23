@@ -23,6 +23,15 @@ async def command_subscription(
     await message.answer(LEXICON["command_subscription"])
 
 
+@router.message(StateFilter(FSMSubscription.filling), Command("cancel"))
+async def cancel_filling(
+    message: Message,
+    state: FSMContext,
+):
+    await state.clear()
+    await message.answer(LEXICON["canceled"])
+
+
 @router.message(StateFilter(FSMSubscription.filling))
 async def handle_input_subscription(
     message: Message,
