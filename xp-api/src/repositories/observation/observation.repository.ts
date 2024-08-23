@@ -153,4 +153,28 @@ export class ObservationRepository {
       where: { id: observationId },
     });
   }
+
+  async getWaitingObservations(
+    limit: number,
+    cursor?: string
+  ): Promise<PaginatedData<Observation>> {
+    const decodedCursor = cursor ? decodeCursor(cursor) : undefined;
+
+    const observations = await this.prismaClient.observation.findMany({
+      select: { ...selectObservation, privateId: true },
+      cursor: { privateId: decodedCursor },
+      take: limit + 1,
+      where: { isApproved: false },
+      orderBy: { privateId: "asc" },
+    });
+
+    const nextId = observations.at(limit)?.privateId;
+
+    return {
+      cursor: nextId ? encodeCursor(nextId) : null,
+      items: observations
+        .slice(0, limit)
+        .map((o) => observationSchema.parse(o)),
+    };
+  }
 }

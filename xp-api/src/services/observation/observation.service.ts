@@ -71,4 +71,11 @@ export class ObservationService {
   async deleteObservation(observationId: Observation["id"]): Promise<void> {
     return this.observationRepository.deleteObservation(observationId);
   }
+
+  async getWaitingObservations(
+    limit: number,
+    cursor?: string
+  ): Promise<PaginatedData<Observation>> {
+    return this.observationRepository.getWaitingObservations(limit, cursor);
+  }
 }

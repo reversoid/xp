@@ -7,8 +7,32 @@ const deleteObservation: FastifyPluginAsyncZod = async (
   const observationService = fastify.diContainer.resolve("observationService");
 
   fastify.addHook("preHandler", (reqest, reply) => {
+    // TODO check for admin
     return;
   });
+
+  fastify.get(
+    "/waitlist",
+    {
+      schema: {
+        querystring: z.object({
+          limit: z.coerce.number(),
+          cursor: z.string().optional(),
+        }),
+      },
+    },
+    async function (request, reply) {
+      const limit = request.query.limit;
+      const cursor = request.query.cursor;
+
+      const observations = await observationService.getWaitingObservations(
+        limit,
+        cursor
+      );
+
+      return reply.send({ observations });
+    }
+  );
 
   fastify.patch(
     "/waitlist/:observationId",
