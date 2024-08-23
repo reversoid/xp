@@ -21,8 +21,8 @@ const setSubscription: FastifyPluginAsyncZod = async (
       schema: { body: setSubscriptionDto },
     },
     async function (request, reply) {
-      const username = request.body.username;
-      const until = new Date(request.body.until);
+      const username = (request as any).body.username;
+      const until = new Date((request as any).body.until);
 
       const subscription = await subscriptionService.upsertSubscription(
         username,

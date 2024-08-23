@@ -14,7 +14,7 @@ from modules.admin.services import admin_service
 router: Router = Router()
 
 
-@router.message(Command("subcription"))
+@router.message(Command("subscription"))
 async def command_subscription(
     message: Message,
     state: FSMContext,
@@ -38,9 +38,7 @@ async def handle_input_subscription(
         await message.answer(
             LEXICON["subscription_success"](
                 username,
-                datetime.fromisoformat(subscription.until).strftime(
-                    "%d.%m.%Y %H:%M:%S"
-                ),
+                subscription.until.strftime("%d.%m.%Y %H:%M:%S") + " UTC",
             )
         )
 

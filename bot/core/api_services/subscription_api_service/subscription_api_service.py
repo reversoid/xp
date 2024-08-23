@@ -26,11 +26,14 @@ class SubscriptionApiService(ApiService):
     async def upsert_subscription(
         self, tg_user_id: int, username: str, until: datetime
     ):
-        url = self.get_url("admin/subscription")
+        url = self.get_url("admin/subscriptions")
 
         headers = self.get_auth_headers(tg_user_id=tg_user_id)
 
-        payload: Payload = {"username": username, "until": until.isoformat()}
+        payload: Payload = {
+            "username": username,
+            "until": until.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+        }
 
         response: UpsertSubscriptionResponse = await self.put(
             url=url,
