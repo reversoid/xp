@@ -6,13 +6,10 @@ from config import load_config
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from modules.root.middlewares.scheduler_middleware import SchedulerMiddleware
+from modules.admin.handlers import admin_router
 
-
-from modules.root.handlers import core_router, other_router, error_router
-from modules.root.utils.set_main_menu import set_main_menu
-from modules.experiment.handlers import experiment_router
-from modules.observation.handlers import observation_router
-from modules.profile.handlers import profile_router
+from modules.admin.utils.set_main_menu import set_main_menu
+from aiogram.fsm.storage.base import DefaultKeyBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +24,9 @@ async def main():
         port=config.database.redis.port,
     )
 
-    storage = RedisStorage(redis=redis)
+    storage = RedisStorage(
+        redis=redis, key_builder=DefaultKeyBuilder(prefix="admin_fsm")
+    )
 
     dp = Dispatcher(storage=storage)
 
@@ -46,14 +45,7 @@ async def main():
     # Выводим в консоль информацию о начале запуска бота
     logger.info("Starting bot")
 
-    dp.include_routers(
-        core_router,
-        experiment_router,
-        observation_router,
-        profile_router,
-        other_router,
-        error_router,
-    )
+    dp.include_routers(admin_router)
 
     await set_main_menu(bot)
 
