@@ -31,7 +31,7 @@ async def handle_input_subscription(
     try:
         username, days = parse_subscription_text(message.text)
         subscription = await admin_service.upsert_subscription(
-            tg_user_id=message.from_user.id, username=username, days=days
+            message.from_user.id, username, days
         )
 
         await state.clear()

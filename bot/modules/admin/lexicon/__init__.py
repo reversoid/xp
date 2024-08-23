@@ -10,7 +10,7 @@ class Lexicon(TypedDict):
 
 LEXICON: Lexicon = {
     "command_start": "Привет! Это админ бот!",
-    "command_subscription": "Введите имя пользователя и длительность подписки в следующем формате:\n*@username 10 days*\n\n Нажмите /cancel для отмены",
+    "command_subscription": "Введите имя пользователя и длительность подписки в следующем формате:\n\n@username 10 days\n\n Нажмите /cancel для отмены",
     "wrong_subscription_format": "Неверный формат",
     "subscription_success": lambda username, until: f"Успешно. Подписка для @{username} активна до {until}UTC",
 }

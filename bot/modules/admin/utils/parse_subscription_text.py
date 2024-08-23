@@ -15,5 +15,5 @@ def parse_subscription_text(text: str):
     return username, days
 
 
-class WrongSubscriptionFormatException:
+class WrongSubscriptionFormatException(BaseException):
     pass

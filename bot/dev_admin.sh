@@ -1,0 +1,1 @@
+docker compose -f docker-compose.dev.yml up -d && pymon admin_bot.py
