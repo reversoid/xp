@@ -42,9 +42,23 @@ async def main():
 
         amount = await admin_service.get_waitlist_amount(123)
         if not amount:
+            await redis.set("has_new_observations", 0)
             return
 
-        await bot.send_message(config.admin_bot.admin_user_id, "Есть новые наблюдения")
+        encoded_has = await redis.get("has_new_observations")
+
+        already_sent_notification = bool(
+            int(encoded_has.decode()) if encoded_has else 0
+        )
+
+        if not already_sent_notification:
+            await bot.send_message(
+                config.admin_bot.admin_user_id,
+                "Есть новые наблюдения",
+                disable_notification=True,
+            )
+
+        await redis.set("has_new_observations", 1)
 
     core_scheduler.run_periodic_task(
         "new_observations_notification", notify_about_new_observations, 60
