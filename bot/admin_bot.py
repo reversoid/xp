@@ -11,6 +11,8 @@ from modules.admin.handlers import admin_router
 from modules.admin.utils.set_main_menu import set_main_menu
 from aiogram.fsm.storage.base import DefaultKeyBuilder
 from modules.root.middlewares.scheduler_middleware.scheduler import CoreScheduler
+from modules.admin.services import admin_service
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +37,18 @@ async def main():
 
     core_scheduler = CoreScheduler(scheduler)
 
-    # TODO notify message
+    async def notify_about_new_observations():
+        print("HELLO WORLD!")
+
+        amount = await admin_service.get_waitlist_amount(123)
+        if not amount:
+            return
+
+        await bot.send_message(config.admin_bot.admin_user_id, "Есть новые наблюдения")
+
+    core_scheduler.run_periodic_task(
+        "new_observations_notification", notify_about_new_observations, 60
+    )
 
     # Конфигурируем логирование
     logging.basicConfig(

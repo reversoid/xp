@@ -10,3 +10,7 @@ class GetRandomObservationsResponse(BaseModel):
 # TODO make paginatedObservations import from shared
 class GetWaitlistObservationsResponse(BaseModel):
     observations: PaginatedObservations
+
+
+class WaitlistAmountResponse(BaseModel):
+    amount: int

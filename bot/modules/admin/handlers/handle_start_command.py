@@ -11,4 +11,5 @@ router: Router = Router()
 async def cancel_experiment(
     message: Message,
 ):
+    print("Your ID", message.from_user.id)
     await message.answer(LEXICON["command_start"])

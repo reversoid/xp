@@ -24,5 +24,11 @@ class AdminService:
     async def delete_observation(self, tg_user_id: int, observation_id: str):
         await observation_api_service.delete_observation(tg_user_id, observation_id)
 
+    async def get_waitlist_amount(
+        self,
+        tg_user_id: int,
+    ):
+        return await observation_api_service.get_waitlist_amount(tg_user_id)
+
 
 admin_service = AdminService()
