@@ -154,6 +154,12 @@ export class ObservationRepository {
     });
   }
 
+  async getWaitingObservationsAmount() {
+    return this.prismaClient.observation.count({
+      where: { isApproved: false },
+    });
+  }
+
   async getWaitingObservations(
     limit: number,
     cursor?: string
@@ -162,7 +168,7 @@ export class ObservationRepository {
 
     const observations = await this.prismaClient.observation.findMany({
       select: { ...selectObservation, privateId: true },
-      cursor: { privateId: decodedCursor },
+      cursor: decodedCursor ? { privateId: decodedCursor } : undefined,
       take: limit + 1,
       where: { isApproved: false },
       orderBy: { privateId: "asc" },

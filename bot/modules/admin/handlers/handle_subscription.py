@@ -4,7 +4,7 @@ from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
 from modules.admin.lexicon import LEXICON
 from aiogram.fsm.context import FSMContext
-from modules.admin.states import FSMSubscription
+from modules.admin.states import FSMAdminSubscription
 from modules.admin.utils.parse_subscription_text import (
     WrongSubscriptionFormatException,
     parse_subscription_text,
@@ -19,11 +19,11 @@ async def command_subscription(
     message: Message,
     state: FSMContext,
 ):
-    await state.set_state(FSMSubscription.filling)
+    await state.set_state(FSMAdminSubscription.filling)
     await message.answer(LEXICON["command_subscription"])
 
 
-@router.message(StateFilter(FSMSubscription.filling), Command("cancel"))
+@router.message(StateFilter(FSMAdminSubscription.filling), Command("cancel"))
 async def cancel_filling(
     message: Message,
     state: FSMContext,
@@ -32,7 +32,7 @@ async def cancel_filling(
     await message.answer(LEXICON["canceled"])
 
 
-@router.message(StateFilter(FSMSubscription.filling))
+@router.message(StateFilter(FSMAdminSubscription.filling))
 async def handle_input_subscription(
     message: Message,
     state: FSMContext,

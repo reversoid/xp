@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
 
+from core.api_services.observation_api_service import observation_api_service
 from core.api_services.subscription_api_service import subscription_api_service
+from modules.observation.services import observation_service
 
 
 class AdminService:
@@ -11,16 +13,16 @@ class AdminService:
         )
         return subscription
 
-    # TODO methods
+    async def get_waiting_observations(self, tg_user_id: int, cursor: str = None):
+        return await observation_api_service.get_waitlist_observations(
+            tg_user_id, cursor
+        )
 
-    async def get_waiting_observations(tg_user_id: int):
-        pass
+    async def approve_observation(self, tg_user_id: int, observation_id: str):
+        await observation_api_service.approve_observation(tg_user_id, observation_id)
 
-    async def approve_observation(tg_user_id: int):
-        pass
-
-    async def remove_observation(tg_user_id: int):
-        pass
+    async def delete_observation(self, tg_user_id: int, observation_id: str):
+        await observation_api_service.delete_observation(tg_user_id, observation_id)
 
 
 admin_service = AdminService()

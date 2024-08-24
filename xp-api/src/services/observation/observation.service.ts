@@ -15,6 +15,10 @@ export class ObservationService {
     this.observationRepository = observationRepository;
   }
 
+  async getWaitingObservationsAmount() {
+    return this.observationRepository.getWaitingObservationsAmount();
+  }
+
   async createObservation(
     userId: User["id"],
     dto: CreateObservationDto

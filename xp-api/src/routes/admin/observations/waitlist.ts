@@ -6,9 +6,15 @@ const deleteObservation: FastifyPluginAsyncZod = async (
 ): Promise<void> => {
   const observationService = fastify.diContainer.resolve("observationService");
 
-  fastify.addHook("preHandler", (reqest, reply) => {
-    // TODO check for admin
-    return;
+  // fastify.addHook("preHandler", (reqest, reply) => {
+  //   // TODO check for admin
+  //   return;
+  // });
+
+  fastify.get("/waitlist/amount", async function (request, reply) {
+    const amount = await observationService.getWaitingObservationsAmount();
+
+    return reply.send({ amount });
   });
 
   fastify.get(
