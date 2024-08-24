@@ -35,10 +35,7 @@ class ObservationApiService(ApiService):
         url = self.get_url(f"admin/observations/waitlist/{observation_id}")
         headers = self.get_auth_headers(tg_user_id)
 
-        await self.patch(
-            url,
-            headers=headers,
-        )
+        await self.patch(url, headers=headers, payload={})
 
     async def delete_observation(self, tg_user_id: int, observation_id: str):
         url = self.get_url(f"admin/observations/waitlist/{observation_id}")
