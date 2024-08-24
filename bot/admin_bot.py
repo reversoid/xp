@@ -10,6 +10,7 @@ from modules.admin.handlers import admin_router
 
 from modules.admin.utils.set_main_menu import set_main_menu
 from aiogram.fsm.storage.base import DefaultKeyBuilder
+from modules.root.middlewares.scheduler_middleware.scheduler import CoreScheduler
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +33,9 @@ async def main():
 
     scheduler = AsyncIOScheduler()
 
-    dp.message.middleware.register(SchedulerMiddleware(scheduler=scheduler))
-    dp.callback_query.middleware.register(SchedulerMiddleware(scheduler=scheduler))
+    core_scheduler = CoreScheduler(scheduler)
+
+    # TODO notify message
 
     # Конфигурируем логирование
     logging.basicConfig(
