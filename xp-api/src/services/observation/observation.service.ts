@@ -15,6 +15,10 @@ export class ObservationService {
     this.observationRepository = observationRepository;
   }
 
+  async getWaitingObservationsAmount() {
+    return this.observationRepository.getWaitingObservationsAmount();
+  }
+
   async createObservation(
     userId: User["id"],
     dto: CreateObservationDto
@@ -60,5 +64,22 @@ export class ObservationService {
       userId,
       limit
     );
+  }
+
+  async approveObservation(
+    observationId: Observation["id"]
+  ): Promise<Observation> {
+    return this.observationRepository.approveObservation(observationId);
+  }
+
+  async deleteObservation(observationId: Observation["id"]): Promise<void> {
+    return this.observationRepository.deleteObservation(observationId);
+  }
+
+  async getWaitingObservations(
+    limit: number,
+    cursor?: string
+  ): Promise<PaginatedData<Observation>> {
+    return this.observationRepository.getWaitingObservations(limit, cursor);
   }
 }

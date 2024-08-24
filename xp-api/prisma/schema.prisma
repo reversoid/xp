@@ -54,6 +54,8 @@ model Observation {
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
+  isApproved Boolean @default(false) @map("is_approved") @db.Boolean()
+
   user         User               @relation(fields: [userId], references: [id])
   views        ObservationView[]
   tgMediaGroup TgMediaGroupItem[]

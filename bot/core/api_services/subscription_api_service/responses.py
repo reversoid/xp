@@ -5,3 +5,7 @@ from pydantic import BaseModel
 
 class GetSubscriptionStatusResponse(BaseModel):
     status: Literal["ACTIVE", "EXPIRED", "NO_SUBSCRIPTION"]
+
+
+class UpsertSubscriptionResponse(BaseModel):
+    subscription: Subscription

@@ -7,6 +7,21 @@ class CoreScheduler:
     def __init__(self, scheduler: AsyncIOScheduler):
         self._scheduler = scheduler
 
+    def run_periodic_task(
+        self,
+        task_id: str,
+        callback: Callable,
+        seconds: int,
+    ):
+        return self._scheduler.add_job(
+            func=callback,
+            id=task_id,
+            trigger="interval",
+            replace_existing=True,
+            seconds=seconds,
+            next_run_time=datetime.now(),
+        )
+
     def schedule_task(self, task_id: str, callback: Callable, date: datetime):
         return self._scheduler.add_job(
             func=callback,

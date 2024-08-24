@@ -74,6 +74,7 @@ export class ObservationRepository {
       AND ov.user_id = ${userId}
       WHERE ov.user_id IS NULL
       AND o.user_id != ${userId}
+      AND o.is_approved = true
       ORDER BY RANDOM()
       LIMIT ${limit};
     `) as { id: Observation["id"] }[];
@@ -135,5 +136,51 @@ export class ObservationRepository {
 
       return { ...observation, tgMediaGroup, tgGeo };
     });
+  }
+
+  async approveObservation(
+    observationId: Observation["id"]
+  ): Promise<Observation> {
+    return this.prismaClient.observation.update({
+      where: { id: observationId },
+      data: { isApproved: true },
+      select: selectObservation,
+    });
+  }
+
+  async deleteObservation(observationId: Observation["id"]): Promise<void> {
+    await this.prismaClient.observation.delete({
+      where: { id: observationId },
+    });
+  }
+
+  async getWaitingObservationsAmount() {
+    return this.prismaClient.observation.count({
+      where: { isApproved: false },
+    });
+  }
+
+  async getWaitingObservations(
+    limit: number,
+    cursor?: string
+  ): Promise<PaginatedData<Observation>> {
+    const decodedCursor = cursor ? decodeCursor(cursor) : undefined;
+
+    const observations = await this.prismaClient.observation.findMany({
+      select: { ...selectObservation, privateId: true },
+      cursor: decodedCursor ? { privateId: decodedCursor } : undefined,
+      take: limit + 1,
+      where: { isApproved: false },
+      orderBy: { privateId: "asc" },
+    });
+
+    const nextId = observations.at(limit)?.privateId;
+
+    return {
+      cursor: nextId ? encodeCursor(nextId) : null,
+      items: observations
+        .slice(0, limit)
+        .map((o) => observationSchema.parse(o)),
+    };
   }
 }
